@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="app-title">
+  <div>
+    <h1><i class="fa fa-edit"></i> Nouvel Arrivage</h1>
+    <!-- <p>Bootstrap default form components</p> -->
+  </div>
+  <ul class="app-breadcrumb breadcrumb">
+    <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+    <li class="breadcrumb-item">Arrivage</li>
+    <li class="breadcrumb-item"><a href="#">Nouvel Arrivage</a></li>
+  </ul>
+</div>
+<div class="row justify-content-md-center">
+  <div class="col-md-8">
+    <div class="tile tile2">
+      <div class="row">
+        <div class="col-lg-12">
+          <form>
+            <div class="form-group">
+              <label for="exampleSelect1">Founisseur</label>
+              <select class="form-control" id="exampleSelect1">
+                <option>Daniel</option>
+                <option>Stephane</option>
+                <option>Hami</option>
+                <option>Karim</option>
+                <option>Touhami</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="dateArrivee">Date d'arrivée</label>
+              <input type="date" id="dateArrivee" name="bday" max="3000-12-31" min="1000-01-01" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Produits</label>
+              <div class="table-responsive">
+                <table class="table table-hover" id="worked" style="min-width:650px">
+                  <thead>
+                      <tr>
+                          <th>Produit</th>
+                          <th>Quantite</th>
+                          <th>Prix unitaire</th>
+                          <th>Montant</th>
+                          <th><button type="button" class="btn btn-blue add-row">+</button></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>
+                            <select class="form-control" id="selectProduit" style="min-width:120px">
+                              <option>Banane</option>
+                              <option>Ananas</option>
+                              <option>Noix de coco</option>
+                              <option>Kiwi</option>
+                              <option>Orange</option>
+                            </select>
+                          </td>
+                          <td>
+                              <input class="form-control calcProduit" id="quantite" type="number" min="0" value="0" ></td>
+                          <td>
+                            <div class="input-group">
+                              <input class="form-control calcProduit" id="prixUnitaire" type="number" min="0" step=".001" value="0">
+                              <div class="input-group-append"><span class="input-group-text">$</span></div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="input-group">
+                              <input class="form-control" id="montant" value="0" disabled>
+                              <div class="input-group-append"><span class="input-group-text">$</span></div>
+                            </div>
+
+                          </td>
+                          <td><button type="button" class="btn btn-danger delete-row">-</button></td>
+                      </tr>
+                  </tbody>
+
+                </table>
+              </div>
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModalCenter">
+                Nouveau produit
+              </button>
+              <div class="clearfix"></div>
+            </div>
+
+
+
+            <div class="form-group">
+              <label for="exampleTextarea">Note</label>
+              <textarea class="form-control" id="exampleTextarea" rows="2" placeholder="Pour cette arrivage, Stephane a oublié d'envoyer les coordonnées de ... "></textarea>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+      <div class="tile-footer">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Nouveau Produit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label for="inputAddProduit" class="col-sm-4 col-form-label">Nom du Produit</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="inputAddProduit" placeholder="Ananas" value="">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="ModalAction">Créer produit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+   rel = "stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<!-- <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
+
+<script type="text/javascript">
+
+
+  $(document).ready(function() {
+    $('#ArrivagesItem').toggleClass('active');
+
+    $('#worked .add-row').click(function () {
+        var template = '<tr> <td class="col-md-4"> <select class="form-control" id="selectProduit"> <option>Banane</option> <option>Ananas</option> <option>Noix de coco</option> <option>Kiwi</option> <option>Orange</option> </select> </td> <td class="col-md-2"> <input class="form-control calcProduit" id="quantite" type="number" min="0" value="0"></td> <td class="col-md-3"> <div class="input-group"> <input class="form-control calcProduit" id="prixUnitaire" type="number" min="0" step=".001" value="0"> <div class="input-group-append"><span class="input-group-text">$</span></div> </div> </td> <td class="col-md-3"> <div class="input-group"> <input class="form-control" id="montant" value="0" disabled> <div class="input-group-append"><span class="input-group-text">$</span></div> </div></td> <td><button type="button" class="btn btn-danger delete-row">-</button></td> </tr>';
+        $('#worked tbody').append(template);
+    });
+
+    $('#worked').on('click', '.delete-row', function () {
+        $(this).parent().parent().remove();
+    });
+
+    $( ".calcProduit" ).change(function() {
+      var tr = $(this).parent().parent();
+      var quantite = $(tr).find('#quantite').val();
+      var prixUnitaire = $(tr).find('#prixUnitaire').val();
+      $(tr).find('#montant').val(quantite * prixUnitaire);
+    });
+
+    $('.calcProduit').on('input', function() {
+      var tr = $(this).parent().parent();
+      var quantite = $(tr).find('#quantite').val();
+      var prixUnitaire = $(tr).find('#prixUnitaire').val();
+      $(tr).find('#montant').val(quantite * prixUnitaire);
+    });
+
+    $( "#ModalAction" ).click(function() {
+      $('#selectProduit').append($('<option>', {
+          value: $('#inputAddProduit').val(),
+          text: $('#inputAddProduit').val()
+      }));
+
+      $('#exampleModalCenter').modal('hide');
+      $('#inputAddProduit').val('');
+    });
+
+    var availableTutorials  =  [
+       "Banane",
+       "Noix de coco",
+       "Ananas",
+       "Kiwi",
+       "Orange",
+    ];
+    $( "#countries" ).autocomplete({
+       source: availableTutorials
+    });
+
+
+
+});
+</script>
+{% endblock %}

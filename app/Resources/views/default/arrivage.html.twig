@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<style>
+  .lh30{
+    line-height: 30px;
+  }
+</style>
+
+<div class="app-title">
+  <div>
+    <h1><i class="fa fa-th-list"></i> Data Table</h1>
+    <p>Table to display analytical data effectively</p>
+  </div>
+  <ul class="app-breadcrumb breadcrumb side">
+    <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+    <li class="breadcrumb-item">Tables</li>
+    <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+  </ul>
+</div>
+
+  <div class="content mt-3">
+      <div class="animated fadeIn">
+          <div class="row">
+
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header">
+                      <strong class="card-title lh30">Liste des Arrivages</strong>
+                      <div class="float-right">
+                        <!-- <button class="btn btn-outline-primary" type="button">Primary</button> -->
+                        <a class="btn btn-primary btn-sm icon-btn" href="{{ path('arrivage_new')}}">
+                          <i class="fa fa-plus"></i>Nouvel Arrivage
+                        </a>
+                      </div>
+                  </div>
+                  <div class="card-body" >
+<div class="table-responsive">
+<table id="example" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+      <tr>
+          <!-- <th>Name</th> -->
+          <th>Fournisseur</th>
+          <th>Produits</th>
+          <th>Date d'arrivée</th>
+          <th>Montant</th>
+          <th>Montant payé</th>
+          <th>Montant restant</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr style="background:orange;color:white">
+          <td>Stephane</td>
+          <td>Banane + Kiwi</td>
+          <!-- <td>66</td> -->
+          <td>2018/04/12</td>
+          <!-- <td>$86,000</td> -->
+          <td>20,000 TND</td>
+          <td>6,000 TND</td>
+          <td>14,000 TND</td>
+      </tr>
+      <tr>
+          <td>Daniel</td>
+          <td>Ananas</td>
+          <!-- <td>66</td> -->
+          <td>2018/04/16</td>
+          <!-- <td>$86,000</td> -->
+          <td>10,000 TND</td>
+          <td>10,000 TND</td>
+          <td>0 TND</td>
+      </tr>
+      <tr>
+          <td>Amir</td>
+          <td>Orange</td>
+          <!-- <td>66</td> -->
+          <td>2018/02/16</td>
+          <!-- <td>$86,000</td> -->
+          <td>20,000 TND</td>
+          <td>20,000 TND</td>
+          <td>0 TND</td>
+      </tr>
+      <tr style="background:orange;color:white">
+          <td>Touhemi</td>
+          <td>Bousaa</td>
+          <!-- <td>66</td> -->
+          <td>2018/03/16</td>
+          <!-- <td>$86,000</td> -->
+          <td>19,000 TND</td>
+          <td>10,000 TND</td>
+          <td>9,000 TND</td>
+      </tr>
+
+  </tbody>
+  <tfoot>
+    <tr>
+        <!-- <th>Name</th> -->
+        <th>Fournisseur</th>
+        <th>Produits</th>
+        <th>Date d'arrivée</th>
+        <th>Montant</th>
+        <th>Montant payé</th>
+        <th>Montant restant</th>
+    </tr>
+  </tfoot>
+</table>
+</div>
+
+                  </div>
+              </div>
+          </div>
+
+
+          </div>
+      </div><!-- .animated -->
+  </div><!-- .content -->
+
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <!-- Data table plugin-->
+  <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+  <script type="text/javascript">$('#sampleTable').DataTable();</script>
+  <!-- Google analytics script-->
+  <script type="text/javascript">
+
+  $(document).ready(function() {
+    $('#ArrivagesItem').toggleClass('active');
+    $('#example').DataTable();
+  } );
+
+    if(document.location.hostname == 'pratikborsadiya.in') {
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-72504830-1', 'auto');
+      ga('send', 'pageview');
+    }
+  </script>
+
+{% endblock %}
