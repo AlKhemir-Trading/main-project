@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: sql7.freemysqlhosting.net
+    database_port: 3306
+    database_name: sql7234887
+    database_user: sql7234887
+    database_password: rrNSYF3Jjk
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: tunisiewebpro@gmail.com
+    mailer_password: KarimMahdi2017
+    secret: 0114e534eaab9159b3c8adf88dea944632670e13
+
+    mailer_user: garalimedkarim4@gmail.com
