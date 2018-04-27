@@ -1,0 +1,93 @@
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+<div class="login-box">
+    <form class="login-form" action="{{ path("fos_user_security_check") }}" method="post">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% endif %}
+        <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+        <div class="form-group">
+            <label class="control-label">{{ 'security.login.username'|trans }}</label>
+            <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required="required" autocomplete="username" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{ 'security.login.password'|trans }}</label>
+            <input type="password" id="password" name="_password" class="form-control" required="required" autocomplete="current-password" />
+        </div>
+        <div class="form-group">
+            <div class="utility">
+                <div class="animated-checkbox">
+                    <label>
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                        <span class="label-text">{{ 'security.login.remember_me'|trans }}</span>
+                    </label>
+                </div>
+                <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+            </div>
+        </div>
+        <div class="form-group btn-container">
+            <button type="submit" id="_submit" name="_submit" class="btn btn-primary btn-block">
+                <i class="fa fa-sign-in fa-lg fa-fw"></i>{{ 'security.login.submit'|trans }}
+            </button>
+        </div>
+    </form>
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error.messageKey|trans(error.messageData, 'security') }}
+    </div>
+    {% endif %}
+
+
+    <form class="forget-form" action="index.html">
+        <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
+        <div class="form-group">
+            <label class="control-label">EMAIL</label>
+            <input class="form-control" type="text" placeholder="Email">
+        </div>
+        <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+        </div>
+        <div class="form-group mt-3">
+            <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+{#
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+<form action="{{ path("fos_user_security_check") }}" method="post">
+    {% if csrf_token %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    {% endif %}
+
+    <label for="username">{{ 'security.login.username'|trans }}</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+
+    <label for="password">{{ 'security.login.password'|trans }}</label>
+    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
+
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+</form>
+
+
+#}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/css/style.css') }}">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Login - Vali Admin</title>
+</head>
+<body>
+<section class="material-half-bg">
+    <div class="cover"></div>
+</section>
+<section class="login-content">
+    <div class="logo">
+        <h1>Vali</h1>
+    </div>
+
+{#Start#}
+    <div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {% else %}
+            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+        {% endif %}
+    </div>
+
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+    </div>
+{#end#}
+
+</section>
+
+{% block javascripts %}
+    <script src="{{ asset('template/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('template/js/popper.min.js') }}"></script>
+    <script src="{{ asset('template/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('template/js/main.js') }}"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="{{ asset('template/js/plugins/pace.min.js') }}"></script>
+
+    <script type="text/javascript">
+        // Login Page Flipbox control
+        $('.login-content [data-toggle="flip"]').click(function() {
+            $('.login-box').toggleClass('flipped');
+            return false;
+        });
+    </script>
+{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+{#
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+        </div>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+    </body>
+</html>
+#}
