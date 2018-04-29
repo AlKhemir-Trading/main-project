@@ -61,10 +61,11 @@ doctrine:
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'
-    host: '%mailer_host%'
+#    host: '%mailer_host%'
+#    port: '%mailer_port%'
     username: '%mailer_user%'
     password: '%mailer_password%'
-    spool: { type: memory }
+#    spool: { type: memory }
 
 # FOS USER BUNDLE
 fos_user:
@@ -76,3 +77,11 @@ fos_user:
         sender_name: "%mailer_user%"
     service:                               # this lines
         mailer: fos_user.mailer.twig_swift # this lines
+    registration:
+        confirmation:
+            enabled: true
+    resetting:
+        email:
+            from_email:
+                address:        %mailer_user%
+                sender_name:    Demo Resetting
