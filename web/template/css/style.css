@@ -5,3 +5,12 @@
 .lh30{
   line-height: 30px;
 }
+
+.checkyourmail{
+  background-color: dimgrey;
+  color:white;
+  font-size: 17px;
+  padding:10px;
+  border-radius: 10px;
+  font-family: "Times New Roman", Times, serif;
+}

@@ -40,21 +40,30 @@
     {% endif %}
 
 
-    <form class="forget-form" action="index.html">
+    <form class="forget-form" action="{{ path('fos_user_resetting_send_email') }}" method="POST">
         <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
         <div class="form-group">
-            <label class="control-label">EMAIL</label>
-            <input class="form-control" type="text" placeholder="Email">
+            <label class="control-label">{{ 'resetting.request.username'|trans }}</label>
+            <input class="form-control" type="text" id="username" name="username" required="required">
         </div>
         <div class="form-group btn-container">
-            <button class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+            <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-unlock fa-lg fa-fw"></i>{{'resetting.request.submit'|trans }}</button>
         </div>
         <div class="form-group mt-3">
             <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
         </div>
     </form>
-
-
+{#
+    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+        <div>
+            <label for="username">{{ 'resetting.request.username'|trans }}</label>
+            <input type="text" id="username" name="username" required="required" />
+        </div>
+        <div>
+            <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+        </div>
+    </form>
+#}
 {#    {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
     {{ form_widget(form) }}
     <div>

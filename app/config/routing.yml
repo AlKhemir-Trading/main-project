@@ -2,6 +2,10 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
+my_vendor_fos_user_bundle:
+    resource: '@MyVendorFOSUserBundle/Controller/'
+    type: annotation
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
