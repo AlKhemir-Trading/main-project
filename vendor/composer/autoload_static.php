@@ -54,6 +54,7 @@ class ComposerStaticInitbb39808569e033facab47bf895925075
         ),
         'M' => 
         array (
+            'MyVendorFOSUserBundle\\' => 22,
             'Monolog\\' => 8,
         ),
         'I' => 
@@ -180,6 +181,10 @@ class ComposerStaticInitbb39808569e033facab47bf895925075
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'MyVendorFOSUserBundle\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/MyVendor/MyVendorFOSUserBundle',
         ),
         'Monolog\\' => 
         array (
