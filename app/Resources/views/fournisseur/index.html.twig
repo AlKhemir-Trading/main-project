@@ -32,7 +32,7 @@
                       <div class="card-body" >
 
                         <div class="table-responsive">
-                        <table id="example" class="table table-striped table-bordered w-100">
+                        <table id="example" class="table table-striped table-bordered w-100 tableData">
                           <thead>
                               <tr>
                                   <th>Matricule</th>
@@ -44,11 +44,18 @@
                           </thead>
                           <tbody>
                             {% for fournisseur in fournisseurs %}
-                              <tr>
-                                  <td>{{ fournisseur.id }}</td>
+                              {% if( date( fournisseur.dateCreation) > date('-7days') )%}
+                                {% set class = 'cadblue' %}
+                              {% else %}
+                                {% set class = '' %}
+                              {% endif %}
+                              <tr class="{{class}}" onclick="window.location.href = '{{ path('fournisseur_show', { 'id': fournisseur.id }) }}';">
+                                  <td>{{ "%05d"|format(fournisseur.id) }}</td>
                                   <td>
                                     {{ fournisseur.name }}
-                                    <span class="badge badge-info">New</span>
+                                    {% if( date( fournisseur.dateCreation) > date('-7days') )%}
+                                        <span class="badge badge-info">New</span>
+                                    {%endif%}
                                   </td>
                                   <td>{{ fournisseur.tel }}</td>
                                   <td>{{ fournisseur.pays }}</td>

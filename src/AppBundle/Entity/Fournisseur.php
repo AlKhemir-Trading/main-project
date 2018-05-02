@@ -42,7 +42,16 @@ class Fournisseur
      */
     private $tel;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="date_creation", type="date", nullable=false)
+     */
+    private $dateCreation;
 
+    public function __construct() {
+      $this->dateCreation = new \DateTime();
+    }
     /**
      * Get id
      *
@@ -124,5 +133,28 @@ class Fournisseur
     {
         return $this->tel;
     }
-}
 
+    /**
+     * Set dateCreation
+     *
+     * @param \DateTime $dateCreation
+     *
+     * @return Fournisseur
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreation
+     *
+     * @return \DateTime
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
+    }
+}
