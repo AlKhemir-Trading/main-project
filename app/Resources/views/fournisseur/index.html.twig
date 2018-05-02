@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="app-title">
+      <div>
+        <h1><i class="fa fa-th-list"></i> Data Table</h1>
+        <p>Table to display analytical data effectively</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item">Tables</li>
+        <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+      </ul>
+    </div>
+
+      <div class="content mt-3">
+          <div class="animated fadeIn">
+              <div class="row">
+
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <strong class="card-title lh30">Liste des Fournisseurs</strong>
+                          <div class="float-right">
+                            <!-- <button class="btn btn-outline-primary" type="button">Primary</button> -->
+                            <a class="btn btn-primary btn-sm icon-btn" href="{{ path('fournisseur_new')}}">
+                              <i class="fa fa-plus"></i>Nouveau Fournisseur
+                            </a>
+                          </div>
+                      </div>
+                      <div class="card-body" >
+
+                        <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered w-100">
+                          <thead>
+                              <tr>
+                                  <th>Matricule</th>
+                                  <th>Nom</th>
+                                  <th>Tel</th>
+                                  <th>Pays</th>
+                                  <th>Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for fournisseur in fournisseurs %}
+                              <tr>
+                                  <td>{{ fournisseur.id }}</td>
+                                  <td>
+                                    {{ fournisseur.name }}
+                                    <span class="badge badge-secondary">New</span>
+                                  </td>
+                                  <td>{{ fournisseur.tel }}</td>
+                                  <td>{{ fournisseur.pays }}</td>
+                                  <td>
+                                    <button class="btn btn-sm btn-danger btn-table-sm" type="button"
+                                      data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i> </button>
+                                    <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash"></i></button>
+                                    <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">
+                                      <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">
+                                      <i class="fa fa-trash"></i>
+                                    </a>
+                                  </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                        </div>
+
+                      </div>
+                  </div>
+              </div>
+
+
+              </div>
+          </div><!-- .animated -->
+      </div><!-- .content -->
+
+
+    </div>
+
+    {% endblock %}
+
+    {% block javascripts %}
+      {{ parent() }}
+      <!-- Data table plugin-->
+      <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+      <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+      <script type="text/javascript">$('#sampleTable').DataTable();</script>
+      <!-- Google analytics script-->
+      <script type="text/javascript">
+
+      $(document).ready(function(){
+        $('#ArrivagesItem').toggleClass('active');
+        $('#example').DataTable();
+      });
+
+        if(document.location.hostname == 'pratikborsadiya.in') {
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-72504830-1', 'auto');
+          ga('send', 'pageview');
+        }
+      </script>
+
+    {% endblock %}
+
+
+
+{#
+
+  {% extends 'base.html.twig' %}
+
+  {% block body %}
+      <h1>Fournisseurs list</h1>
+
+      <table>
+          <thead>
+              <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Pays</th>
+                  <th>Tel</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for fournisseur in fournisseurs %}
+              <tr>
+                  <td><a href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">{{ fournisseur.id }}</a></td>
+                  <td>{{ fournisseur.name }}</td>
+                  <td>{{ fournisseur.pays }}</td>
+                  <td>{{ fournisseur.tel }}</td>
+                  <td>
+                      <ul>
+                          <li>
+                              <a href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">show</a>
+                          </li>
+                          <li>
+                              <a href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">edit</a>
+                          </li>
+                      </ul>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+      <ul>
+          <li>
+              <a href="{{ path('fournisseur_new') }}">Create a new fournisseur</a>
+          </li>
+      </ul>
+  {% endblock %}
+
+
+
+  #}

@@ -1,0 +1,15 @@
+
+{% for entity in form.children %}
+  {% if entity.vars.name != '_token' %}
+      <!-- {{dump(entity.vars.name)}} -->
+      <div class="form-group row">
+        {{ form_label(attribute(form,entity.vars.name), null,
+          { 'label_attr': {'class': 'col-sm-3 col-form-label font-weight-bold'} }) }}
+        {{ form_errors(attribute(form,entity.vars.name)) }}
+        <div class="col-sm-9">
+          {{ form_widget(attribute(form,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>
+  {% endif %}
+{% endfor%}
+<hr />
