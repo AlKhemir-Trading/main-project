@@ -71,7 +71,6 @@
   background: blue;
 }
 
-
 .test2{
   width: 100%;
   background: green;
@@ -82,3 +81,23 @@
     width: auto!important;
   }
 } */
+
+.fa-fix{
+  width:11px;
+}
+
+/* btn-edit */
+.btn-edit {
+  color: white;
+  background-color: orange;
+  border-color: red;
+}
+.btn-edit:hover {
+  color: #FFF;
+  background-color: chocolate;
+  border-color: black;
+}
+.btn-edit:focus, .btn-edit.focus {
+  -webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+          box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+}

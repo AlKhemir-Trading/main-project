@@ -4,10 +4,10 @@
       <!-- {{dump(entity.vars.name)}} -->
       <div class="form-group row">
         {{ form_label(attribute(form,entity.vars.name), null,
-          { 'label_attr': {'class': 'col-sm-3 col-form-label font-weight-bold'} }) }}
+          { 'label_attr': {'class': 'col-sm-3 col-form-label col-form-label-sm font-weight-bold'} }) }}
         {{ form_errors(attribute(form,entity.vars.name)) }}
         <div class="col-sm-9">
-          {{ form_widget(attribute(form,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+          {{ form_widget(attribute(form,entity.vars.name) ,{'attr': {'class': 'form-control form-control-sm'} }) }}
         </div>
       </div>
   {% endif %}

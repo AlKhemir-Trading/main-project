@@ -48,20 +48,28 @@
                                   <td>{{ fournisseur.id }}</td>
                                   <td>
                                     {{ fournisseur.name }}
-                                    <span class="badge badge-secondary">New</span>
+                                    <span class="badge badge-info">New</span>
                                   </td>
                                   <td>{{ fournisseur.tel }}</td>
                                   <td>{{ fournisseur.pays }}</td>
                                   <td>
-                                    <button class="btn btn-sm btn-danger btn-table-sm" type="button"
-                                      data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i> </button>
-                                    <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash"></i></button>
+
+                                    <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">
+                                      <i class="fa fa-info fa-fix"></i>
+                                    </a>
+
+                                    <a class="btn btn-edit btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">
+                                      <i class="fa fa-edit fa-fix"></i>
+                                    </a>
+
+                                    <!-- <button class="btn btn-sm btn-danger btn-table-sm" type="button"
+                                    data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash fa-fix"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash fa-fix"></i></button>
                                     <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">
-                                      <i class="fa fa-trash"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">
-                                      <i class="fa fa-trash"></i>
-                                    </a>
+                                      <i class="fa fa-trash fa-fix"></i>
+                                    </a> -->
+
                                   </td>
                               </tr>
                             {% endfor %}
