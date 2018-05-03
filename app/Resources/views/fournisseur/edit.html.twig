@@ -1,26 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'fournisseur/layout.html.twig' %}
 
-{% block body %}
+{% set action = "Edit Fournisseur" %}
 
-<div class="app-title">
-  <div>
-    <h1><i class="fa fa-edit"></i> Edit Fournisseur</h1>
-    <!-- <p>Bootstrap default form components</p> -->
-  </div>
-  <ul class="app-breadcrumb breadcrumb">
-    <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-    <li class="breadcrumb-item">Fournisseur</li>
-    <li class="breadcrumb-item"><a href="#">Edit Fournisseur</a></li>
-  </ul>
-</div>
-<div class="row justify-content-lg-center">
-  <div class="col-lg-9">
-    <div class="tile tile2">
-      <div class="row">
-        <div class="col-lg-12">
+{% block body2 %}
 
           {{ form_start(form) }}
-            {{ include("fournisseur/fournisseurForm.html.twig") }}
+            {{ include("fournisseur/form.html.twig") }}
 
             <div class="form-group row">
               <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-1">
@@ -42,39 +27,31 @@
             </div>
           {{ form_end(form) }}
 
+          <!-- Delete form -->
+          {{ form_start(delete_form, {'attr': {'id': 'form_delete_founisseur'}}) }}
+          {{ form_end(delete_form) }}
 
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Supprimer le Fournisseur <b style="color:red">{{fournisseur.name}}</b> ?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- <div class="modal-body">
+                  <h6>Confirmer la suppression du fournisseur <b style="color:red">{{fournisseur.name}}</b> ? </h6>
+                </div> -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <!-- <a class="btn btn-primary btn-secondary" href="{{ path('fournisseur_index') }}">Back to the list</a> -->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Delete form -->
-{{ form_start(delete_form, {'attr': {'id': 'form_delete_founisseur'}}) }}
-{{ form_end(delete_form) }}
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supprimer le Fournisseur <b style="color:red">{{fournisseur.name}}</b> ?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- <div class="modal-body">
-        <h6>Confirmer la suppression du fournisseur <b style="color:red">{{fournisseur.name}}</b> ? </h6>
-      </div> -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 {#
     <h1>Fournisseur edit</h1>

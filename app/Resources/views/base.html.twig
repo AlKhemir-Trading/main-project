@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}WareHouse!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('template/css/main.css') }}">
@@ -82,12 +82,13 @@
           </div>
         </div>
         <ul class="app-menu">
-          <li><a id="DashboardItem" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
-          <li><a id="ArrivagesItem" class="app-menu__item " href="{{ path('arrivages') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Arrivage</span></a></li>
-          <li><a class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Mon Stock</span></a></li>
-          <li><a class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Client</span></a></li>
-          <li><a class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Fournisseur</span></a></li>
-          <li><a class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Facture</span></a></li>
+          <li><a id="dashboard-item" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+          <li><a id="arrivage-item" class="app-menu__item " href="{{ path('arrivages') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Arrivage</span></a></li>
+          <li><a id="produit-item" class="app-menu__item " href="{{ path('arrivages') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Produit</span></a></li>
+          <li><a id="monstock-item" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Mon Stock</span></a></li>
+          <li><a id="client-item" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Client</span></a></li>
+          <li><a id="fournisseur-item" class="app-menu__item " href="{{ path('fournisseur_index') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Fournisseur</span></a></li>
+          <li><a id="facture-item" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Facture</span></a></li>
           <!-- <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li> -->
           <!-- <li><a class="app-menu__item active" href="index.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li> -->
           <!-- <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">UI Elements</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -130,6 +131,7 @@
       <main class="app-content">
         {% block body %}{% endblock %}
       </main>
+
       <!-- Essential javascripts for application to work-->
       {% block javascripts %}
         <script src="{{ asset('template/js/jquery-3.2.1.min.js') }}"></script>
@@ -138,6 +140,17 @@
         <script src="{{ asset('template/js/main.js') }}"></script>
         <!-- The javascript plugin to display page loading on top-->
         <script src="{{ asset('template/js/plugins/pace.min.js') }}"></script>
+        <script type="text/javascript">
+          $(document).ready(function() {
+            //set active tab:
+            var tabname = $('#tab_name').val();
+            if (!tabname)
+              tabname = 'dashboard';
+            $('#'+tabname+"-item").toggleClass('active');
+
+
+          });
+        </script>
       {% endblock %}
       <!-- Google analytics script-->
       <!-- <script type="text/javascript">
