@@ -81,6 +81,9 @@ fos_user:
     registration:
         confirmation:
             enabled: true
+            from_email:
+                address:        %mailer_user%
+                sender_name:    Demo Resetti
     resetting:
         email:
             from_email:
