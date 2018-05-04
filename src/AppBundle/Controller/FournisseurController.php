@@ -41,6 +41,7 @@ class FournisseurController extends Controller
     public function newAction(Request $request)
     {
         $fournisseur = new Fournisseur();
+        $fournisseur->setPays('TN');
         $form = $this->createForm('AppBundle\Form\FournisseurType', $fournisseur);
         $form->handleRequest($request);
 

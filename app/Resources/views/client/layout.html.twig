@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <input id="tab_name" type="hidden" value="client" />
+  <div class="app-title">
+    <div>
+      <h1><i class="fa fa-edit"></i> {{ action }}</h1>
+      <!-- <p>Bootstrap default form components</p> -->
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+      <li class="breadcrumb-item">Client</li>
+      <li class="breadcrumb-item"><a href="#">{{ action }}</a></li>
+    </ul>
+  </div>
+
+  {% block container %}
+  <div class="row justify-content-lg-center">
+    <div class="col-lg-9">
+      <div class="tile tile2">
+        <div class="row">
+          <div class="col-lg-12">
+            {% block body2 %}
+
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block without_container %}
+  {% endblock %}
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

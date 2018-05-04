@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 
-class FournisseurType extends AbstractType
+class ClientType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -30,7 +30,7 @@ class FournisseurType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Fournisseur'
+            'data_class' => 'AppBundle\Entity\Client'
         ));
     }
 
@@ -39,7 +39,7 @@ class FournisseurType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_fournisseur';
+        return 'appbundle_client';
     }
 
 
