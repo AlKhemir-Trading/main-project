@@ -19,12 +19,12 @@
 
         <div class="form-group row">
           <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-1">
-            <a class="btn btn-primary d-block btn-sm" type="button" href="{{ path('fournisseur_index') }}">
+            <a class="btn btn-primary d-block " type="button" href="{{ path('fournisseur_index') }}">
               <i class="fa fa-arrow-circle-left "></i>Retour
             </a>
           </div>
           <div class="col-sm-9 order-1 order-sm-2">
-            <a class="btn btn-warning d-block btn-sm" type="button" href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">
+            <a class="btn btn-edit d-block " type="button" href="{{ path('fournisseur_edit', { 'id': fournisseur.id }) }}">
               <i class="fa fa-edit"></i>Edit
             </a>
             <!-- <a class="btn btn-secondary" href="{{ path('fournisseur_index') }}">Annuler</a> -->

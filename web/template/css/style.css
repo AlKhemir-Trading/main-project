@@ -87,15 +87,31 @@
 }
 
 /* btn-edit */
+.btn-edit-xs {
+  color: white;
+  background-color: chocolate;
+  border-color: red;
+}
+.btn-edit-xs:hover {
+  color: #FFF;
+  background-color: orange ;
+  border-color: black;
+}
+.btn-edit-xs:focus, .btn-edit.focus {
+  -webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+          box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
+}
+
+/* btn-edit */
 .btn-edit {
   color: white;
-  background-color: orange;
-  border-color: red;
+  background-color: darkorange;
+  border-color: chocolate;
 }
 .btn-edit:hover {
   color: #FFF;
-  background-color: chocolate;
-  border-color: black;
+  background-color: orange ;
+  border-color: chocolate;
 }
 .btn-edit:focus, .btn-edit.focus {
   -webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.5);
