@@ -1,0 +1,165 @@
+{% extends 'produit/layout.html.twig' %}
+
+{% set action = "Liste des Produits" %}
+
+{% block container %}
+{%endblock%}
+
+{% block without_container %}
+      <div class="content mt-3">
+          <div class="animated fadeIn">
+              <div class="row">
+
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <strong class="card-title lh30">Liste des Produits</strong>
+                          <div class="float-right">
+                            <!-- <button class="btn btn-outline-primary" type="button">Primary</button> -->
+                            <a class="btn btn-primary btn-sm icon-btn" href="{{ path('produit_new')}}">
+                              <i class="fa fa-plus"></i>Nouveau Produit
+                            </a>
+                          </div>
+                      </div>
+                      <div class="card-body" >
+
+                        <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered w-100 tableData">
+                          <thead>
+                              <tr>
+                                  <th>Matricule</th>
+                                  <th>Produit</th>
+                                  <th>Note</th>
+                                  <th>Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for produit in produits %}
+                              {% if( date( produit.dateCreation) > date('-7days') )%}
+                                {% set class = 'cadblue' %}
+                              {% else %}
+                                {% set class = '' %}
+                              {% endif %}
+                              <tr class="{{class}}" onclick="window.location.href = '{{ path('produit_show', { 'id': produit.id }) }}';">
+                                  <td>{{ "%05d"|format(produit.id) }}</td>
+                                  <td>
+                                    {{ produit.name }}
+                                    {% if( date( produit.dateCreation) > date('-7days') )%}
+                                        <span class="badge badge-info">New</span>
+                                    {%endif%}
+                                  </td>
+                                  <td>{{ produit.note }}</td>
+                                  <td>
+
+                                    <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('produit_show', { 'id': produit.id }) }}">
+                                      <i class="fa fa-info fa-fix"></i>
+                                    </a>
+
+                                    <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('produit_edit', { 'id': produit.id }) }}">
+                                      <i class="fa fa-edit fa-fix"></i>
+                                    </a>
+
+                                    <!-- <button class="btn btn-sm btn-danger btn-table-sm" type="button"
+                                    data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash fa-fix"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash fa-fix"></i></button>
+                                    <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('produit_edit', { 'id': produit.id }) }}">
+                                      <i class="fa fa-trash fa-fix"></i>
+                                    </a> -->
+
+                                  </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                        </div>
+
+                      </div>
+                  </div>
+              </div>
+
+
+              </div>
+          </div><!-- .animated -->
+      </div><!-- .content -->
+
+
+    {% endblock %}
+
+    {% block javascripts %}
+      {{ parent() }}
+      <!-- Data table plugin-->
+      <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+      <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+      <script type="text/javascript">$('#sampleTable').DataTable();</script>
+      <!-- Google analytics script-->
+      <script type="text/javascript">
+
+      $(document).ready(function(){
+        $('#ArrivagesItem').toggleClass('active');
+        $('#example').DataTable();
+      });
+
+        if(document.location.hostname == 'pratikborsadiya.in') {
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-72504830-1', 'auto');
+          ga('send', 'pageview');
+        }
+      </script>
+
+    {% endblock %}
+
+
+
+{#
+
+  {% extends 'base.html.twig' %}
+
+  {% block body %}
+      <h1>Produits list</h1>
+
+      <table>
+          <thead>
+              <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Pays</th>
+                  <th>Tel</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for produit in produits %}
+              <tr>
+                  <td><a href="{{ path('produit_show', { 'id': produit.id }) }}">{{ produit.id }}</a></td>
+                  <td>{{ produit.name }}</td>
+                  <td>{{ produit.pays }}</td>
+                  <td>{{ produit.tel }}</td>
+                  <td>
+                      <ul>
+                          <li>
+                              <a href="{{ path('produit_show', { 'id': produit.id }) }}">show</a>
+                          </li>
+                          <li>
+                              <a href="{{ path('produit_edit', { 'id': produit.id }) }}">edit</a>
+                          </li>
+                      </ul>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+      <ul>
+          <li>
+              <a href="{{ path('produit_new') }}">Create a new produit</a>
+          </li>
+      </ul>
+  {% endblock %}
+
+
+
+  #}

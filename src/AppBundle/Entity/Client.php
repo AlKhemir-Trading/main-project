@@ -38,7 +38,7 @@ class Client
     /**
      * @var int
      *
-     * @ORM\Column(name="tel", type="integer", nullable=true)
+     * @ORM\Column(name="tel", type="bigint", nullable=true)
      */
     private $tel;
 

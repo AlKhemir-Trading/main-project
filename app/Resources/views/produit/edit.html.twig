@@ -1,0 +1,97 @@
+{% extends 'produit/layout.html.twig' %}
+
+{% set action = "Edit Produit" %}
+
+{% block body2 %}
+
+          {{ form_start(form) }}
+            {{ include("produit/form.html.twig") }}
+
+            <div class="form-group row">
+              <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-1">
+                <a class="btn btn-primary d-block " type="button" href="{{ path('produit_index') }}">
+                  <i class="fa fa-arrow-circle-left "></i>Retour
+                </a>
+              </div>
+              <div class="col-sm-6 order-1 order-sm-2">
+                <button type="submit" class="btn btn-edit btn-block " value="Edit">
+                  <i class="fa fa-edit"></i>Edit
+                </button>
+                <!-- <a class="btn btn-secondary" href="{{ path('produit_index') }}">Annuler</a> -->
+              </div>
+              <div class="col-sm-3 mt-3 mt-sm-0 order-3 order-sm-3">
+                <button type="button" class="btn btn-danger btn-block " data-toggle="modal" data-target="#exampleModal">
+                  <i class="fa fa-trash"></i>Delete
+                </button>
+              </div>
+            </div>
+          {{ form_end(form) }}
+
+          <!-- Delete form -->
+          {{ form_start(delete_form, {'attr': {'id': 'form_delete_founisseur'}}) }}
+          {{ form_end(delete_form) }}
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Supprimer le Produit <b style="color:red">{{produit.name}}</b> ?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- <div class="modal-body">
+                  <h6>Confirmer la suppression du produit <b style="color:red">{{produit.name}}</b> ? </h6>
+                </div> -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+{#
+    <h1>Produit edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" />
+    {{ form_end(edit_form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('produit_index') }}">Back to the list</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+#}
+{% endblock %}
+
+{% block javascripts%}
+{{parent()}}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#appbundle_produit_name').focus();
+    //Modal handling
+    var modalConfirm = function(callback){
+      $("#confirm-delete-button").on("click", function(){
+        callback(true);
+        $("#exampleModal").modal('hide');
+      });
+    };
+    modalConfirm(function(confirm){
+      if(confirm){
+        var form = document.getElementById("form_delete_founisseur");
+        form.submit();
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Fournisseur
+ * Produit
  *
- * @ORM\Table(name="fournisseur")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FournisseurRepository")
+ * @ORM\Table(name="produit")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitRepository")
  */
-class Fournisseur
+class Produit
 {
     /**
      * @var int
@@ -24,34 +24,28 @@ class Fournisseur
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pays", type="string", length=50)
+     * @ORM\Column(name="note", type="string", length=255, nullable=true)
      */
-    private $pays;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tel", type="bigint", nullable=true)
-     */
-    private $tel;
+    private $note;
 
     /**
      * @var int
      *
      * @ORM\Column(name="date_creation", type="date", nullable=false)
      */
-    private $dateCreation;
+     private $dateCreation;
 
-    public function __construct() {
-      $this->dateCreation = new \DateTime();
-    }
+     public function __construct() {
+       $this->dateCreation = new \DateTime();
+     }
+
     /**
      * Get id
      *
@@ -67,7 +61,7 @@ class Fournisseur
      *
      * @param string $name
      *
-     * @return Fournisseur
+     * @return Produit
      */
     public function setName($name)
     {
@@ -87,51 +81,27 @@ class Fournisseur
     }
 
     /**
-     * Set pays
+     * Set note
      *
-     * @param string $pays
+     * @param string $note
      *
-     * @return Fournisseur
+     * @return Produit
      */
-    public function setPays($pays)
+    public function setNote($note)
     {
-        $this->pays = $pays;
+        $this->note = $note;
 
         return $this;
     }
 
     /**
-     * Get pays
+     * Get note
      *
      * @return string
      */
-    public function getPays()
+    public function getNote()
     {
-        return $this->pays;
-    }
-
-    /**
-     * Set tel
-     *
-     * @param integer $tel
-     *
-     * @return Fournisseur
-     */
-    public function setTel($tel)
-    {
-        $this->tel = $tel;
-
-        return $this;
-    }
-
-    /**
-     * Get tel
-     *
-     * @return int
-     */
-    public function getTel()
-    {
-        return $this->tel;
+        return $this->note;
     }
 
     /**
@@ -139,7 +109,7 @@ class Fournisseur
      *
      * @param \DateTime $dateCreation
      *
-     * @return Fournisseur
+     * @return Produit
      */
     public function setDateCreation($dateCreation)
     {
