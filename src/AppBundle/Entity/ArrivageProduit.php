@@ -166,4 +166,28 @@ class ArrivageProduit
     {
         return $this->arrivage;
     }
+
+    /**
+     * Set produit
+     *
+     * @param \AppBundle\Entity\Produit $produit
+     *
+     * @return ArrivageProduit
+     */
+    public function setProduit(\AppBundle\Entity\Produit $produit)
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    /**
+     * Get produit
+     *
+     * @return \AppBundle\Entity\Produit
+     */
+    public function getProduit()
+    {
+        return $this->produit;
+    }
 }
