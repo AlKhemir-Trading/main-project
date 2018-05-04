@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Arrivage;
 
 /**
  * Arrivage
@@ -28,6 +29,11 @@ class Arrivage
      */
     private $dateCreation;
 
+    /**
+     * @var Arrivage
+     * @ORM\OneToMany(targetEntity="ArrivageProduit", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    private $arrivageProduits;
 
     public function __construct() {
       $this->dateCreation = new \DateTime();
@@ -65,5 +71,39 @@ class Arrivage
     public function getDateCreation()
     {
         return $this->dateCreation;
+    }
+
+    /**
+     * Add arrivageProduit
+     *
+     * @param \AppBundle\Entity\ArrivageProduit $arrivageProduit
+     *
+     * @return Arrivage
+     */
+    public function addArrivageProduit(\AppBundle\Entity\ArrivageProduit $arrivageProduit)
+    {
+        $this->arrivageProduits[] = $arrivageProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove arrivageProduit
+     *
+     * @param \AppBundle\Entity\ArrivageProduit $arrivageProduit
+     */
+    public function removeArrivageProduit(\AppBundle\Entity\ArrivageProduit $arrivageProduit)
+    {
+        $this->arrivageProduits->removeElement($arrivageProduit);
+    }
+
+    /**
+     * Get arrivageProduits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArrivageProduits()
+    {
+        return $this->arrivageProduits;
     }
 }
