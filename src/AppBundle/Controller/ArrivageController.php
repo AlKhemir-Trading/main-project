@@ -41,15 +41,23 @@ class ArrivageController extends Controller
     public function newAction(Request $request)
     {
         $arrivage = new Arrivage();
-        $elementArrivage = new ElementArrivage();
-        $elementArrivage2 = new ElementArrivage();
-        $arrivage->addElementArrivage($elementArrivage);
-        $arrivage->addElementArrivage($elementArrivage2);
+        // $elementArrivage = new ElementArrivage();
+        // $elementArrivage2 = new ElementArrivage();
+        // $arrivage->addElementArrivage($elementArrivage);
+        // $arrivage->addElementArrivage($elementArrivage2);
 
         $form = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+//print_r($form->getData()); die;
+          // $elementArrivages = $form->get('elementArrivages')->getData();
+          // foreach($elementArrivages as $elementArrivage)
+          // {
+          //     $elementArrivage->setArrivage($arrivage);
+          // }
+
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
             $em->flush();

@@ -44,7 +44,7 @@ class Produit
 
      /**
       * @var Arrivage
-      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="produit", cascade={"persist", "remove"}, orphanRemoval=TRUE)
       */
      private $elementArrivages;
 

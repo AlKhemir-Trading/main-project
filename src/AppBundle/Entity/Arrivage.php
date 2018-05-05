@@ -84,6 +84,7 @@ class Arrivage
      */
     public function addElementArrivage(\AppBundle\Entity\ElementArrivage $elementArrivage)
     {
+        $elementArrivage->setArrivage($this);
         $this->elementArrivages[] = $elementArrivage;
 
         return $this;

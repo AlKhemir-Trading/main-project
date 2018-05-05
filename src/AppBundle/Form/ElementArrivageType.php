@@ -5,6 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class ElementArrivageType extends AbstractType
 {
@@ -17,8 +19,18 @@ class ElementArrivageType extends AbstractType
         ->add('quantite')
         ->add('prixAchat')
         ->add('prixVente')
-        // ->add('arrivage')
-        // ->add('produit')
+        //->add('arrivage')
+        ->add('produit', EntityType::class, array(
+            // looks for choices from this entity
+            'class' => 'AppBundle:Produit',
+
+            // uses the User.username property as the visible option string
+            'choice_label' => 'name',
+
+            // used to render a select box, check boxes or radios
+            // 'multiple' => true,
+            // 'expanded' => true,
+        ));
         ;
     }/**
      * {@inheritdoc}

@@ -26,7 +26,7 @@ class ElementArrivage
     /**
      * @var Arrivage
      *
-     * @ORM\ManyToOne(targetEntity="Arrivage", inversedBy="elementArrivage")
+     * @ORM\ManyToOne(targetEntity="Arrivage", inversedBy="elementArrivages")
      * @ORM\JoinColumn(name="arrivage_id", referencedColumnName="id", nullable=FALSE)
      */
      private $arrivage;
@@ -34,7 +34,7 @@ class ElementArrivage
      /**
       * @var Produit
       *
-      * @ORM\ManyToOne(targetEntity="Produit", inversedBy="elementArrivage")
+      * @ORM\ManyToOne(targetEntity="Produit", inversedBy="elementArrivages")
       * @ORM\JoinColumn(name="produit_id", referencedColumnName="id", nullable=FALSE)
       */
       private $produit;

@@ -17,6 +17,7 @@ class ArrivageType extends AbstractType
         $builder
         ->add('elementArrivages', CollectionType::class, array(
             'entry_type' => ElementArrivageType::class,
+            'allow_add' => true,
             'label'=> false,
             'entry_options' => array(
               'label' => false
