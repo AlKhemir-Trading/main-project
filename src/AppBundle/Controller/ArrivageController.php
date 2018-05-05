@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Arrivage;
+use AppBundle\Entity\ElementArrivage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,11 @@ class ArrivageController extends Controller
     public function newAction(Request $request)
     {
         $arrivage = new Arrivage();
+        $elementArrivage = new ElementArrivage();
+        $elementArrivage2 = new ElementArrivage();
+        $arrivage->addElementArrivage($elementArrivage);
+        $arrivage->addElementArrivage($elementArrivage2);
+
         $form = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $form->handleRequest($request);
 

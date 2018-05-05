@@ -5,9 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ArrivageType extends AbstractType
+class ElementArrivageType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,22 +14,19 @@ class ArrivageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('elementArrivages', CollectionType::class, array(
-            'entry_type' => ElementArrivageType::class,
-            'label'=> false,
-            'entry_options' => array(
-              'label' => false
-            )
-        ))
+        ->add('quantite')
+        ->add('prixAchat')
+        ->add('prixVente')
+        // ->add('arrivage')
+        // ->add('produit')
         ;
-
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Arrivage'
+            'data_class' => 'AppBundle\Entity\ElementArrivage'
         ));
     }
 
@@ -39,7 +35,7 @@ class ArrivageType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_arrivage';
+        return 'appbundle_elementarrivage';
     }
 
 
