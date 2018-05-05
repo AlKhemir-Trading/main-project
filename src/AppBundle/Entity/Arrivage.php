@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Arrivage;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Arrivage
@@ -37,6 +38,7 @@ class Arrivage
 
     public function __construct() {
       $this->dateCreation = new \DateTime();
+      $this->elementArrivages = new ArrayCollection();
     }
 
     /**

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Arrivages list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datecreation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for arrivage in arrivages %}
+            <tr>
+                <td><a href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">{{ arrivage.id }}</a></td>
+                <td>{% if arrivage.dateCreation %}{{ arrivage.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('arrivage_new') }}">Create a new arrivage</a>
+        </li>
+    </ul>
+{% endblock %}

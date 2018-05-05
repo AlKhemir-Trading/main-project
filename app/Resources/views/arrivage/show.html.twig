@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Arrivage</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ arrivage.id }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{% if arrivage.dateCreation %}{{ arrivage.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('arrivage_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
