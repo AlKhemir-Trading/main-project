@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Arrivage;
 
 /**
- * ArrivageProduit
+ * ElementArrivage
  *
- * @ORM\Table(name="arrivage_produit")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ArrivageProduitRepository")
+ * @ORM\Table(name="element_arrivage")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ElementArrivageRepository")
  */
-class ArrivageProduit
+class ElementArrivage
 {
     /**
      * @var int
@@ -26,7 +26,7 @@ class ArrivageProduit
     /**
      * @var Arrivage
      *
-     * @ORM\ManyToOne(targetEntity="Arrivage", inversedBy="arrivageProduits")
+     * @ORM\ManyToOne(targetEntity="Arrivage", inversedBy="elementArrivage")
      * @ORM\JoinColumn(name="arrivage_id", referencedColumnName="id", nullable=FALSE)
      */
      private $arrivage;
@@ -34,7 +34,7 @@ class ArrivageProduit
      /**
       * @var Produit
       *
-      * @ORM\ManyToOne(targetEntity="Produit", inversedBy="arrivageProduits")
+      * @ORM\ManyToOne(targetEntity="Produit", inversedBy="elementArrivage")
       * @ORM\JoinColumn(name="produit_id", referencedColumnName="id", nullable=FALSE)
       */
       private $produit;
@@ -76,7 +76,7 @@ class ArrivageProduit
      *
      * @param integer $quantite
      *
-     * @return ArrivageProduit
+     * @return ElementArrivage
      */
     public function setQuantite($quantite)
     {
@@ -100,7 +100,7 @@ class ArrivageProduit
      *
      * @param string $prixAchat
      *
-     * @return ArrivageProduit
+     * @return ElementArrivage
      */
     public function setPrixAchat($prixAchat)
     {
@@ -124,7 +124,7 @@ class ArrivageProduit
      *
      * @param string $prixVente
      *
-     * @return ArrivageProduit
+     * @return ElementArrivage
      */
     public function setPrixVente($prixVente)
     {
@@ -148,7 +148,7 @@ class ArrivageProduit
      *
      * @param \AppBundle\Entity\Arrivage $arrivage
      *
-     * @return ArrivageProduit
+     * @return ElementArrivage
      */
     public function setArrivage(\AppBundle\Entity\Arrivage $arrivage)
     {
@@ -172,7 +172,7 @@ class ArrivageProduit
      *
      * @param \AppBundle\Entity\Produit $produit
      *
-     * @return ArrivageProduit
+     * @return ElementArrivage
      */
     public function setProduit(\AppBundle\Entity\Produit $produit)
     {

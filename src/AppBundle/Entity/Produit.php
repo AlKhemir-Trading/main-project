@@ -44,9 +44,9 @@ class Produit
 
      /**
       * @var Arrivage
-      * @ORM\OneToMany(targetEntity="ArrivageProduit", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
       */
-     private $arrivageProduits;
+     private $elementArrivages;
 
      public function __construct() {
        $this->dateCreation = new \DateTime();
@@ -135,36 +135,36 @@ class Produit
     }
 
     /**
-     * Add arrivageProduit
+     * Add elementArrivage
      *
-     * @param \AppBundle\Entity\ArrivageProduit $arrivageProduit
+     * @param \AppBundle\Entity\ElementArrivage $elementArrivage
      *
      * @return Produit
      */
-    public function addArrivageProduit(\AppBundle\Entity\ArrivageProduit $arrivageProduit)
+    public function addElementArrivage(\AppBundle\Entity\ElementArrivage $elementArrivage)
     {
-        $this->arrivageProduits[] = $arrivageProduit;
+        $this->elementArrivages[] = $elementArrivage;
 
         return $this;
     }
 
     /**
-     * Remove arrivageProduit
+     * Remove elementArrivage
      *
-     * @param \AppBundle\Entity\ArrivageProduit $arrivageProduit
+     * @param \AppBundle\Entity\ElementArrivage $elementArrivage
      */
-    public function removeArrivageProduit(\AppBundle\Entity\ArrivageProduit $arrivageProduit)
+    public function removeElementArrivage(\AppBundle\Entity\ElementArrivage $elementArrivage)
     {
-        $this->arrivageProduits->removeElement($arrivageProduit);
+        $this->elementArrivages->removeElement($elementArrivage);
     }
 
     /**
-     * Get arrivageProduits
+     * Get elementArrivages
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArrivageProduits()
+    public function getElementArrivages()
     {
-        return $this->arrivageProduits;
+        return $this->elementArrivages;
     }
 }
