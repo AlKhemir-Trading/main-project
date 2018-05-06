@@ -31,7 +31,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/arrivage/new", name="arrivage_new_default")
+     * @Route("/arrivages/new", name="arrivage_new_default")
      */
     public function addArrivageAction(Request $request)
     {

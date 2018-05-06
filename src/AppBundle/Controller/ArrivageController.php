@@ -42,21 +42,21 @@ class ArrivageController extends Controller
     {
         $arrivage = new Arrivage();
         // $elementArrivage = new ElementArrivage();
-        // $elementArrivage2 = new ElementArrivage();
         // $arrivage->addElementArrivage($elementArrivage);
+        // $elementArrivage2 = new ElementArrivage();
         // $arrivage->addElementArrivage($elementArrivage2);
 
         $form = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-//print_r($form->getData()); die;
-          // $elementArrivages = $form->get('elementArrivages')->getData();
-          // foreach($elementArrivages as $elementArrivage)
-          // {
-          //     $elementArrivage->setArrivage($arrivage);
-          // }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            //print_r($arrivage->getElementArrivages()[0]->getArrivage()->getId()); die;
+
+            $elementArrivages = $arrivage->getElementArrivages();
+            foreach( $elementArrivages as $elementArrivage){
+              $elementArrivage->setArrivage($arrivage);
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
