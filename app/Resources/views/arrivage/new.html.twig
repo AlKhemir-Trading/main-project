@@ -1,18 +1,74 @@
-{% extends 'base.html.twig' %}
+{% extends 'arrivage/layout.html.twig' %}
 
-{% block body %}
-    <h1>Arrivage creation</h1>
+{% set action = "Nouvel Arrivage" %}
 
-    {{ form_start(form) }}
+{% block body2 %}
 
-    <h3>ElementArrivages</h3>
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
-        <ul class="elementArrivages" data-prototype="{{ form_widget(form.elementArrivages.vars.prototype)|e('html_attr') }}">
-        </ul>
+        <div class="row clearfix">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-bordered table-hover table-sortable" id="tab_logic" data-index="0" data-prototype="">
+              <thead>
+                <tr >
+                  <th class="text-center" style="min-width:120px">
+                    Produit
+                  </th>
+                  <th class="text-center">
+                    Quantite
+                  </th>
+                  <th class="text-center">
+                    Prix Unit
+                  </th>
+                  <th class="text-center">
+                    Montant
+                  </th>
+                  <th class="text-center" style="border-top:none;border-right:none">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id='prototype' class="d-none">
+                  <td data-name="name">
+                      {{ form_widget(form.elementArrivages.vars.prototype.produit, {'attr': {'class': 'form-control'}}) }}
+                  </td>
+                  <td data-name="mail">
+                      <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
+                      {{ form_widget(form.elementArrivages.vars.prototype.quantite, {'attr': {'class': 'form-control'}}) }}
+                  </td>
+                  <td data-name="desc">
+                      {{ form_widget(form.elementArrivages.vars.prototype.prixVente, {'attr': {'class': 'form-control'}}) }}
+                  </td>
+                  <td data-name="sel">
+                      {{ form_widget(form.elementArrivages.vars.prototype.prixAchat, {'attr': {'class': 'form-control montant'}}) }}
+                  </td>
+                  <td data-name="del">
+                    <button class="btn btn-danger item row-remove" type="button">
+                      <i class="fa fa-close"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <input id="montant" type="text" required="required" class="form-control" value="0" disabled>
+                </td>
+                <td>
+                  <button type="button" id="add_row" class='btn btn-primary'>
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </td>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- <a id="add_row" class="btn btn-default pull-right">Add Row</a> -->
+    <hr />
 
-        {{ form_widget(form) }}
-
-        <input type="submit" value="Create" />
+    <input type="submit" class="btn btn-primary" value="Create" />
     {{ form_end(form) }}
 
     <ul>
@@ -20,62 +76,15 @@
             <a href="{{ path('arrivage_index') }}">Back to the list</a>
         </li>
     </ul>
+
 {% endblock %}
 
 {% block javascripts %}
   {{parent()}}
+
   <script type="text/javascript">
-  var $collectionHolder;
+  $(document).ready(function(){
 
-  // setup an "add a tag" link
-  var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
-  var $newLinkLi = $('ul.elementArrivages').append($addTagLink);
-
-  jQuery(document).ready(function() {
-      // Get the ul that holds the collection of tags
-      $collectionHolder = $('ul.elementArrivages');
-
-      // add the "add a tag" anchor and li to the tags ul
-      $collectionHolder.append($newLinkLi);
-
-      // count the current form inputs we have (e.g. 2), use that as the new
-      // index when inserting a new item (e.g. 2)
-      $collectionHolder.data('index', $collectionHolder.find(':input').length);
-
-      $addTagLink.on('click', function(e) {
-          // prevent the link from creating a "#" on the URL
-          e.preventDefault();
-
-          // add a new tag form (see next code block)
-          addTagForm($collectionHolder, $newLinkLi);
-      });
   });
-
-
-  function addTagForm($collectionHolder, $newLinkLi) {
-      // Get the data-prototype explained earlier
-      var prototype = $collectionHolder.data('prototype');
-
-      // get the new index
-      var index = $collectionHolder.data('index');
-
-      var newForm = prototype;
-      // You need this only if you didn't set 'label' => false in your tags field in TaskType
-      // Replace '__name__label__' in the prototype's HTML to
-      // instead be a number based on how many items we have
-      // newForm = newForm.replace(/__name__label__/g, index);
-
-      // Replace '__name__' in the prototype's HTML to
-      // instead be a number based on how many items we have
-      newForm = newForm.replace(/__name__/g, index);
-
-      // increase the index with one for the next item
-      $collectionHolder.data('index', index + 1);
-
-      // Display the form in the page in an li, before the "Add a tag" link li
-      var $newFormLi = $('<li></li>').append(newForm);
-      $newLinkLi.before($newFormLi);
-  }
-
   </script>
 {% endblock %}

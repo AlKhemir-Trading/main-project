@@ -1,20 +1,102 @@
-{% extends 'base.html.twig' %}
+{% extends 'arrivage/layout.html.twig' %}
 
-{% block body %}
-    <h1>Arrivage</h1>
+{% set action = "Détails Arrivage" %}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ arrivage.id }}</td>
-            </tr>
-            <tr>
-                <th>Datecreation</th>
-                <td>{% if arrivage.dateCreation %}{{ arrivage.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block body2 %}
+
+    <form>
+      <fieldset disabled>
+
+            <div class="row clearfix">
+              <div class="col-md-12 table-responsive">
+                <table class="table table-bordered table-hover table-sortable" id="tab_logic" data-index="{{edit_form.elementArrivages.children|length}}">
+                  <thead>
+                    <tr >
+                      <th class="text-center" style="min-width:120px">
+                        Produit
+                      </th>
+                      <th class="text-center">
+                        Quantite
+                      </th>
+                      <th class="text-center">
+                        Prix Unit
+                      </th>
+                      <th class="text-center">
+                        Montant
+                      </th>
+                      <th class="text-center" style="border-top:none;border-right:none">
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id='prototype' class="d-none">
+                      <td data-name="name">
+                          {{ form_widget(edit_form.elementArrivages.vars.prototype.produit, {'attr': {'class': 'form-control'}}) }}
+                      </td>
+                      <td data-name="mail">
+                          <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
+                          {{ form_widget(edit_form.elementArrivages.vars.prototype.quantite, {'attr': {'class': 'form-control'}}) }}
+                      </td>
+                      <td data-name="desc">
+                          {{ form_widget(edit_form.elementArrivages.vars.prototype.prixVente, {'attr': {'class': 'form-control'}}) }}
+                      </td>
+                      <td data-name="sel">
+                          {{ form_widget(edit_form.elementArrivages.vars.prototype.prixAchat, {'attr': {'class': 'form-control'}}) }}
+                      </td>
+                      <td data-name="del">
+                        <button class="btn btn-danger item row-remove" type="button">
+                          <i class="fa fa-close"></i>
+                        </button>
+                      </td>
+                    </tr>
+
+                    {% for detail in edit_form.elementArrivages %}
+                      <tr data-id="{{loop.index0}}">
+                        <td data-name="name">
+                            {{ form_widget(detail.produit, {'attr': {'class': 'form-control'}}) }}
+                        </td>
+                        <td data-name="mail">
+                            <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
+                            {{ form_widget(detail.quantite, {'attr': {'class': 'form-control'}}) }}
+                        </td>
+                        <td data-name="desc">
+                            {{ form_widget(detail.prixVente, {'attr': {'class': 'form-control'}}) }}
+                        </td>
+                        <td data-name="sel">
+                            {{ form_widget(detail.prixAchat, {'attr': {'class': 'form-control'}}) }}
+                        </td>
+                        <td data-name="del">
+                          <button class="btn btn-danger item row-remove" type="button">
+                            <i class="fa fa-close"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                  <tfoot>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <input type="text" required="required" class="form-control" value="0" disabled>
+                    </td>
+                    <td>
+                      <button type="button" id="add_row" class='btn btn-primary'>
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </td>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+      </fieldset>
+      <hr />
+      <!-- <input class="btn btn-edit" type="submit" value="Edit" /> -->
+      <a class="btn btn-edit" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">Edit</a>
+    </form>
 
     <ul>
         <li>

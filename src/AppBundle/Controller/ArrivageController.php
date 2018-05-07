@@ -55,6 +55,7 @@ class ArrivageController extends Controller
 
             $elementArrivages = $arrivage->getElementArrivages();
             foreach( $elementArrivages as $elementArrivage){
+              // print_r($elementArrivage->getQuantite());
               $elementArrivage->setArrivage($arrivage);
             }
 
@@ -80,9 +81,11 @@ class ArrivageController extends Controller
     public function showAction(Arrivage $arrivage)
     {
         $deleteForm = $this->createDeleteForm($arrivage);
+        $edit_form = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
 
         return $this->render('arrivage/show.html.twig', array(
             'arrivage' => $arrivage,
+            'edit_form' => $edit_form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -100,6 +103,13 @@ class ArrivageController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $elementArrivages = $arrivage->getElementArrivages();
+            foreach( $elementArrivages as $elementArrivage){
+              // print_r($elementArrivage->getQuantite());
+              $elementArrivage->setArrivage($arrivage);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('arrivage_edit', array('id' => $arrivage->getId()));
