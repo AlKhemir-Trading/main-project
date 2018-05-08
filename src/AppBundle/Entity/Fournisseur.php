@@ -49,6 +49,13 @@ class Fournisseur
      */
     private $dateCreation;
 
+    /**
+     * @var Arrivage
+     *
+     * @ORM\OneToMany(targetEntity="Arrivage", mappedBy="fournisseur")
+     */
+    private $arrivages;
+
     public function __construct() {
       $this->dateCreation = new \DateTime();
     }
@@ -156,5 +163,39 @@ class Fournisseur
     public function getDateCreation()
     {
         return $this->dateCreation;
+    }
+
+    /**
+     * Add arrivage
+     *
+     * @param \AppBundle\Entity\Arrivage $arrivage
+     *
+     * @return Fournisseur
+     */
+    public function addArrivage(\AppBundle\Entity\Arrivage $arrivage)
+    {
+        $this->arrivages[] = $arrivage;
+
+        return $this;
+    }
+
+    /**
+     * Remove arrivage
+     *
+     * @param \AppBundle\Entity\Arrivage $arrivage
+     */
+    public function removeArrivage(\AppBundle\Entity\Arrivage $arrivage)
+    {
+        $this->arrivages->removeElement($arrivage);
+    }
+
+    /**
+     * Get arrivages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArrivages()
+    {
+        return $this->arrivages;
     }
 }

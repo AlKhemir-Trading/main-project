@@ -38,8 +38,16 @@
 {% block javascripts %}
   {{parent()}}
   {% block newEdit %}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
   <script type="text/javascript">
   $(document).ready(function() {
+    $('#appbundle_arrivage_dateCreation').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '2008-01-01',
+        endDate: 'y-12-31',
+        autoclose: true
+    });
+
     var prototype = $('#prototype').html();
     $('#prototype').remove();
 

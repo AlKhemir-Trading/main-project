@@ -15,7 +15,7 @@
         {% for arrivage in arrivages %}
             <tr>
                 <td><a href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">{{ arrivage.id }}</a></td>
-                <td>{% if arrivage.dateCreation %}{{ arrivage.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if arrivage.dateCreation %}{{ arrivage.dateCreation|date('Y-m-d') }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>

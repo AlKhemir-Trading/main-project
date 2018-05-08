@@ -31,6 +31,13 @@ class Arrivage
     private $dateCreation;
 
     /**
+     * @var Fournisseur
+     *
+     * @ORM\ManyToOne(targetEntity="Fournisseur", inversedBy="arrivages", cascade={"persist"})
+     */
+    private $fournisseur;
+
+    /**
      * @var Arrivage
      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
@@ -108,5 +115,29 @@ class Arrivage
     public function getElementArrivages()
     {
         return $this->elementArrivages;
+    }
+
+    /**
+     * Set fournisseur
+     *
+     * @param \AppBundle\Entity\Fournisseur $fournisseur
+     *
+     * @return Arrivage
+     */
+    public function setFournisseur(\AppBundle\Entity\Fournisseur $fournisseur = null)
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    /**
+     * Get fournisseur
+     *
+     * @return \AppBundle\Entity\Fournisseur
+     */
+    public function getFournisseur()
+    {
+        return $this->fournisseur;
     }
 }

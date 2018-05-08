@@ -126,3 +126,11 @@
   background: #009688!important;
   color:white!important;
 }
+
+.datepicker{
+  margin-top:51px!important;
+}
+.day:hover{
+  background-color: #009688!important;
+  color: white!important;
+}

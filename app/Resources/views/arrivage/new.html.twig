@@ -4,9 +4,32 @@
 
 {% block body2 %}
 
+
     {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
+        <div class="form-group">
+          {{ form_label(form.fournisseur, null,
+            { 'label_attr': {'class': 'font-weight-bold'} }) }}
+          {{ form_errors(form.fournisseur) }}
+
+            {{ form_widget(form.fournisseur ,{'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <div class="form-group">
+          {{ form_label(form.dateCreation, null,
+            { 'label_attr': {'class': 'font-weight-bold'} }) }}
+          {{ form_errors(form.dateCreation) }}
+
+            {{ form_widget(form.dateCreation ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy hh:mm:ss"} }) }}
+        </div>
+
+
+
+        <hr />
+        <label class="font-weight-bold">Produits Arrivés :</label>
+
         <div class="row clearfix">
+
           <div class="col-md-12 table-responsive">
             <table class="table table-bordered table-hover table-sortable" id="tab_logic" data-index="0" data-prototype="">
               <thead>
@@ -76,6 +99,7 @@
             <a href="{{ path('arrivage_index') }}">Back to the list</a>
         </li>
     </ul>
+
 
 {% endblock %}
 

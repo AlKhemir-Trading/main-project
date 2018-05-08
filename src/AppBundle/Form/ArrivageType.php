@@ -6,6 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 class ArrivageType extends AbstractType
 {
@@ -15,6 +18,17 @@ class ArrivageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+        ->add('fournisseur', EntityType::class, array(
+            'class' => 'AppBundle:Fournisseur',
+            'choice_label' => 'name',
+        ))
+        ->add('dateCreation', DateType::class, array(
+            'widget' => 'single_text',
+            //'format' => 'dd/MM/yyyy',
+            'html5' => false,
+            // adds a class that can be selected in JavaScript
+            //'attr' => ['class' => 'js-datepicker'],
+        ))
         ->add('elementArrivages', CollectionType::class, array(
             'entry_type' => ElementArrivageType::class,
             'allow_add' => true,
