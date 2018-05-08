@@ -43,6 +43,12 @@ class Arrivage
      */
     private $elementArrivages;
 
+    /**
+     * @var string
+     * @ORM\Column(name="note", type="string", length=255, nullable=true)
+     */
+    private $note;
+
     public function __construct() {
       $this->dateCreation = new \DateTime();
       $this->elementArrivages = new ArrayCollection();
@@ -139,5 +145,29 @@ class Arrivage
     public function getFournisseur()
     {
         return $this->fournisseur;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Arrivage
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
     }
 }

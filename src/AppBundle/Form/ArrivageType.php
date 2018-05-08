@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class ArrivageType extends AbstractType
@@ -37,6 +38,11 @@ class ArrivageType extends AbstractType
             'entry_options' => array(
               'label' => false
             )
+        ))
+        ->add('note', TextareaType::class, array(
+             'attr' => array('placeholder' => 'Pour cet arrivage, Stephane a oublié d\'envoyer les coordonnées de ... '),
+            //'empty_data' => 'John Doe',
+            //'placeholder' => 'Last Name'
         ))
         ;
 
