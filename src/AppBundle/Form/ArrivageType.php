@@ -40,7 +40,11 @@ class ArrivageType extends AbstractType
             )
         ))
         ->add('note', TextareaType::class, array(
-             'attr' => array('placeholder' => 'Pour cet arrivage, Stephane a oublié d\'envoyer les coordonnées de ... '),
+            'required' => false,
+             'attr' =>
+                array(
+                  'placeholder' => 'Pour cet arrivage, Stephane a oublié d\'envoyer les coordonnées de ... ',
+                ),
             //'empty_data' => 'John Doe',
             //'placeholder' => 'Last Name'
         ))
