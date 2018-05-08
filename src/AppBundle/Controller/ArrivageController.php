@@ -85,7 +85,7 @@ class ArrivageController extends Controller
 
         return $this->render('arrivage/show.html.twig', array(
             'arrivage' => $arrivage,
-            'edit_form' => $edit_form->createView(),
+            'form' => $edit_form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -117,7 +117,7 @@ class ArrivageController extends Controller
 
         return $this->render('arrivage/edit.html.twig', array(
             'arrivage' => $arrivage,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }

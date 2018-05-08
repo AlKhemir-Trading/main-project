@@ -4,117 +4,53 @@
 
 {% block body2 %}
 
-    {{ form_start(edit_form) }}
-    <div class="form-group">
-      {{ form_label(edit_form.fournisseur, null,
-        { 'label_attr': {'class': 'font-weight-bold'} }) }}
-      {{ form_errors(edit_form.fournisseur) }}
+    {{ form_start(form) }}
+      {% include ('arrivage/form.twig.html') %}
+      <!-- <a  class="btn btn-secondary float-right" href="{{ path('arrivage_index') }}">
+        <i class="fa fa-arrow-left"></i>Back to the list</a>
+      <input type="submit" class="btn btn-edit w-btn-create" value="Create" /> -->
+      <div class="form-group row">
+        <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-2">
+          <a class="btn btn-primary d-block " type="button" href="{{ path('arrivage_index') }}">
+            <i class="fa fa-arrow-circle-left "></i>Retour
+          </a>
+        </div>
+        <div class="col-sm-6 order-1 order-sm-1">
+          <button type="submit" class="btn btn-edit btn-block " value="Edit">
+            <i class="fa fa-edit"></i>Edit
+          </button>
+          <!-- <a class="btn btn-secondary" href="{{ path('client_index') }}">Annuler</a> -->
+        </div>
+        <div class="col-sm-3 mt-3 mt-sm-0 order-3 order-sm-3">
+          <button type="button" class="btn btn-danger btn-block " data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-trash"></i>Delete
+          </button>
+        </div>
+      </div>
+    {{ form_end(form) }}
 
-        {{ form_widget(edit_form.fournisseur ,{'attr': {'class': 'form-control'} }) }}
-    </div>
+    <!-- Delete form -->
+    {{ form_start(delete_form, {'attr': {'id': 'form_delete'}}) }}
+    {{ form_end(delete_form) }}
 
-    <div class="form-group">
-      {{ form_label(edit_form.dateCreation, null,
-        { 'label_attr': {'class': 'font-weight-bold'} }) }}
-      {{ form_errors(edit_form.dateCreation) }}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Supprimer Cet Arrivage <b style="color:red"></b> ?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 
-      {{ form_widget(edit_form.dateCreation ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
-    </div>
-
-
-
-    <hr />
-    <label class="font-weight-bold">Produits Arrivés :</label>
-
-    <div class="row clearfix">
-      <div class="col-md-12 table-responsive">
-        <table class="table table-bordered table-hover table-sortable" id="tab_logic" data-index="{{edit_form.elementArrivages.children|length}}">
-          <thead>
-            <tr >
-              <th class="text-center" style="min-width:120px">
-                Produit
-              </th>
-              <th class="text-center">
-                Quantite
-              </th>
-              <th class="text-center">
-                Prix Unit
-              </th>
-              <th class="text-center">
-                Montant
-              </th>
-              <th class="text-center" style="border-top:none;border-right:none">
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr id='prototype' class="d-none">
-              <td data-name="name">
-                  {{ form_widget(edit_form.elementArrivages.vars.prototype.produit, {'attr': {'class': 'form-control'}}) }}
-              </td>
-              <td data-name="mail">
-                  <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
-                  {{ form_widget(edit_form.elementArrivages.vars.prototype.quantite, {'attr': {'class': 'form-control'}}) }}
-              </td>
-              <td data-name="desc">
-                  {{ form_widget(edit_form.elementArrivages.vars.prototype.prixVente, {'attr': {'class': 'form-control'}}) }}
-              </td>
-              <td data-name="sel">
-                  {{ form_widget(edit_form.elementArrivages.vars.prototype.prixAchat, {'attr': {'class': 'form-control'}}) }}
-              </td>
-              <td data-name="del">
-                <button class="btn btn-danger item row-remove" type="button">
-                  <i class="fa fa-close"></i>
-                </button>
-              </td>
-            </tr>
-
-            {% for detail in edit_form.elementArrivages %}
-              <tr data-id="{{loop.index0}}">
-                <td data-name="name">
-                    {{ form_widget(detail.produit, {'attr': {'class': 'form-control'}}) }}
-                </td>
-                <td data-name="mail">
-                    <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
-                    {{ form_widget(detail.quantite, {'attr': {'class': 'form-control'}}) }}
-                </td>
-                <td data-name="desc">
-                    {{ form_widget(detail.prixVente, {'attr': {'class': 'form-control'}}) }}
-                </td>
-                <td data-name="sel">
-                    {{ form_widget(detail.prixAchat, {'attr': {'class': 'form-control montant'}}) }}
-                </td>
-                <td data-name="del">
-                  <button class="btn btn-danger item row-remove" type="button">
-                    <i class="fa fa-close"></i>
-                  </button>
-                </td>
-              </tr>
-            {% endfor %}
-
-
-          </tbody>
-          <tfoot>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <input id="montant" type="text" required="required" class="form-control" value="0" disabled>
-            </td>
-            <td>
-              <button type="button" id="add_row" class='btn btn-primary'>
-                <i class="fa fa-plus"></i>
-              </button>
-            </td>
-          </tfoot>
-        </table>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <hr />
-    <input class="btn btn-edit" type="submit" value="Edit" />
-
-    {{ form_end(edit_form) }}
 
     <ul>
         <li>
@@ -133,6 +69,20 @@
 
   <script type="text/javascript">
   $(document).ready(function(){
+
+    //Modal handling
+    var modalConfirm = function(callback){
+      $("#confirm-delete-button").on("click", function(){
+        callback(true);
+        $("#exampleModal").modal('hide');
+      });
+    };
+    modalConfirm(function(confirm){
+      if(confirm){
+        var form = document.getElementById("form_delete");
+        form.submit();
+      }
+    });
 
   });
   </script>
