@@ -129,7 +129,7 @@
 }
 
 #tab_logic{
-  min-width: 600px;
+  min-width: 656px;
 }
 
 .tableData{
@@ -160,10 +160,10 @@
   width:200px;
 }
 
-input,select,option {
+.tile input,select,option {
     /* background: blanchedalmond!important; */
     font-weight: bold!important;
 }
-label{
+.tile label{
   color:#009688;
 }

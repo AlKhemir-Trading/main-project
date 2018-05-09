@@ -36,8 +36,8 @@
                           </thead>
                           <tbody>
                             {% for client in clients %}
-                              {% if( date( client.dateCreation) > date('-7days') )%}
-                                {% set class = 'cadblue' %}
+                              {% if( date( client.dateCreation) > date('-'~newDatesNb~'days') )%}
+                                {% set class = 'a' %}
                               {% else %}
                                 {% set class = '' %}
                               {% endif %}
@@ -45,7 +45,7 @@
                                   <td>{{ "%05d"|format(client.id) }}</td>
                                   <td>
                                     {{ client.name }}
-                                    {% if( date( client.dateCreation) > date('-7days') )%}
+                                    {% if( class != '' ) %}
                                         <span class="badge badge-info">New</span>
                                     {%endif%}
                                   </td>
@@ -98,62 +98,11 @@
       <script type="text/javascript">
 
       $(document).ready(function(){
-        $('#ArrivagesItem').toggleClass('active');
-        $('#example').DataTable();
+
+        var table = $('#example').DataTable();
+        table.order( [ 0, 'desc' ] ).draw();
       });
 
       </script>
 
     {% endblock %}
-
-
-
-{#
-
-  {% extends 'base.html.twig' %}
-
-  {% block body %}
-      <h1>Clients list</h1>
-
-      <table>
-          <thead>
-              <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Pays</th>
-                  <th>Tel</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-          {% for client in clients %}
-              <tr>
-                  <td><a href="{{ path('client_show', { 'id': client.id }) }}">{{ client.id }}</a></td>
-                  <td>{{ client.name }}</td>
-                  <td>{{ client.pays }}</td>
-                  <td>{{ client.tel }}</td>
-                  <td>
-                      <ul>
-                          <li>
-                              <a href="{{ path('client_show', { 'id': client.id }) }}">show</a>
-                          </li>
-                          <li>
-                              <a href="{{ path('client_edit', { 'id': client.id }) }}">edit</a>
-                          </li>
-                      </ul>
-                  </td>
-              </tr>
-          {% endfor %}
-          </tbody>
-      </table>
-
-      <ul>
-          <li>
-              <a href="{{ path('client_new') }}">Create a new client</a>
-          </li>
-      </ul>
-  {% endblock %}
-
-
-
-  #}
