@@ -60,7 +60,11 @@ class ElementArrivage
      */
     private $prixVente;
 
-
+    public function __construct() {
+      // $this->quantite = 0;
+      // $this->prixAchat = 0;
+      // $this->prixVente = 0;
+    }
     /**
      * Get id
      *

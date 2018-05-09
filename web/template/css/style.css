@@ -125,6 +125,27 @@
 .tableData tbody tr:hover{
   background: #009688!important;
   color:white!important;
+  cursor: pointer;
+}
+
+#tab_logic{
+  min-width: 600px;
+}
+
+.tableData{
+  min-width: 635px;
+}
+
+.tableData td{
+  font-weight: bold!important;
+}
+.tableData th{
+  background-color: powderblue!important;
+  cursor:row-resize!important;
+  /* color:white!important; */
+}
+.tableData th:hover{
+  background-color: #17a2b8!important;
 }
 
 .datepicker{
@@ -137,4 +158,12 @@
 
 .w-btn-create{
   width:200px;
+}
+
+input,select,option {
+    /* background: blanchedalmond!important; */
+    font-weight: bold!important;
+}
+label{
+  color:#009688;
 }

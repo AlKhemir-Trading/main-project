@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{%block stylesheets%}
+  {{ parent() }}
+  <style>
+
+  </style>
+{% endblock %}
+
 {% block body %}
-  <input id="tab_name" type="hidden" value="client" />
+  <input id="tab_name" type="hidden" value="arrivage" />
   <div class="app-title">
     <div>
       <h1><i class="fa fa-edit"></i> {{ action }}</h1>
@@ -35,8 +42,11 @@
 
 {% endblock %}
 
+
+
+
 {% block javascripts %}
-  {{parent()}}
+  {{ parent() }}
   {% block newEdit %}
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
   <script type="text/javascript">

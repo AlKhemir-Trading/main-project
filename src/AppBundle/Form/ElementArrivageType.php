@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 
 class ElementArrivageType extends AbstractType
@@ -16,9 +18,38 @@ class ElementArrivageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('quantite')
-        ->add('prixAchat')
-        ->add('prixVente')
+        ->add('quantite', IntegerType::class, array(
+          //'data' => 0.000,
+          //'scale' => 3,
+          'attr' => array(
+            "min" => 0,
+            // "scale" => 3,
+            // "step" => 0.001,
+             "placeholder" => "0",
+          )
+))
+        ->add('prixAchat', IntegerType::class, array(
+          //'data' => 0.000,
+          'scale' => 3,
+          'attr' => array(
+            "min" => 0,
+            "scale" => 3,
+            "step" => 0.001,
+            "placeholder" => "0.000",
+          )
+        ))
+
+        ->add('prixVente', IntegerType::class, array(
+          //'data' => 0.000,
+          'scale' => 3,
+          'attr' => array(
+            "min" => 0,
+            "scale" => 3,
+            "step" => 0.001,
+            "placeholder" => "0.000",
+          )
+        ))
+
         //->add('arrivage')
         ->add('produit', EntityType::class, array(
             // looks for choices from this entity
@@ -30,7 +61,7 @@ class ElementArrivageType extends AbstractType
             // used to render a select box, check boxes or radios
             // 'multiple' => true,
             // 'expanded' => true,
-        ));
+        ))
         ;
     }/**
      * {@inheritdoc}
