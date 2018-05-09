@@ -1,0 +1,125 @@
+{% extends 'monstock/layout.html.twig' %}
+
+{% set action = "monstock" %}
+
+  {% block container %}
+  {%endblock%}
+
+  {% block stylesheets %}
+    {{ parent() }}
+    <style>
+      .tableData th{
+        text-align: center!important;
+      }
+    </style>
+  {% endblock %}
+
+  {% block without_container %}
+  <div class="content mt-3">
+      <div class="animated fadeIn">
+          <div class="row">
+
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header">
+                      <strong class="card-title lh30">Liste des produits</strong>
+                      <div class="float-right">
+                        <!-- <button class="btn btn-outline-primary" type="button">Primary</button> -->
+                        <a class="btn btn-primary btn-sm icon-btn" href="{{ path('arrivage_new')}}">
+                          <i class="fa fa-plus"></i>Nouvel Arrivage
+                        </a>
+                      </div>
+                  </div>
+                  <div class="card-body" >
+
+                    <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered w-100 tableData">
+                      <thead>
+                          <tr>
+                              <th style="width:125px">Produit</th>
+                              <th style="width:125px">Fournisseur</th>
+                              <th style="width:125px">Date d'arrivage</th>
+                              <th style="width:60px!important">Quantite</th>
+                              <th style="width:60px!important">Vendu</th>
+                              <th style="width:60px!important">Restant</th>
+                              <th> Progress %</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for element in monstock %}
+
+                          {% if( date( element.arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+                            {% set class = 'a' %}
+                          {% else %}
+                            {% set class = '' %}
+                          {% endif %}
+
+                          <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': element.arrivage.id }) }}';" >
+                              <td>{{ element.produit.name }}
+                                {% if( class != '' ) %}
+                                    <span class="badge badge-info">New</span>
+                                {%endif%}
+                              </td>
+                              <td>
+                                {{ element.arrivage.fournisseur.name }}
+                              </td>
+                              <td>{{ element.arrivage.dateCreation|date('Y-m-d (H:m)') }}</td>
+                              <td class="text-center">
+                                {{ element.quantite }}
+                              </td>
+                              <td class="text-center">
+                                {{ element.quantiteVendu }}
+                              </td>
+                              <td class="text-center"> {{ element.quantite - element.quantiteVendu }} </td>
+                              <td>
+                                  {% set restantPercent = ( (element.quantite - element.quantiteVendu)/element.quantite) * 100 %}
+                                <div class="bs-component mb-2">
+                                  <div class="progress" style="background:chartreuse">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{restantPercent}}%;" ></div>
+                                  </div>
+                                </div>
+                                {#
+                                <!-- <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">
+                                  <i class="fa fa-info fa-fix"></i>
+                                </a>
+
+                                <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">
+                                  <i class="fa fa-edit fa-fix"></i>
+                                </a> -->
+#}
+                              </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    </div>
+
+                  </div>
+              </div>
+          </div>
+
+
+          </div>
+      </div><!-- .animated -->
+  </div><!-- .content -->
+  {% endblock %}
+
+  {% block javascripts %}
+    {{parent()}}
+    {% block newEdit %}{% endblock %}
+    <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <!-- Google analytics script-->
+
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        //$('#ArrivagesItem').toggleClass('active');
+        var table = $('#example').DataTable();
+        table.order( [ 4, 'desc' ] ).draw();
+      });
+
+    </script>
+
+  {% endblock %}

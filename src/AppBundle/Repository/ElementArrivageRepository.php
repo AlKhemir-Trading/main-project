@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class ElementArrivageRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function monstockIndex()
+  {
+      return $this->getEntityManager()
+          ->createQuery('
+              SELECT p FROM AppBundle:ElementArrivage p
+              where p.quantite - p.quantiteVendu > 0
+          ')
+          //ORDER BY p.quantite ASC
+          ->getResult();
+  }
 }

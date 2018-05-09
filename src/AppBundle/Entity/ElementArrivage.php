@@ -47,6 +47,13 @@ class ElementArrivage
     private $quantite;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="quantite_vendu", type="integer")
+     */
+    private $quantiteVendu;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=3)
@@ -193,5 +200,29 @@ class ElementArrivage
     public function getProduit()
     {
         return $this->produit;
+    }
+
+    /**
+     * Set quantiteVendu
+     *
+     * @param integer $quantiteVendu
+     *
+     * @return ElementArrivage
+     */
+    public function setQuantiteVendu($quantiteVendu)
+    {
+        $this->quantiteVendu = $quantiteVendu;
+
+        return $this;
+    }
+
+    /**
+     * Get quantiteVendu
+     *
+     * @return integer
+     */
+    public function getQuantiteVendu()
+    {
+        return $this->quantiteVendu;
     }
 }
