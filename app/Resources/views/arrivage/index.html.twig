@@ -105,9 +105,18 @@
   {% block javascripts %}
     {{parent()}}
     {% block newEdit %}{% endblock %}
-    <script type="text/javascript">
-    $(document).ready(function(){
+    <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <!-- Google analytics script-->
 
-    });
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        //$('#ArrivagesItem').toggleClass('active');
+        $('#example').DataTable();
+      });
+
     </script>
+
   {% endblock %}
