@@ -43,6 +43,14 @@ class ElementVente
     private $montantVente;
 
     /**
+     * @var Vente
+     *
+     * @ORM\ManyToOne(targetEntity="Vente", inversedBy="elementsVente")
+     * @ORM\JoinColumn(name="vente_id", referencedColumnName="id", nullable=FALSE)
+     */
+    private $vente;
+
+    /**
      *
      * @var ElementArrivage
      *
@@ -155,5 +163,29 @@ class ElementVente
     public function getElementArrivage()
     {
         return $this->elementArrivage;
+    }
+
+    /**
+     * Set vente
+     *
+     * @param \AppBundle\Entity\Vente $vente
+     *
+     * @return ElementVente
+     */
+    public function setVente(\AppBundle\Entity\Vente $vente)
+    {
+        $this->vente = $vente;
+
+        return $this;
+    }
+
+    /**
+     * Get vente
+     *
+     * @return \AppBundle\Entity\Vente
+     */
+    public function getVente()
+    {
+        return $this->vente;
     }
 }
