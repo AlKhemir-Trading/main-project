@@ -15,8 +15,8 @@ class ElementVenteType extends AbstractType
     {
         $builder
         ->add('quantite')
-        ->add('prixVente')
-        ->add('montantVente');
+        ->add('prixVente');
+        //->add('montantVente');
         // ->add('vente')
         // ->add('elementArrivage');
     }/**

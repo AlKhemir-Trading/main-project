@@ -1,21 +1,79 @@
-{% extends 'base.html.twig' %}
+{% extends 'arrivage/layout.html.twig' %}
 
-{% block body %}
-    <h1>Vente edit</h1>
+{% set action = "Edit Arrivage" %}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+{% block body2 %}
 
-    <ul>
-        <li>
-            <a href="{{ path('vente_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    {{ form_start(form) }}
+      {% include ('arrivage/form.twig.html') %}
+      <!-- <a  class="btn btn-secondary float-right" href="{{ path('arrivage_index') }}">
+        <i class="fa fa-arrow-left"></i>Back to the list</a>
+      <input type="submit" class="btn btn-edit w-btn-create" value="Create" /> -->
+      <div class="form-group row">
+        <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-2">
+          <a class="btn btn-primary d-block " type="button" href="{{ path('arrivage_index') }}">
+            <i class="fa fa-arrow-circle-left "></i>Retour
+          </a>
+        </div>
+        <div class="col-sm-6 order-1 order-sm-1">
+          <button type="submit" class="btn btn-edit btn-block " value="Edit">
+            <i class="fa fa-edit"></i>Edit
+          </button>
+          <!-- <a class="btn btn-secondary" href="{{ path('client_index') }}">Annuler</a> -->
+        </div>
+        <div class="col-sm-3 mt-3 mt-sm-0 order-3 order-sm-3">
+          <button type="button" class="btn btn-danger btn-block " data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-trash"></i>Delete
+          </button>
+        </div>
+      </div>
+    {{ form_end(form) }}
+
+    <!-- Delete form -->
+    {{ form_start(delete_form, {'attr': {'id': 'form_delete'}}) }}
+    {{ form_end(delete_form) }}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Supprimer Cet Arrivage <b style="color:red"></b> ?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{parent()}}
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+    //Modal handling
+    var modalConfirm = function(callback){
+      $("#confirm-delete-button").on("click", function(){
+        callback(true);
+        $("#exampleModal").modal('hide');
+      });
+    };
+    modalConfirm(function(confirm){
+      if(confirm){
+        var form = document.getElementById("form_delete");
+        form.submit();
+      }
+    });
+
+  });
+  </script>
 {% endblock %}

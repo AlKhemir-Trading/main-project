@@ -1,36 +1,62 @@
-{% extends 'base.html.twig' %}
+{% extends 'arrivage/layout.html.twig' %}
 
-{% block body %}
-    <h1>Vente</h1>
+{% set action = "Détails Arrivage" %}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ vente.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{% if vente.date %}{{ vente.date|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Montant</th>
-                <td>{{ vente.montant }}</td>
-            </tr>
-        </tbody>
-    </table>
+{%block stylesheets%}
+  {{ parent() }}
+  <style>
+  input,select {
+      background: blanchedalmond!important;
+      font-weight: bold!important;
+  }
+  #add_row, .row-remove{
+    background: burlywood!important;
+  }
+  </style>
+{% endblock %}
 
-    <ul>
-        <li>
-            <a href="{{ path('vente_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('vente_edit', { 'id': vente.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+{% block body2 %}
+
+    <form>
+      <fieldset disabled>
+
+        {% include ('arrivage/form.twig.html') %}
+
+      </fieldset>
+    </form>
+
+
+      <div class="form-group row">
+        <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-3">
+          <a class="btn btn-secondary d-block " type="button" href="{{ path('arrivage_index') }}">
+            <i class="fa fa-arrow-circle-left "></i>Retour
+          </a>
+        </div>
+        <div class="col-sm-6 order-1 order-sm-1">
+          <!-- <button type="submit" class="btn btn-edit btn-block " value="Edit">
+            <i class="fa fa-edit"></i>Edit
+          </button> -->
+          <a class="btn btn-edit btn-block" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">
+            <i class="fa fa-edit">Edit</i>
+          </a>
+          <!-- <a class="btn btn-secondary" href="{{ path('client_index') }}">Annuler</a> -->
+        </div>
+        <div class="col-sm-3 mt-3 mt-sm-0 order-3 order-sm-2">
+          <!-- <button type="button" class="btn btn-danger btn-block " data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-trash"></i>Delete
+          </button> -->
+        </div>
+      </div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{parent()}}
+    {% block newEdit %}{% endblock %}
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('textarea').attr("placeholder", "");
+  });
+  </script>
 {% endblock %}

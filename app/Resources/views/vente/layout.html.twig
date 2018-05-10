@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{%block stylesheets%}
+  {{ parent() }}
+  <style>
+
+  </style>
+{% endblock %}
+
+{% block body %}
+  <input id="tab_name" type="hidden" value="vente" />
+  <div class="app-title">
+    <div>
+      <h1><i class="fa fa-edit"></i> {{ action }}</h1>
+      <!-- <p>Bootstrap default form components</p> -->
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+      <li class="breadcrumb-item">Vente</li>
+      <li class="breadcrumb-item"><a href="#">{{ action }}</a></li>
+    </ul>
+  </div>
+{#
+  <!-- {% block container %}
+  <div class="row justify-content-lg-center">
+    <div class="col-lg-9">
+      <div class="tile tile2">
+        <div class="row">
+          <div class="col-lg-12">
+            {% block body2 %}
+
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %} -->
+#}
+  {% block body2 %}
+  {% endblock %}
+
+  {% block without_container %}
+  {% endblock %}
+
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+  {{ parent() }}
+  {% block newEdit %}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+  <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+  <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+
+    var table = $('#example').DataTable();
+    //table.order( [ 4, 'desc' ] ).draw();
+
+    $('#appbundle_vente_date').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '2008-01-01',
+        endDate: 'y-12-31',
+        autoclose: true
+    });
+
+    var prototype = $('#prototype').html();
+    $('#prototype').remove();
+
+    //console.log(prototype);
+    $('#tab_logic').data('prototype',prototype);
+
+    if($('#tab_logic tr').length == 2){
+      createNewRow();
+    }else{
+      MajMontant();
+    }
+
+
+    $("#add_row").on("click", function(){
+      createNewRow();
+    });
+
+    $('#tab_logic').on('click', '.row-remove', function() {
+
+      if($('#tab_logic tr').length > 3){
+        // Do something on an existent or future .dynamicElement
+        let myParent = $(this).closest("tr");
+        console.log(myParent);
+        //alert(myParent.data("id"));
+        myParent.remove();
+        MajMontant();
+      }
+    });
+
+    //$(".montant").on("change keyup paste", function(){
+    $('#tab_logic').on('change keyup paste', '.montant', function() {
+      MajMontant();
+    })
+
+    function createNewRow(){
+
+      console.log('start');
+      var index = $('#tab_logic').data("index");
+      $('#tab_logic').data("index",index + 1);
+      var newRow = $('<tr></tr>').append(prototype);
+      //console.log(newRow);
+      //set tr index
+      newRow.attr('data-id',index);
+      //alert(newRow.data('id'));
+      //$('#tab_logic tbody').append(newRow);
+      // console.log(newRow);
+      // newRow.removeClass('d-none');
+      var res = newRow.find("[name]");
+      res.each(function( index2 ) {
+        // console.log( index + "name: " + $( this ).attr('name') +"<br /> id : " + $( this ).attr('id') );
+        let name = $( this ).attr('name').replace(/__name__/g, index);
+        let id = $( this ).attr('id').replace(/__name__/g, index);
+        // console.log(name + "/" + id);
+        $( this ).attr('name',name);
+        $( this ).attr('id',id);
+      });
+      // console.log(res);
+      $('#tab_logic tbody').append(newRow);
+
+    }
+
+    function MajMontant(){
+      let res = 0;
+      $('#tab_logic tbody td[data-name="sel"]').each( function(index2){
+        res += +$(this).find('input').val();
+        $('#montant').val(res);
+        //alert( $(this).find('input').val() );
+      })
+    }
+
+  });
+
+  </script>
+  {% endblock %}
+{% endblock %}

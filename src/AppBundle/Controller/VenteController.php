@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Vente;
+use AppBundle\Entity\ElementVente;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,17 @@ class VenteController extends Controller
     public function newAction(Request $request)
     {
         $vente = new Vente();
+
+        $em = $this->getDoctrine()->getManager();
+        $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
+
+        foreach ($monstock as $elementArrivage){
+          $eltVente = new ElementVente();
+          $eltVente->setElementArrivage($elementArrivage);
+          $eltVente->setVente($vente);
+          $vente->addElementsVente($eltVente);
+        }
+
         $form = $this->createForm('AppBundle\Form\VenteType', $vente);
         $form->handleRequest($request);
 
@@ -54,6 +66,7 @@ class VenteController extends Controller
         return $this->render('vente/new.html.twig', array(
             'vente' => $vente,
             'form' => $form->createView(),
+            //"monstock" => $monstock,
         ));
     }
 

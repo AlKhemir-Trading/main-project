@@ -1,0 +1,108 @@
+
+{#
+<!-- <div class="form-group">
+  {{ form_label(form.fournisseur, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_errors(form.fournisseur) }}
+  {{ form_widget(form.fournisseur ,{'attr': {'class': 'form-control'} }) }}
+</div> --> #}
+
+
+<div class="form-group">
+  {{ form_label(form.date, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_errors(form.date) }}
+  {{ form_widget(form.date ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
+</div>
+<hr />
+<label class="font-weight-bold">Produits Dispo :</label>
+
+**********************
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <!-- <div class="card-header">
+                    <strong class="card-title lh30">Liste des Ventes</strong>
+                    <div class="float-right">
+                      <a class="btn btn-primary btn-sm icon-btn" href="{{ path('vente_new')}}">
+                        <i class="fa fa-plus"></i>Nouvelle Vente
+                      </a>
+                    </div>
+                </div> -->
+                <div class="card-body" >
+
+                  <div class="table-responsive">
+                  <table id="example" class="table table-striped table-bordered w-100 tableData">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Fournisseur</th>
+                            <th>Date d'arrivée</th>
+                            <th>Quantite</th>
+                            <th>Prix Unitaire</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for element in vente.elementsVente %}
+                        {% if( date( element.elementArrivage.arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+                          {% set class = 'a' %}
+                        {% else %}
+                          {% set class = '' %}
+                        {% endif %}
+
+                          {#
+                            {% set produitArray = [] %}
+                            {% set montant = 0 %}
+                            {% for element in arrivage.elementArrivages %}
+                              {% set produitArray = produitArray|merge([element.produit.name]) %}
+                              {% set montant = montant + element.prixVente %}
+                            {% endfor %}
+                          #}
+                        <tr class="{{class}}" >
+                            <td> {{ element.elementArrivage.produit.name }}
+                              {% if( class != '' ) %}
+                                  <span class="badge badge-info">New</span>
+                              {%endif%}
+                            </td>
+                            <td>
+                              {{ element.elementArrivage.arrivage.fournisseur.name }}
+                            </td>
+                            <td>
+                              {{ element.elementArrivage.arrivage.dateCreation|date('Y-m-d (H:m)') }}
+                            </td>
+                            <td>
+                              {{ element.quantite }}
+                            </td>
+                            <td>{{ element.prixVente }}</td>
+                            <td>
+                              Auto
+                            </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+    </div><!-- .animated -->
+</div><!-- .content -->
+**********************
+<hr />
+{#
+<div class="form-group">
+  {{ form_label(form.note, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_errors(form.note) }}
+  {{ form_widget(form.note ,{'attr': {'class': 'form-control'} }) }}
+</div>
+#}
+<hr />
