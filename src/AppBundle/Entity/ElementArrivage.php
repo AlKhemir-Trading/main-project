@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Arrivage;
+use AppBundle\Entity\ElementVente;
 
 /**
  * ElementArrivage
@@ -66,6 +67,14 @@ class ElementArrivage
      * @ORM\Column(name="prixVente", type="decimal", precision=10, scale=3)
      */
     private $prixVente;
+
+    /**
+     *
+     * @var ElementVente
+     *
+     * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="elementArrivage", cascade={}, orphanRemoval=FALSE)
+     */
+    private $elementsVente;
 
     public function __construct() {
       // $this->quantite = 0;
@@ -224,5 +233,39 @@ class ElementArrivage
     public function getQuantiteVendu()
     {
         return $this->quantiteVendu;
+    }
+
+    /**
+     * Add elementsVente
+     *
+     * @param \AppBundle\Entity\ElementVente $elementsVente
+     *
+     * @return ElementArrivage
+     */
+    public function addElementsVente(\AppBundle\Entity\ElementVente $elementsVente)
+    {
+        $this->elementsVente[] = $elementsVente;
+
+        return $this;
+    }
+
+    /**
+     * Remove elementsVente
+     *
+     * @param \AppBundle\Entity\ElementVente $elementsVente
+     */
+    public function removeElementsVente(\AppBundle\Entity\ElementVente $elementsVente)
+    {
+        $this->elementsVente->removeElement($elementsVente);
+    }
+
+    /**
+     * Get elementsVente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getElementsVente()
+    {
+        return $this->elementsVente;
     }
 }

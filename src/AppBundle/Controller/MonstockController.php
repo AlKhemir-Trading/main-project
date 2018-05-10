@@ -12,9 +12,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class MonstockController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name ="monstock_index")
      */
     public function indexAction()
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
+
+      return $this->render('monstock/index.html.twig', array(
+        "monstock" => $monstock
+      ));
+    }
+
+    /**
+     * @Route("/vente", name="vente_new")
+     */
+    public function venteAction()
     {
       $em = $this->getDoctrine()->getManager();
 
