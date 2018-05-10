@@ -60,6 +60,16 @@ class ElementVente
     private $elementArrivage;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->quantite = 0;
+        $this->prixVente = 0;
+        $this->montantVente = 0;
+    }
+
+    /**
      * Get id
      *
      * @return int

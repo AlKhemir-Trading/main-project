@@ -43,6 +43,15 @@ class Vente
     private $elementsVente;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->elementsVente = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -98,13 +107,6 @@ class Vente
     public function getMontant()
     {
         return $this->montant;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->elementsVente = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
