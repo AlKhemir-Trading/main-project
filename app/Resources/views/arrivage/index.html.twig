@@ -47,7 +47,7 @@
                           {% set montant = 0 %}
                           {% for element in arrivage.elementArrivages %}
                             {% set produitArray = produitArray|merge([element.produit.name]) %}
-                            {% set montant = montant + element.prixVente %}
+                            {% set montant = montant + element.montant %}
                           {% endfor %}
 
                           <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';">
@@ -64,7 +64,7 @@
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td>
-                                {{montant}}D
+                                {{montant |number_format(0, '.', ' ') }} D
                               </td>
                               <td>{{ arrivage.dateCreation|date('Y-m-d (H:m)') }}</td>
                               <td>

@@ -49,16 +49,18 @@ class ArrivageController extends Controller
         $form = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $form->handleRequest($request);
 
+        // $data =$form->getData()->getElementArrivages();
+        // print_r($data[0]->getMontant()); die('aaa');
 
         if ($form->isSubmitted() && $form->isValid()) {
             //print_r($arrivage->getElementArrivages()[0]->getArrivage()->getId()); die;
 
             $elementArrivages = $arrivage->getElementArrivages();
             foreach( $elementArrivages as $elementArrivage){
-              // print_r($elementArrivage->getQuantite());
+               //print_r($elementArrivage->getMontant());
               $elementArrivage->setArrivage($arrivage);
             }
-
+            //die;
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
             $em->flush();
@@ -98,6 +100,7 @@ class ArrivageController extends Controller
      */
     public function editAction(Request $request, Arrivage $arrivage)
     {
+
         $deleteForm = $this->createDeleteForm($arrivage);
         $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $editForm->handleRequest($request);
@@ -106,10 +109,11 @@ class ArrivageController extends Controller
 
             $elementArrivages = $arrivage->getElementArrivages();
             foreach( $elementArrivages as $elementArrivage){
-              // print_r($elementArrivage->getQuantite());
+               //print_r($elementArrivage->getMontant());
               $elementArrivage->setArrivage($arrivage);
             }
-
+ //die;
+            $arrivage->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('arrivage_edit', array('id' => $arrivage->getId()));

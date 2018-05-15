@@ -49,8 +49,67 @@
   {{ parent() }}
   {% block newEdit %}
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+
+<!-- <script src="pcsFormatNumber.jquery.js"></script> -->
+
   <script type="text/javascript">
+
+
   $(document).ready(function() {
+
+
+    //init:
+    $('.prixUnit').each(function( index2 ) {
+      $(this).val( addCommas( $(this).val() ) );
+    });
+
+    $('.montant').each(function( index2 ) {
+      $(this).val( addCommas( $(this).val() ) );
+    });
+
+    $('form').submit(function() {
+      $('.prixUnit').prop('type', 'text');
+      $('.prixUnit').each(function( index2 ) {
+        $(this).val( removeCommas( $(this).val() ) );
+      });
+
+      $('.montant').prop('type', 'text');
+      $('.montant').each(function( index2 ) {
+        $(this).val( removeCommas( $(this).val() ) );
+      });
+
+    })
+
+    function removeCommas(str){
+      return str.replace(/\s/g, '');
+    }
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+        }
+        return x1 + x2;
+    }
+
+    //$('.number').prop('type', 'number');
+
+    $('body').on('focusout', '.prixUnit', function() {
+      $(this).prop('type', 'text');
+      $(this).val (  addCommas( $(this).val() ) );
+    });
+
+    $('body').on('focus','.prixUnit',function(){
+      $(this).val (  removeCommas( $(this).val() ) );
+      $(this).prop('type', 'number');
+    });
+
+
     $('#appbundle_arrivage_dateCreation').datepicker({
         format: 'yyyy-mm-dd',
         startDate: '2008-01-01',
@@ -67,7 +126,7 @@
     if($('#tab_logic tr').length == 2){
       createNewRow();
     }else{
-      MajMontant();
+      MajMontantGlobal();
     }
 
 
@@ -86,11 +145,6 @@
         MajMontant();
       }
     });
-
-    //$(".montant").on("change keyup paste", function(){
-    $('#tab_logic').on('change keyup paste', '.montant', function() {
-      MajMontant();
-    })
 
     function createNewRow(){
 
@@ -117,13 +171,31 @@
       // console.log(res);
       $('#tab_logic tbody').append(newRow);
 
+
     }
 
-    function MajMontant(){
+    $('#tab_logic').on('change keyup paste', '.quantite', function() {
+      MajMontantRow($(this));
+    });
+    $('#tab_logic').on('change keyup paste', '.prixUnit', function() {
+      MajMontantRow($(this));
+    });
+
+    function MajMontantRow(element){
+      let myParent = $(element).closest("tr");
+
+      let quantite = myParent.find('.quantite').val();
+      let prixUnit = removeCommas( myParent.find('.prixUnit').val() );
+      myParent.find('.montant').val( addCommas( quantite * prixUnit ) );
+
+      MajMontantGlobal();
+    }
+
+    function MajMontantGlobal(){
       let res = 0;
       $('#tab_logic tbody td[data-name="sel"]').each( function(index2){
-        res += +$(this).find('input').val();
-        $('#montant').val(res);
+        res += +(removeCommas( $(this).find('input').val() ) );
+        $('#montant').val( addCommas(res) );
         //alert( $(this).find('input').val() );
       })
     }

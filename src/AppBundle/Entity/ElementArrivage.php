@@ -48,6 +48,20 @@ class ElementArrivage
     private $quantite;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="prix_unit", type="decimal", precision=10, scale=3)
+     */
+    private $prixUnit;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=3)
+     */
+    private $montant;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="quantite_vendu", type="integer")
@@ -55,18 +69,11 @@ class ElementArrivage
     private $quantiteVendu;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=3)
+     * @ORM\Column(name="quantite_restante", type="integer")
      */
-    private $prixAchat;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prixVente", type="decimal", precision=10, scale=3)
-     */
-    private $prixVente;
+    private $quantiteRestante;
 
     /**
      *
@@ -77,10 +84,13 @@ class ElementArrivage
     private $elementsVente;
 
     public function __construct() {
-      // $this->quantite = 0;
-      // $this->prixAchat = 0;
-      // $this->prixVente = 0;
+      $this->quantite = 0;
+      $this->prixUnit = 0;
+      $this->montant = 0;
+      $this->quantiteVendu = 0;
+      $this->quantiteRestante = 0;
     }
+
     /**
      * Get id
      *
@@ -113,54 +123,6 @@ class ElementArrivage
     public function getQuantite()
     {
         return $this->quantite;
-    }
-
-    /**
-     * Set prixAchat
-     *
-     * @param string $prixAchat
-     *
-     * @return ElementArrivage
-     */
-    public function setPrixAchat($prixAchat)
-    {
-        $this->prixAchat = $prixAchat;
-
-        return $this;
-    }
-
-    /**
-     * Get prixAchat
-     *
-     * @return string
-     */
-    public function getPrixAchat()
-    {
-        return $this->prixAchat;
-    }
-
-    /**
-     * Set prixVente
-     *
-     * @param string $prixVente
-     *
-     * @return ElementArrivage
-     */
-    public function setPrixVente($prixVente)
-    {
-        $this->prixVente = $prixVente;
-
-        return $this;
-    }
-
-    /**
-     * Get prixVente
-     *
-     * @return string
-     */
-    public function getPrixVente()
-    {
-        return $this->prixVente;
     }
 
     /**
@@ -267,5 +229,77 @@ class ElementArrivage
     public function getElementsVente()
     {
         return $this->elementsVente;
+    }
+
+    /**
+     * Set prixUnit
+     *
+     * @param string $prixUnit
+     *
+     * @return ElementArrivage
+     */
+    public function setPrixUnit($prixUnit)
+    {
+        $this->prixUnit = $prixUnit;
+
+        return $this;
+    }
+
+    /**
+     * Get prixUnit
+     *
+     * @return string
+     */
+    public function getPrixUnit()
+    {
+        return $this->prixUnit;
+    }
+
+    /**
+     * Set montant
+     *
+     * @param string $montant
+     *
+     * @return ElementArrivage
+     */
+    public function setMontant($montant)
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * Get montant
+     *
+     * @return string
+     */
+    public function getMontant()
+    {
+        return $this->montant;
+    }
+
+    /**
+     * Set quantiteRestante
+     *
+     * @param integer $quantiteRestante
+     *
+     * @return ElementArrivage
+     */
+    public function setQuantiteRestante($quantiteRestante)
+    {
+        $this->quantiteRestante = $quantiteRestante;
+
+        return $this;
+    }
+
+    /**
+     * Get quantiteRestante
+     *
+     * @return integer
+     */
+    public function getQuantiteRestante()
+    {
+        return $this->quantiteRestante;
     }
 }

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="arrivage")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArrivageRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Arrivage
 {
@@ -49,9 +50,29 @@ class Arrivage
      */
     private $note;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=3)
+     */
+    private $montant;
+
     public function __construct() {
       $this->dateCreation = new \DateTime();
       $this->elementArrivages = new ArrayCollection();
+      $this->montant = 0;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersistOrUpdate()
+    {
+        $montant = 0;
+        foreach ($this->elementArrivages as $element)
+          $montant += $element->getMontant();
+        $this->montant = $montant;
     }
 
     /**
@@ -169,5 +190,29 @@ class Arrivage
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set montant
+     *
+     * @param string $montant
+     *
+     * @return Arrivage
+     */
+    public function setMontant($montant)
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * Get montant
+     *
+     * @return string
+     */
+    public function getMontant()
+    {
+        return $this->montant;
     }
 }

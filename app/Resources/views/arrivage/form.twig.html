@@ -42,17 +42,18 @@
           </td>
           <td data-name="mail">
             <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
-              {{ form_widget(form.elementArrivages.vars.prototype.quantite, {'attr': {'class': 'form-control'}}) }}
+              {{ form_widget(form.elementArrivages.vars.prototype.quantite, {'attr': {'class': 'form-control quantite'}}) }}
           </td>
           <td data-name="desc">
             <div class="input-group">
-              {{ form_widget(form.elementArrivages.vars.prototype.prixVente, {'attr': {'class': 'form-control'}}) }}
+              {{ form_widget(form.elementArrivages.vars.prototype.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}
             <div class="input-group-append"><span class="input-group-text">D</span></div>
           </div>
           </td>
           <td data-name="sel">
             <div class="input-group">
-              {{ form_widget(form.elementArrivages.vars.prototype.prixAchat, {'attr': {'class': 'form-control montant'}}) }}
+                {{ form_widget(form.elementArrivages.vars.prototype.montant, {'attr': {'class': 'form-control montant', 'readonly':'readonly'}}) }}
+                <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant" disabled> -->
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
           </td>
@@ -69,17 +70,18 @@
           </td>
           <td data-name="mail">
             <!-- <input type="text" name='mail0' placeholder='Email' class="form-control"/> -->
-            {{ form_widget(detail.quantite, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(detail.quantite, {'attr': {'class': 'form-control quantite'}}) }}
           </td>
           <td data-name="desc">
             <div class="input-group">
-              {{ form_widget(detail.prixVente, {'attr': {'class': 'form-control'}}) }}
+              {{ form_widget(detail.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
           </td>
           <td data-name="sel">
             <div class="input-group">
-              {{ form_widget(detail.prixAchat, {'attr': {'class': 'form-control montant'}}) }}
+                {{ form_widget(detail.montant, {'attr': {'class': 'form-control montant', 'readonly':'readonly'}}) }}
+                <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant disabled"> -->
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
           </td>
