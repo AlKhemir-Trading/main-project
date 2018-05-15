@@ -47,8 +47,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                      {% for element in vente.elementsVente %}
-                        {% if( date( element.elementArrivage.arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+                      {% for element in form.elementsVente %}
+                        {% if( date( attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation ) > date('-'~newDatesNb~'days') )%}
                           {% set class = 'a' %}
                         {% else %}
                           {% set class = '' %}
@@ -63,21 +63,30 @@
                             {% endfor %}
                           #}
                         <tr class="{{class}}" >
-                            <td> {{ element.elementArrivage.produit.name }}
+                            <td>
+                              {{ attribute(vente.elementsVente,loop.index0).elementArrivage.produit.name }}
                               {% if( class != '' ) %}
                                   <span class="badge badge-info">New</span>
                               {%endif%}
                             </td>
                             <td>
-                              {{ element.elementArrivage.arrivage.fournisseur.name }}
+                              {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.fournisseur.name }}
                             </td>
                             <td>
-                              {{ element.elementArrivage.arrivage.dateCreation|date('Y-m-d (H:m)') }}
+                              {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d (H:m)') }}
                             </td>
                             <td>
-                              {{ element.quantite }}
+                              <div class="input-group">
+                                {{ form_widget(element.quantite, {'attr': {'class': 'form-control'}}) }}
+                                <div class="input-group-append">
+                                  <span class="input-group-text">
+                                    / {{ attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante }}
+                                  </span></div>
+                              </div>
                             </td>
-                            <td>{{ element.prixVente }}</td>
+                            <td>
+                              {{ form_widget(element.prixVente, {'attr': {'class': 'form-control'}}) }}
+                            </td>
                             <td>
                               Auto
                             </td>

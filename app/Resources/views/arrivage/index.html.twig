@@ -44,10 +44,8 @@
                           {% endif %}
 
                           {% set produitArray = [] %}
-                          {% set montant = 0 %}
                           {% for element in arrivage.elementArrivages %}
                             {% set produitArray = produitArray|merge([element.produit.name]) %}
-                            {% set montant = montant + element.montant %}
                           {% endfor %}
 
                           <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';">
@@ -64,9 +62,9 @@
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td>
-                                {{montant |number_format(0, '.', ' ') }} D
+                                {{ arrivage.montant |number_format(0, '.', ' ') }} D
                               </td>
-                              <td>{{ arrivage.dateCreation|date('Y-m-d (H:m)') }}</td>
+                              <td>{{ arrivage.dateCreation|date('Y-m-d') }}</td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">
@@ -115,7 +113,7 @@
       $(document).ready(function(){
         //$('#ArrivagesItem').toggleClass('active');
         var table = $('#example').DataTable();
-        table.order( [ 4, 'desc' ] ).draw();
+        table.order( [ 0, 'desc' ] ).draw();
       });
 
     </script>
