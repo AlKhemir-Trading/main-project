@@ -31,16 +31,16 @@ class ElementVente
     /**
      * @var string
      *
-     * @ORM\Column(name="prixVente", type="decimal", precision=10, scale=3)
+     * @ORM\Column(name="prixUnit", type="decimal", precision=10, scale=3)
      */
-    private $prixVente;
+    private $prixUnit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="montantVente", type="decimal", precision=10, scale=3)
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=3)
      */
-    private $montantVente;
+    private $montant;
 
     /**
      * @var Vente
@@ -65,8 +65,8 @@ class ElementVente
     public function __construct()
     {
         $this->quantite = 0;
-        $this->prixVente = 0;
-        $this->montantVente = 0;
+        $this->prixUnit = 0;
+        $this->montant = 0;
     }
 
     /**
@@ -101,54 +101,6 @@ class ElementVente
     public function getQuantite()
     {
         return $this->quantite;
-    }
-
-    /**
-     * Set prixVente
-     *
-     * @param string $prixVente
-     *
-     * @return ElementVente
-     */
-    public function setPrixVente($prixVente)
-    {
-        $this->prixVente = $prixVente;
-
-        return $this;
-    }
-
-    /**
-     * Get prixVente
-     *
-     * @return string
-     */
-    public function getPrixVente()
-    {
-        return $this->prixVente;
-    }
-
-    /**
-     * Set montantVente
-     *
-     * @param string $montantVente
-     *
-     * @return ElementVente
-     */
-    public function setMontantVente($montantVente)
-    {
-        $this->montantVente = $montantVente;
-
-        return $this;
-    }
-
-    /**
-     * Get montantVente
-     *
-     * @return string
-     */
-    public function getMontantVente()
-    {
-        return $this->montantVente;
     }
 
     /**
@@ -197,5 +149,53 @@ class ElementVente
     public function getVente()
     {
         return $this->vente;
+    }
+
+    /**
+     * Set prixUnit
+     *
+     * @param string $prixUnit
+     *
+     * @return ElementVente
+     */
+    public function setPrixUnit($prixUnit)
+    {
+        $this->prixUnit = $prixUnit;
+
+        return $this;
+    }
+
+    /**
+     * Get prixUnit
+     *
+     * @return string
+     */
+    public function getPrixUnit()
+    {
+        return $this->prixUnit;
+    }
+
+    /**
+     * Set montant
+     *
+     * @param string $montant
+     *
+     * @return ElementVente
+     */
+    public function setMontant($montant)
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * Get montant
+     *
+     * @return string
+     */
+    public function getMontant()
+    {
+        return $this->montant;
     }
 }

@@ -11,6 +11,7 @@ use AppBundle\Entity\ElementVente;
  *
  * @ORM\Table(name="element_arrivage")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ElementArrivageRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ElementArrivage
 {
@@ -79,7 +80,7 @@ class ElementArrivage
      *
      * @var ElementVente
      *
-     * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="elementArrivage", cascade={}, orphanRemoval=FALSE)
+     * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="elementArrivage", cascade={"remove"}, orphanRemoval=FALSE)
      */
     private $elementsVente;
 
@@ -89,6 +90,22 @@ class ElementArrivage
       $this->montant = 0;
       $this->quantiteVendu = 0;
       $this->quantiteRestante = 0;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+      $this->quantiteRestante = $this->quantite;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+      $this->quantiteRestante = $this->quantite - $this->quantiteVendu;
     }
 
     /**

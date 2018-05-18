@@ -8,8 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-
 
 class ElementArrivageType extends AbstractType
 {
@@ -28,7 +26,7 @@ class ElementArrivageType extends AbstractType
             // "step" => 0.001,
              "placeholder" => "0",
           )
-))
+        ))
 
         ->add('prixUnit', NumberType::class, array(
           //"grouping" => true,
@@ -37,7 +35,7 @@ class ElementArrivageType extends AbstractType
           // 'scale' => 3,
           'attr' => array(
             "min" => 0,
-            "step" => 0.100,
+            "step" => 0.001,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )
@@ -48,7 +46,7 @@ class ElementArrivageType extends AbstractType
           // 'scale' => 3,
           'attr' => array(
             "min" => 0,
-            "step" => 1.000,
+            "step" => 0.001,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )

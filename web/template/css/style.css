@@ -136,10 +136,10 @@
   min-width: 635px;
 }
 
-.tableData td{
+.tableData,.tableVente td{
   font-weight: bold!important;
 }
-.tableData th{
+.tableData,.tableVente th{
   background-color: powderblue!important;
   cursor:row-resize!important;
   /* color:white!important; */
@@ -170,4 +170,18 @@
 
 .w-a{
   width:auto!important;
+}
+
+.w-230{
+  width: 225px;
+}
+
+.w-115{
+  width: 120px;
+}
+
+.tableVente th,td{
+  vertical-align: middle!important;
+  white-space: nowrap!important;
+  /* width:auto!important; */
 }

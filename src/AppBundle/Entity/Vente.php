@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="vente")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VenteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Vente
 {
@@ -51,6 +52,18 @@ class Vente
         $this->date = new \DateTime();
     }
 
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersistOrUpdate()
+    {
+        $montant = 0;
+        foreach ($this->elementsVente as $element)
+          $montant += $element->getMontant();
+        $this->montant = $montant;
+    }
     /**
      * Get id
      *

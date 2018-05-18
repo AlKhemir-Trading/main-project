@@ -20,6 +20,20 @@
       <li class="breadcrumb-item"><a href="#">{{ action }}</a></li>
     </ul>
   </div>
+
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="bs-component messageContainer">
+          {% for label, messages in app.flashes %}
+              {% for message in messages %}
+                <div class="alert alert-dismissible alert-{{label}}">
+                  <button class="close" type="button" data-dismiss="alert">×</button><strong>{{ message }}</strong>
+                </div>
+              {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
 {#
   <!-- {% block container %}
   <div class="row justify-content-lg-center">
@@ -62,7 +76,48 @@
   $(document).ready(function() {
 
     var table = $('#example').DataTable();
-    //table.order( [ 4, 'desc' ] ).draw();
+
+    // Handle form submission event
+       $('form').on('submit', function(e){
+
+
+        var atLeastOnce = false;
+        $('.tableVente').find('tbody tr').each(function( index2 ) {
+          let quantite = $(this).find('.quantite').val();
+          let prixUnit = $(this).find('.prixUnit').val();
+          if ( quantite > 0 && prixUnit > 0){
+            atLeastOnce = true;
+          }
+        });
+
+        if ( !atLeastOnce){
+          event.preventDefault();
+          let type = "danger";
+          let message = 'Une Vente doit contenir au moins un produit!';
+          alertMessage(type,message);
+        }
+
+          var form = this;
+
+          // Encode a set of form elements from all pages as an array of names and values
+          var params = table.$('input,select,textarea').serializeArray();
+
+          // Iterate over all form elements
+          $.each(params, function(){
+             // If element doesn't exist in DOM
+             if(!$.contains(document, form[this.name])){
+                // Create a hidden element
+                $(form).append(
+                   $('<input>')
+                      .attr('type', 'hidden')
+                      .attr('name', this.name)
+                      .val(this.value)
+                );
+             }
+          });
+       });
+
+    // table.order( [ 3, 'desc' ] ).draw();
 
     $('#appbundle_vente_date').datepicker({
         format: 'yyyy-mm-dd',
@@ -71,74 +126,79 @@
         autoclose: true
     });
 
-    var prototype = $('#prototype').html();
-    $('#prototype').remove();
-
-    //console.log(prototype);
-    $('#tab_logic').data('prototype',prototype);
-
-    if($('#tab_logic tr').length == 2){
-      createNewRow();
-    }else{
-      MajMontant();
-    }
-
-
-    $("#add_row").on("click", function(){
-      createNewRow();
+    $('.quantite').each(function( index2 ) {
+        MajTr($(this));
     });
 
-    $('#tab_logic').on('click', '.row-remove', function() {
-
-      if($('#tab_logic tr').length > 3){
-        // Do something on an existent or future .dynamicElement
+    $('.tableVente').on('click', '.row-remove', function() {
         let myParent = $(this).closest("tr");
-        console.log(myParent);
-        //alert(myParent.data("id"));
-        myParent.remove();
-        MajMontant();
-      }
+
+        myParent.find('.quantite').attr('value',0);
+        myParent.find('.prixUnit').attr('value',0);
+        myParent.find('.montant').attr('value',0);
+
+        myParent.css("background-color", "");
+        myParent.css("color", "black");
+        $(this).addClass('disabled d-none');
+        //MajMontant();
+
     });
 
-    //$(".montant").on("change keyup paste", function(){
-    $('#tab_logic').on('change keyup paste', '.montant', function() {
-      MajMontant();
-    })
+    $('.prixUnit').prop('type','number');
 
-    function createNewRow(){
+    $('.tableVente').on('change keyup paste', '.quantite', function() {
+      MajMontantRow($(this));
+      MajTr($(this));
+    });
+    $('.tableVente').on('change keyup paste', '.prixUnit', function() {
+      MajMontantRow($(this));
+      MajTr($(this));
+    });
 
-      console.log('start');
-      var index = $('#tab_logic').data("index");
-      $('#tab_logic').data("index",index + 1);
-      var newRow = $('<tr></tr>').append(prototype);
-      //console.log(newRow);
-      //set tr index
-      newRow.attr('data-id',index);
-      //alert(newRow.data('id'));
-      //$('#tab_logic tbody').append(newRow);
-      // console.log(newRow);
-      // newRow.removeClass('d-none');
-      var res = newRow.find("[name]");
-      res.each(function( index2 ) {
-        // console.log( index + "name: " + $( this ).attr('name') +"<br /> id : " + $( this ).attr('id') );
-        let name = $( this ).attr('name').replace(/__name__/g, index);
-        let id = $( this ).attr('id').replace(/__name__/g, index);
-        // console.log(name + "/" + id);
-        $( this ).attr('name',name);
-        $( this ).attr('id',id);
-      });
-      // console.log(res);
-      $('#tab_logic tbody').append(newRow);
+    function MajTr(element){
+      let myParent = $(element).closest("tr");
 
+      let quantite = myParent.find('.quantite').val();
+      let prixUnit = myParent.find('.prixUnit').val();
+      let button = myParent.find('.row-remove');
+
+      if( quantite > 0 && prixUnit > 0){
+        myParent.css("background-color", "#009688");
+        myParent.css("color", "white");
+        button.removeClass('disabled d-none');
+      }else{
+        myParent.css("background-color", "");
+        myParent.css("color", "black");
+        button.addClass('disabled d-none');
+      }
+      //myParent.find('.montant').val( quantite * prixUnit );
     }
 
-    function MajMontant(){
+    function MajMontantRow(element){
+      let myParent = $(element).closest("tr");
+
+      let quantite = myParent.find('.quantite').val();
+      let prixUnit = myParent.find('.prixUnit').val();
+      myParent.find('.montant').val( quantite * prixUnit );
+
+      //MajMontantGlobal();
+    }
+
+    function MajMontantGlobal(){
       let res = 0;
-      $('#tab_logic tbody td[data-name="sel"]').each( function(index2){
-        res += +$(this).find('input').val();
-        $('#montant').val(res);
+      $('.tableVente tbody td[data-name="sel"]').each( function(index2){
+        res += +(removeCommas( $(this).find('input').val() ) );
+        $('#montant').val( addCommas(res) );
         //alert( $(this).find('input').val() );
       })
+    }
+
+    function alertMessage(type,message){
+      let alert = $("<div>", {"class": "alert alert-dismissible"});
+      alert.addClass('alert-'+type);
+      alert.html('<button class="close" type="button" data-dismiss="alert">×</button><strong></strong>');
+      alert.find('strong').html(message);
+      $('.messageContainer').append(alert);
     }
 
   });

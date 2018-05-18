@@ -16,9 +16,15 @@
                       <strong class="card-title lh30">Liste des Ventes</strong>
                       <div class="float-right">
                         <!-- <button class="btn btn-outline-primary" type="button">Primary</button> -->
-                        <a class="btn btn-primary btn-sm icon-btn" href="{{ path('vente_new')}}">
-                          <i class="fa fa-plus"></i>Nouvelle Vente
-                        </a>
+                        {% if countMonstock == 0 %}
+                          <a class="btn btn-primary btn-sm icon-btn disabled" href="#">
+                            <i class="fa fa-plus"></i>Nouvelle Vente
+                          </a>
+                        {% else %}
+                          <a class="btn btn-primary btn-sm icon-btn" href="{{ path('vente_new')}}">
+                            <i class="fa fa-plus"></i>Nouvelle Vente
+                          </a>
+                        {% endif %}
                       </div>
                   </div>
                   <div class="card-body" >
@@ -28,52 +34,49 @@
                       <thead>
                           <tr>
                               <th>Matricule</th>
-                              <th>Fournisseur</th>
+                              <!-- <th>Client</th> -->
                               <th>Produits</th>
                               <th>Montant</th>
-                              <th>Date d'arrivée</th>
+                              <th>Date de vente</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
                       <tbody>
-                        {% for arrivage in arrivages %}
-                          {% if( date( arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+                        {% for vente in ventes %}
+                          {% if( date( vente.date) > date('-'~newDatesNb~'days') )%}
                             {% set class = 'a' %}
                           {% else %}
                             {% set class = '' %}
                           {% endif %}
 
                           {% set produitArray = [] %}
-                          {% set montant = 0 %}
-                          {% for element in arrivage.elementArrivages %}
-                            {% set produitArray = produitArray|merge([element.produit.name]) %}
-                            {% set montant = montant + element.prixVente %}
+                          {% for element in vente.elementsVente %}
+                            {% set produitArray = produitArray|merge([element.elementArrivage.produit.name]) %}
                           {% endfor %}
 
-                          <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';">
-                              <td>{{ "%05d"|format(arrivage.id) }}
+                          <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';">
+                              <td>{{ "%05d"|format(vente.id) }}
                                 {% if( class != '' ) %}
                                     <span class="badge badge-info">New</span>
                                 {%endif%}
                               </td>
-                              <td>
-                                {{ arrivage.fournisseur.name }}
-
-                              </td>
+                              {#<!-- <td>
+                                {{ vente.client.name }}
+                              </td> --> #}
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td>
-                                {{montant}}D
+                                {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td>{{ arrivage.dateCreation|date('Y-m-d (H:m)') }}</td>
+                              <td>{{ vente.date|date('Y-m-d') }}</td>
                               <td>
 
-                                <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">
+                                <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">
                                   <i class="fa fa-info fa-fix"></i>
                                 </a>
 
-                                <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">
+                                <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('vente_edit', { 'id': vente.id }) }}">
                                   <i class="fa fa-edit fa-fix"></i>
                                 </a>
 
@@ -81,7 +84,7 @@
                                 data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash fa-fix"></i>
                                 </button>
                                 <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash fa-fix"></i></button>
-                                <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">
+                                <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('vente_edit', { 'id': vente.id }) }}">
                                   <i class="fa fa-trash fa-fix"></i>
                                 </a> -->
 
