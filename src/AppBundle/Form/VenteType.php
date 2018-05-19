@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class VenteType extends AbstractType
 {
@@ -16,6 +17,10 @@ class VenteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+        ->add('client', EntityType::class, array(
+            'class' => 'AppBundle:Client',
+            'choice_label' => 'name',
+        ))
         ->add('date', DateType::class, array(
             'widget' => 'single_text',
             //'format' => 'dd/MM/yyyy',

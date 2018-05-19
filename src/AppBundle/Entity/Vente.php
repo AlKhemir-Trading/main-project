@@ -44,6 +44,12 @@ class Vente
     private $elementsVente;
 
     /**
+     * @var Client
+     *
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist"})
+     */
+    private $client;
+    /**
      * Constructor
      */
     public function __construct()
@@ -154,5 +160,29 @@ class Vente
     public function getElementsVente()
     {
         return $this->elementsVente;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Vente
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }

@@ -7,6 +7,12 @@
   {{ form_widget(form.fournisseur ,{'attr': {'class': 'form-control'} }) }}
 </div> --> #}
 
+<div class="form-group">
+  {{ form_label(form.client, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_errors(form.client) }}
+  {{ form_widget(form.client ,{'attr': {'class': 'form-control'} }) }}
+</div>
 
 <div class="form-group">
   {{ form_label(form.date, null,
