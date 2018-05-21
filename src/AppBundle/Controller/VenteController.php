@@ -6,8 +6,10 @@ use AppBundle\Entity\Vente;
 use AppBundle\Entity\ElementVente;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * Vente controller.
  *
@@ -23,6 +25,25 @@ class VenteController extends Controller
      */
     public function indexAction()
     {
+
+      // $myfile = fopen("testfile.txt", "w");
+
+
+      // Set parameters
+      // $apikey = '4c143f72-6ca0-4010-8870-338f8ccfa4ae';
+      // $value = '<title>Test PDF conversion</title>This is the body'; // can aso be a url, starting with http..
+      //
+      // // Convert the HTML string to a PDF using those parameters.  Note if you have a very long HTML string use POST rather than get.  See example #5
+      // $result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" . urlencode($value));
+      //
+      // // Save to root folder in website
+      // file_put_contents('mypdf-1.pdf', $result);
+
+      $var = $this->generateUrl('vente_index', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+
+      $connector = $this->get('schoenef_html_to_pdf.connector');
+      $connector->saveUrlAsPdf($var, 'sss2.pdf', ['dpi' => 96]);
+
         $em = $this->getDoctrine()->getManager();
 
         $ventes = $em->getRepository('AppBundle:Vente')->findAll();

@@ -91,3 +91,16 @@ fos_user:
             from_email:
                 address:        %mailer_user%
                 sender_name:    Demo Resetting
+
+
+schoenef_html_to_pdf:
+  provider: pdfrocket
+  timeout: 20
+  apikey: "%html_to_pdf_apikey%"
+  default_options:
+     shrinking: false
+     dpi: 300
+     image_quality: 100
+     page_size: A4
+     zoom: 1.2
+     js_delay: 500

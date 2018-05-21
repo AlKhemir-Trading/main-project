@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new MyVendorFOSUserBundle\MyVendorFOSUserBundle(),
+            new Schoenef\HtmlToPdfBundle\SchoenefHtmlToPdfBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
