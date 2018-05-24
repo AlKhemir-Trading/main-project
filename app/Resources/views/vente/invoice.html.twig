@@ -1,0 +1,114 @@
+
+
+<link rel="stylesheet" type="text/css" href="{{ base_dir ~ asset('template/css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ base_dir ~ asset('template/css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ base_dir ~ asset('font-awesome/css/font-awesome.min.css') }}">
+
+  <style>
+    body{
+      font-size: 25px!important;
+    }
+    table{
+      font-size: 30px!important;
+    }
+
+    .invoice-title h2, .invoice-title h3 {
+        display: inline-block;
+    }
+    .table > tbody > tr > .no-line {
+        border-top: none;
+    }
+    .table > thead > tr > .no-line {
+        border-bottom: none;
+    }
+    .table > tbody > tr > .thick-line {
+        border-top: 2px solid;
+    }
+
+  </style>
+<!--
+  <div style="background-color:green">
+    <span style="text-align:left">
+      bbbb
+    </span>
+    <span style="color:white;text-align:right">
+        aaa
+    </span>
+  </div> -->
+
+
+<div class="container">
+
+        <div class="col-sm-12">
+    		<div class="invoice-title">
+    			<h2>Facture</h2><h3 class="pull-right">Order #{{ "%05d"|format(id) }}</h3>
+    		</div>
+        <hr />
+        <br />
+
+				<div >
+	      Facturé par:
+        <strong>  Mr {{ app.user.username |capitalize  }}</strong>
+				</div>
+
+				<div >
+    			Facturé à:
+					<strong> Mr {{ vente.client.name |capitalize  }}</strong>
+          <br>
+				</div>
+
+        <div >
+	      Methode de payement:
+          <strong> Cheque</strong>
+				</div>
+
+				<div >
+    			Facturé le:
+					<strong> {{ vente.date |date("m/d/Y") }}</strong>
+          <br>
+				</div>
+
+    </div>
+    <hr />
+    <br />
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title"><strong>Order summary</strong></h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                    <tr>
+                      <td><strong>Produits</strong></td>
+                      <td class="text-center"><strong>Quantite</strong></td>
+                      <td class="text-center"><strong>Prix Unitaire</strong></td>
+                      <td class="text-right"><strong>Montant</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for produit,value in produits %}
+                    <tr>
+                      <td>{{produit}}</td>
+                      <td class="text-center">{{value['quantite'] }}</td>
+                      <td class="text-center">{{value['prixUnit'] | number_format(0, '.', ' ')}} D</td>
+                      <td class="text-right">{{value['montant'] | number_format(0, '.', ' ') }} D</td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td class="no-line"></td>
+                    <td class="no-line"></td>
+                    <td class="no-line text-center"><strong>Total</strong></td>
+                    <td class="no-line text-right">{{montantGlobal | number_format(0, '.', ' ')}} D</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

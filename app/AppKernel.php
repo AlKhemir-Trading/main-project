@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new MyVendorFOSUserBundle\MyVendorFOSUserBundle(),
             new Schoenef\HtmlToPdfBundle\SchoenefHtmlToPdfBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

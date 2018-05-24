@@ -10,6 +10,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 /**
  * Vente controller.
  *
@@ -39,10 +44,6 @@ class VenteController extends Controller
       // // Save to root folder in website
       // file_put_contents('mypdf-1.pdf', $result);
 
-      $var = $this->generateUrl('vente_index', array(), UrlGeneratorInterface::ABSOLUTE_URL);
-
-      $connector = $this->get('schoenef_html_to_pdf.connector');
-      $connector->saveUrlAsPdf($var, 'sss2.pdf', ['dpi' => 96]);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -57,6 +58,7 @@ class VenteController extends Controller
               'warning',
               'Votre stock est entierement vide ..'
           );
+
 
         return $this->render('vente/index.html.twig', array(
             'ventes' => $ventes,
@@ -146,12 +148,161 @@ class VenteController extends Controller
         // foreach ($vente->getElementsVente() as $element)
         //   print_r($element->getQuantite());
         // //die;
+
+        $pdfUrl = $this->generateUrl('facture', array("id"=>$vente->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
+
         return $this->render('vente/show.html.twig', array(
             'vente' => $vente,
             'delete_form' => $deleteForm->createView(),
             'form' => $editForm->createView(),
+            'pdfUrl' => $pdfUrl,
         ));
     }
+
+    // /**
+    //  * Creates a new vente entity.
+    //  *
+    //  * @Route("/facture/twig/{id}", name="facture_pdf")
+    //  * @Method({"GET"})
+    //  */
+    //  public function facture(Vente $vente){
+    //    $produitsFacture = array();
+    //
+    //    foreach ($vente->getElementsVente() as $elt){
+    //      if( !array_key_exists($elt->getElementArrivage()->getProduit()->getName(), $produitsFacture )){
+    //        $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['prixUnit'] = $elt->getPrixUnit();
+    //        $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['montant'] = $elt->getMontant();
+    //        $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['quantite'] = $elt->getQuantite();
+    //      }else{
+    //        $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['montant'] += $elt->getMontant();
+    //        $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['quantite'] += $elt->getQuantite();
+    //      }
+    //    }
+    //
+    //    $montantGlobal =  $vente->getMontant();
+    //
+    //    $html = $this->renderView('vente/invoice.html.twig', array(
+    //      "produits" => $produitsFacture,
+    //      "id" => $vente->getId(),
+    //      "montantGlobal" => $montantGlobal
+    //    ));
+    //
+    //    $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+    //
+    //    // return new Response(
+    //    //     $this->get('knp_snappy.pdf')->getOutput('http:\\www.google.com'),
+    //    //     200,
+    //    //     [
+    //    //         'Content-Type'        => 'application/pdf',
+    //    //         'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+    //    //     ]
+    //    // );
+    //
+    //    //$this->get('knp_snappy.pdf')->generate('http://www.google.fr', 'file.pdf');
+    //
+    //    return new PdfResponse(
+    //        $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+    //        'file.pdf'
+    //    );
+    //  }
+
+    /**
+     * Creates a new vente entity.
+     *
+     * @Route("/facture/{id}", name="facture")
+     * @Method({"GET"})
+     */
+    public function downloadAction($id){
+
+      $em = $this->getDoctrine()->getManager();
+      $vente = $em->getRepository('AppBundle:Vente')->find($id);
+
+
+      $produitsFacture = array();
+      foreach ($vente->getElementsVente() as $elt){
+        if( !array_key_exists($elt->getElementArrivage()->getProduit()->getName(), $produitsFacture )){
+          $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['prixUnit'] = $elt->getPrixUnit();
+          $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['montant'] = $elt->getMontant();
+          $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['quantite'] = $elt->getQuantite();
+        }else{
+          $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['montant'] += $elt->getMontant();
+          $produitsFacture[$elt->getElementArrivage()->getProduit()->getName()]['quantite'] += $elt->getQuantite();
+        }
+      }
+      $montantGlobal =  $vente->getMontant();
+
+      $filePath = "facture/facture_".$vente->getId().".pdf";
+      $this->get('knp_snappy.pdf')->generateFromHtml(
+        $this->renderView('vente/invoice.html.twig', array(
+          "produits" => $produitsFacture,
+          "id" => $vente->getId(),
+          "montantGlobal" => $montantGlobal,
+          "base_dir" => $this->get('kernel')->getRootDir() . '/../web',
+          "vente" => $vente,
+        )),
+          $filePath,
+          array(
+            'orientation' => 'landscape',
+             'enable-javascript' => true,
+             'javascript-delay' => 1000,
+             'no-stop-slow-scripts' => true,
+             'no-background' => false,
+             'lowquality' => false,
+             'encoding' => 'utf-8',
+             'images' => true,
+             'cookie' => array(),
+             'dpi' => 300,
+             'image-dpi' => 300,
+             'enable-external-links' => true,
+             'enable-internal-links' => true,
+             // 'page-height' => 124 * 3,
+             // 'page-width'  => 192 * 3,
+             'page-size' => 'A4',
+          ),
+          true
+
+      );
+
+      return new BinaryFileResponse($filePath);
+
+      // return new PdfResponse(
+      //     $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+      //     'file.pdf'
+      // );
+
+
+
+      // $urlFacture = $this->generateUrl('facture_pdf', array('id'=>$id), UrlGeneratorInterface::ABSOLUTE_URL);
+      // $pdfPath = 'facture/facture_'.$id.'.pdf';
+      // $filename = 'facture_'.$id.'.pdf';
+      //
+      // $connector = $this->get('schoenef_html_to_pdf.connector');
+      // $connector->saveUrlAsPdf('http://www.google.com', $pdfPath , ['dpi' => 96]);
+      //
+      // return $this->file($pdfPath, $filename , ResponseHeaderBag::DISPOSITION_INLINE);
+    }
+
+    // /**
+    //  * Export to PDF
+    //  *
+    //  * @Route("/pdf", name="demo_pdf")
+    //  */
+    // public function pdfAction()
+    // {
+    //
+    //
+    //     $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+    //
+    //     return new Response(
+    //         $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+    //         200,
+    //         [
+    //             'Content-Type'        => 'application/pdf',
+    //             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+    //         ]
+    //     );
+    // }
+
 
     /**
      * Displays a form to edit an existing vente entity.
@@ -241,8 +392,6 @@ class VenteController extends Controller
      */
     public function deleteAction(Request $request, Vente $vente)
     {
-
-
         $form = $this->createDeleteForm($vente);
         $form->handleRequest($request);
 
