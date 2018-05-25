@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new MyVendorFOSUserBundle\MyVendorFOSUserBundle(),
-            new Schoenef\HtmlToPdfBundle\SchoenefHtmlToPdfBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         ];
 
