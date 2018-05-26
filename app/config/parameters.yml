@@ -1,10 +1,17 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: 127.0.0.1
-    database_port: null
-    database_name: iheb_db_2
-    database_user: iheb_user
-    database_password: '0000'
+    database_host: sql2.freemysqlhosting.net
+    database_port: 3306
+    database_name: sql2239992
+    database_user: sql2239992
+    database_password: rF9*yC3!
+
+    # database_host: 127.0.0.1
+    # database_port: null
+    # database_name: iheb_db_2
+    # database_user: iheb_user
+    # database_password: '0000'
+
 
     mailer_transport: gmail
 #    mailer_host: smtp.gmail.com
