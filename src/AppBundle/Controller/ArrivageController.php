@@ -41,6 +41,7 @@ class ArrivageController extends Controller
     public function newAction(Request $request)
     {
         $arrivage = new Arrivage();
+
         // $elementArrivage = new ElementArrivage();
         // $arrivage->addElementArrivage($elementArrivage);
         // $elementArrivage2 = new ElementArrivage();
@@ -54,7 +55,7 @@ class ArrivageController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             //print_r($arrivage->getElementArrivages()[0]->getArrivage()->getId()); die;
-
+            // print_r($arrivage->getFournisseur()->getName()); die('aaa');
             $elementArrivages = $arrivage->getElementArrivages();
             foreach( $elementArrivages as $elementArrivage){
                //print_r($elementArrivage->getMontant());

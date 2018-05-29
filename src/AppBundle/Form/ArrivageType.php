@@ -35,6 +35,7 @@ class ArrivageType extends AbstractType
             'allow_add' => true,
             'allow_delete' => true,
             'label'=> false,
+            'error_bubbling' => false,
             'entry_options' => array(
               'label' => false
             )

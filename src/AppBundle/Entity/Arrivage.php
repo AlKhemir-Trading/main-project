@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Arrivage;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as Assert2;
+
 /**
  * Arrivage
  *
@@ -33,19 +36,23 @@ class Arrivage
 
     /**
      * @var Fournisseur
+     * @Assert\NotNull(message=" Fournisseur non saisi: Vous devez allez à l'onglet Fournisseur et créer au moins un Fournisseur!")
      *
      * @ORM\ManyToOne(targetEntity="Fournisseur", inversedBy="arrivages", cascade={"persist"})
      */
     private $fournisseur;
 
     /**
-     * @var Arrivage
+     * @var Collection
+     * @Assert2\ElementArrivage()
+     *
      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     private $elementArrivages;
 
     /**
      * @var string
+     *
      * @ORM\Column(name="note", type="string", length=255, nullable=true)
      */
     private $note;
