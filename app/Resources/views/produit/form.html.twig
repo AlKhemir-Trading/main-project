@@ -1,11 +1,23 @@
 
+{% if not form.vars.valid %}
+    {% for child in form.children %}
+        {%for error in child.vars.errors%}
+        <div class="alert alert-sm alert-danger alert-dismissible fade show " role="alert">
+          <strong>{{error.message}}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {%endfor%}
+    {%endfor%}
+{%endif%}
+
 {% for entity in form.children %}
   {% if entity.vars.name != '_token' %}
       <!-- {{dump(entity.vars.name)}} -->
       <div class="form-group row">
         {{ form_label(attribute(form,entity.vars.name), null,
           { 'label_attr': {'class': 'col-sm-3 col-form-label font-weight-bold'} }) }}
-        {{ form_errors(attribute(form,entity.vars.name)) }}
         <div class="col-sm-9">
           {{ form_widget(attribute(form,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
         </div>

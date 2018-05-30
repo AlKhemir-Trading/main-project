@@ -78,17 +78,17 @@ class VenteController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
-
+// print_r(count($monstock)); die('qSq');
         foreach ($monstock as $elementArrivage){
           $eltVente = new ElementVente();
           $eltVente->setElementArrivage($elementArrivage);
           $eltVente->setVente($vente);
           $vente->addElementsVente($eltVente);
         }
-
+  // print_r(count($vente->getElementsVente())); die('qqqs');
         $form = $this->createForm('AppBundle\Form\VenteType', $vente);
         $form->handleRequest($request);
-
+ // print_r(count($vente->getElementsVente())); die('qqqs');
         if ($form->isSubmitted() && $form->isValid()) {
 
             $elementsVente = $vente->getElementsVente();
@@ -126,6 +126,9 @@ class VenteController extends Controller
 
             return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
         }
+        //print_r(count($vente->getElementsVente()));
+        //print_r($vente->getElementsVente()[0]->getQuantite());
+        // die("aaaa");
 
         return $this->render('vente/new.html.twig', array(
             'vente' => $vente,

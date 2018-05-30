@@ -23,6 +23,7 @@ class FournisseurType extends AbstractType
         ->add('pays',CountryType::class, array(
         ))
         ->add('tel',TelType::class, array(
+          'required'   => false,
         ));
     }/**
      * {@inheritdoc}

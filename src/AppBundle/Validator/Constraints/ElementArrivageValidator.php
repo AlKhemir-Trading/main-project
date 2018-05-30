@@ -13,15 +13,28 @@ class ElementArrivageValidator extends ConstraintValidator
         $this->context->buildViolation($constraint->message)
             ->setParameter('{{ string }}', "Vous devez saisir au moins un element d'arrivage.")
             ->addViolation();
-      else
+      else{
+        $products_ids = array();
         foreach ($value as $elementArrivage){
           if ($elementArrivage->getQuantite() <= 0 || $elementArrivage->getPrixUnit() <= 0 || $elementArrivage->getMontant() <=0 || is_null( $elementArrivage->getProduit() ) ){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', "Verifiez votre saisi pour les elements d'arrivage.")
                 ->addViolation();
           }
+          $products_ids[] = $elementArrivage->getProduit()->getName();
         }
 
+        $products_non_duplicated = array();
+        foreach($products_ids as $product){
+          if( !in_array($product,$products_non_duplicated) )
+            $products_non_duplicated[] = $product;
+          else
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ string }}', "Le produit ( $product ) est dupliqué! Veuillez rectifiez votre saisie. ")
+                ->addViolation();
+        }
+
+      }
 
     }
 }

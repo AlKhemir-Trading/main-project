@@ -7,17 +7,28 @@
   {{ form_widget(form.fournisseur ,{'attr': {'class': 'form-control'} }) }}
 </div> --> #}
 
+{% if not form.vars.valid %}
+    {% for child in form.children %}
+        {%for error in child.vars.errors%}
+        <div class="alert alert-sm alert-danger alert-dismissible fade show " role="alert">
+          <strong>{{error.message}}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {%endfor%}
+    {%endfor%}
+{%endif%}
+
 <div class="form-group">
   {{ form_label(form.client, null,
   { 'label_attr': {'class': 'font-weight-bold'} }) }}
-  {{ form_errors(form.client) }}
   {{ form_widget(form.client ,{'attr': {'class': 'form-control'} }) }}
 </div>
 
 <div class="form-group">
   {{ form_label(form.date, null,
   { 'label_attr': {'class': 'font-weight-bold'} }) }}
-  {{ form_errors(form.date) }}
   {{ form_widget(form.date ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
 </div>
 <hr />
@@ -46,8 +57,8 @@
                             <th>Produit</th>
                             <th>Fournisseur</th>
                             <th >Date d'arrivée</th>
-                            <th style="width:150px!important" >Quantite</th>
-                            <th >Prix Unitaire</th>
+                            <th style="width:180px!important" >Quantite / Restant</th>
+                            <th > Prix Unitaire </th>
                             <th >Montant</th>
                             <th style="width:28px!important"></th>
                         </tr>
@@ -60,14 +71,6 @@
                           {% set class = '' %}
                         {% endif %}
 
-                          {#
-                            {% set produitArray = [] %}
-                            {% set montant = 0 %}
-                            {% for element in arrivage.elementArrivages %}
-                              {% set produitArray = produitArray|merge([element.produit.name]) %}
-                              {% set montant = montant + element.prixVente %}
-                            {% endfor %}
-                          #}
                         <tr class="{{class}}" >
                             <td>
                               {{ attribute(vente.elementsVente,loop.index0).elementArrivage.produit.name }}
@@ -82,7 +85,6 @@
                               {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d') }}
                             </td>
                             <td>
-                                {#  {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante + element.quantite.vars.value %} #}
                                 {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante %}
 
                                 <div class="input-group">
@@ -100,7 +102,7 @@
                                 {{ form_widget(element.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}
                                 <div class="input-group-append">
                                   <span class="input-group-text w-115">
-                                    / {{ attribute(vente.elementsVente,loop.index0).elementArrivage.prixUnit | number_format(0, '.', ' ') }}
+                                    > {{ attribute(vente.elementsVente,loop.index0).elementArrivage.prixUnit | number_format(0, '.', ' ') }} D
                                   </span></div>
                               </div>
 
@@ -134,7 +136,6 @@
 <div class="form-group">
   {{ form_label(form.note, null,
   { 'label_attr': {'class': 'font-weight-bold'} }) }}
-  {{ form_errors(form.note) }}
   {{ form_widget(form.note ,{'attr': {'class': 'form-control'} }) }}
 </div>
 #}

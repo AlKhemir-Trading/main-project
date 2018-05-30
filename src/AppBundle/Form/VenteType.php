@@ -33,6 +33,7 @@ class VenteType extends AbstractType
             'entry_type' => ElementVenteType::class,
             'allow_add' => true,
             'allow_delete' => true,
+            'error_bubbling' => false,
             'label'=> false,
             'entry_options' => array(
               'label' => false

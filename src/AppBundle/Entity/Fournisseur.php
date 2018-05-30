@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Fournisseur
  *
@@ -23,6 +25,7 @@ class Fournisseur
 
     /**
      * @var string
+     * @Assert\NotBlank(message=" Le nom du Fournisseur est obligatoire!")
      *
      * @ORM\Column(name="name", type="string", length=100)
      */

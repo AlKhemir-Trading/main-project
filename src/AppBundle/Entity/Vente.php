@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as Assert2;
 /**
  * Vente
  *
@@ -38,6 +40,7 @@ class Vente
 
     /**
      * @var \Doctrine\Common\Collections\Collection
+     * @Assert2\ElementVente()
      *
      * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="vente", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
@@ -45,6 +48,7 @@ class Vente
 
     /**
      * @var Client
+     * @Assert\NotNull(message=" Vous devez specifier un Client. Veuillez aller à l'onglet Client et créer au moins un Client!")
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist"})
      */
