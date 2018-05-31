@@ -46,6 +46,7 @@ class Vente
      */
     private $elementsVente;
 
+
     /**
      * @var Client
      * @Assert\NotNull(message=" Vous devez specifier un Client. Veuillez aller à l'onglet Client et créer au moins un Client!")
@@ -53,12 +54,29 @@ class Vente
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist"})
      */
     private $client;
+
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Payement", mappedBy="vente", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    private $payements;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_paye", type="decimal", precision=10, scale=3)
+     */
+    private $montantPaye;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->elementsVente = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->date = new \DateTime();
     }
 
@@ -188,5 +206,63 @@ class Vente
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * Set montantPaye
+     *
+     * @param string $montantPaye
+     *
+     * @return Vente
+     */
+    public function setMontantPaye($montantPaye)
+    {
+        $this->montantPaye = $montantPaye;
+
+        return $this;
+    }
+
+    /**
+     * Get montantPaye
+     *
+     * @return string
+     */
+    public function getMontantPaye()
+    {
+        return $this->montantPaye;
+    }
+
+    /**
+     * Add payement
+     *
+     * @param \AppBundle\Entity\Payement $payement
+     *
+     * @return Vente
+     */
+    public function addPayement(\AppBundle\Entity\Payement $payement)
+    {
+        $this->payements[] = $payement;
+
+        return $this;
+    }
+
+    /**
+     * Remove payement
+     *
+     * @param \AppBundle\Entity\Payement $payement
+     */
+    public function removePayement(\AppBundle\Entity\Payement $payement)
+    {
+        $this->payements->removeElement($payement);
+    }
+
+    /**
+     * Get payements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPayements()
+    {
+        return $this->payements;
     }
 }
