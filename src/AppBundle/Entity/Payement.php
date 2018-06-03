@@ -39,11 +39,32 @@ class Payement
      private $date;
 
      /**
-      * @var Vente
+      * @var string
       *
-      * @ORM\ManyToOne(targetEntity="Vente", inversedBy="payements")
+      * @ORM\Column(name="note", type="string", length=255, nullable=true)
       */
-     private $vente;
+     private $note;
+
+     /**
+      * @var string
+      *
+      * @ORM\Column(name="type", type="string", length=255)
+      */
+     private $type;
+
+     /**
+      * @var string
+      *
+      * @ORM\Column(name="num_cheque", type="string", length=255, nullable=true)
+      */
+     private $numCheque;
+
+     /**
+      * @var Client
+      *
+      * @ORM\ManyToOne(targetEntity="Client", inversedBy="payements")
+      */
+     private $client;
 
      public function __construct() {
        $this->date = new \DateTime();
@@ -130,5 +151,101 @@ class Payement
     public function getVente()
     {
         return $this->vente;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Payement
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Payement
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Payement
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set numCheque
+     *
+     * @param string $numCheque
+     *
+     * @return Payement
+     */
+    public function setNumCheque($numCheque)
+    {
+        $this->numCheque = $numCheque;
+
+        return $this;
+    }
+
+    /**
+     * Get numCheque
+     *
+     * @return string
+     */
+    public function getNumCheque()
+    {
+        return $this->numCheque;
     }
 }

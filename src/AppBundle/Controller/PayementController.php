@@ -42,7 +42,9 @@ class PayementController extends Controller
         $payement = new Payement();
         $form = $this->createForm('AppBundle\Form\PayementType', $payement);
         $form->handleRequest($request);
-
+        //die('qqaaa'.$payement->getClient()->getName());
+        // die('qqq'.$payement->getMontant());
+        // die("ss".$form->get('client ')->getData());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($payement);

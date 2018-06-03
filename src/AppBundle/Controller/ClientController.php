@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use AppBundle\Entity\Payement;
+
 /**
  * Client controller.
  *
@@ -70,10 +72,23 @@ class ClientController extends Controller
         $deleteForm = $this->createDeleteForm($client);
         $editForm = $this->createForm('AppBundle\Form\ClientType', $client);
 
+        #Payements:
+        $em = $this->getDoctrine()->getManager();
+        $payements = $em->getRepository('AppBundle:Payement')->findBy(array('client' => $client->getId()));
+
+        #Form Payement:
+        $payement = new Payement();
+        $payement->setClient($client);
+        // die('aaa'.$payement->getClient()->getName());
+        $formPayement = $this->createForm('AppBundle\Form\PayementType', $payement);
+        // $formPayement->handleRequest($request);
+
         return $this->render('client/show.html.twig', array(
             'client' => $client,
             'delete_form' => $deleteForm->createView(),
-            'form' => $editForm->createView()
+            'form' => $editForm->createView(),
+            'formPayement' => $formPayement->createView(),
+            'payements' => $payements,
         ));
     }
 

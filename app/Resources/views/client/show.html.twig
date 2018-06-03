@@ -10,6 +10,63 @@
           </fieldset>
     		</form>
 
+
+            <label class="col-form-label font-weight-bold"> Historique de payements:</label>
+            <div class="row ">
+
+                  <div class="card-body">
+                    <button class=" btn btn-primary btn-sm float-right mb-2" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
+                    <div class="clearfix"></div>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th>Methode</th>
+                          <th scope="col">Montant</th>
+                          <th style="width:20px">
+                            <!-- <button class=" btn btn-primary btn-sm  "> Nouveau payement</button> -->
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for payement in payements %}
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>{% if payement.date %}{{ payement.date|date('Y-m-d H:m') }}{% endif %} </td>
+                          <th>{{ payement.type | capitalize }}</th>
+                          <td>{{ payement.montant }}</td>
+                          <td>
+                            <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th scope="col"></th>
+                          <th></th>
+                          <th scope="col">Total Payé</th>
+                          <th scope="col">2 500</th>
+                          <!-- <th scope="col">Handle</th> -->
+                        </tr>
+                        <tr>
+                          <th scope="col"></th>
+                          <th></th>
+                          <th scope="col">Restant</th>
+                          <th scope="col">500</th>
+                          <!-- <th scope="col">Handle</th> -->
+                        </tr>
+                      </tfoot>
+                    </table>
+
+                  </div>
+
+            </div>
+
+        <hr />
+
+
         <div class="form-group row">
           <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-1">
             <a class="btn btn-primary d-block " type="button" href="{{ path('client_index') }}">
@@ -51,6 +108,42 @@
           </div>
         </div>
 
+        <!-- Modal Payement -->
+        <div class="modal fade" id="ModalPayement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Payement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                {{ form_start(formPayement, {'action': path('payement_new'),'attr': {'id': 'formPayement'}}) }}
+
+                {% for entity in formPayement.children %}
+                  {% if entity.vars.name != '_token' %}
+                      <!-- {{dump(entity.vars.name)}} -->
+                      <div class="form-group">
+                        {{ form_label(attribute(formPayement,entity.vars.name), null,
+                          { 'label_attr': {'class': 'col-form-label font-weight-bold'} }) }}
+                          {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+
+                      </div>
+                  {% endif %}
+                {% endfor%}
+                {{form_end(formPayement)}}
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="formPayementButton" type="button" class="btn btn-primary">Payement</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- <div class="row form-group">
           <div class="col-sm-3  ">
             <a class="btn btn-primary d-block" type="button" href="{{ path('client_index') }}">
@@ -87,6 +180,9 @@
 
 {% endblock %}
 
+
+
+
 {% block javascripts %}
 {{parent()}}
 <!-- <script type="text/javascript" src="{{ asset('template/js/plugins/sweetalert.min.js') }}"></script> -->
@@ -104,6 +200,32 @@
         var form = document.getElementById("form_delete_founisseur");
         form.submit();
       }
+    });
+
+    //montant
+    $('#appbundle_payement_montant').prop('type', 'number');
+
+    //select Type Payement:
+    let numCheque = $('#appbundle_payement_numCheque');
+    let divNumCheque = numCheque.closest(".form-group");
+    divNumCheque.hide();
+    $( "#appbundle_payement_type" ).change(function() {
+      if($( "#appbundle_payement_type" ).val() == "cash" ){
+        // numCheque.val('');
+        divNumCheque.hide();
+      }else{
+        divNumCheque.show();
+        numCheque.focus();
+      }
+    });
+
+    $('#appbundle_payement_client').attr('disabled',true);
+    //button submit formPayement:
+    $("#formPayementButton").on("click", function(){
+      $('#appbundle_payement_client').removeAttr('disabled');
+      var form = document.getElementById("formPayement");
+      form.submit();
+      // $("#exampleModal").modal('hide');
     });
 
   });

@@ -6,6 +6,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+
 class PayementType extends AbstractType
 {
     /**
@@ -13,7 +20,38 @@ class PayementType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('montant')->add('date')->add('vente');
+        $builder
+        ->add('client',EntityType::class, array(
+          'class' => 'AppBundle:Client',
+          'choice_label' => 'name',
+          'attr' => array(
+            "readonly" => "readonly",
+          )
+        ))
+        ->add('type', ChoiceType::class, array(
+            'choices'  => array(
+                'Cash' => 'cash',
+                'Cheque' => 'cheque'
+            ),
+        ))
+        ->add('numCheque')
+        ->add('montant', NumberType::class, array(
+          //'data' => 0.000,
+          // 'scale' => 3,
+          'attr' => array(
+            "min" => 0,
+            "step" => 0.001,
+            "placeholder" => "0.000",
+            //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
+          )
+        ))
+        ->add('note', TextareaType::class, array(
+          'attr' => array(
+            //'class' => 'tinymce'
+          ),
+          'required' => false,
+        ));
+
     }/**
      * {@inheritdoc}
      */

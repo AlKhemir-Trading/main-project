@@ -59,9 +59,21 @@ class Client
      */
     private $ventes;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Payement", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    private $payements;
+
     public function __construct() {
       $this->dateCreation = new \DateTime();
+      $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    // public function __toString() {
+    //     return "".$this->id."";
+    // }
+
     /**
      * Get id
      *
@@ -200,5 +212,39 @@ class Client
     public function getVentes()
     {
         return $this->ventes;
+    }
+
+    /**
+     * Add payement
+     *
+     * @param \AppBundle\Entity\Payement $payement
+     *
+     * @return Client
+     */
+    public function addPayement(\AppBundle\Entity\Payement $payement)
+    {
+        $this->payements[] = $payement;
+
+        return $this;
+    }
+
+    /**
+     * Remove payement
+     *
+     * @param \AppBundle\Entity\Payement $payement
+     */
+    public function removePayement(\AppBundle\Entity\Payement $payement)
+    {
+        $this->payements->removeElement($payement);
+    }
+
+    /**
+     * Get payements
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPayements()
+    {
+        return $this->payements;
     }
 }

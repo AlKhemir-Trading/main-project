@@ -56,12 +56,12 @@ class Vente
     private $client;
 
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(targetEntity="Payement", mappedBy="vente", cascade={"persist", "remove"}, orphanRemoval=TRUE)
-     */
-    private $payements;
+    // /**
+    //  * @var Collection
+    //  *
+    //  * @ORM\OneToMany(targetEntity="Payement", mappedBy="vente", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+    //  */
+    // private $payements;
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class Vente
     public function __construct()
     {
         $this->elementsVente = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
+        // $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->date = new \DateTime();
     }
 
