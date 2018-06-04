@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="payement")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PayementRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Payement
 {
@@ -27,14 +28,14 @@ class Payement
      * @var string
      * @Assert\NotBlank(message=" Spécifiez le payement")
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="montant", type="string", length=255)
      */
     private $montant;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="date_creation", type="date", nullable=false)
+     * @ORM\Column(name="date_creation", type="datetime")
      */
      private $date;
 
@@ -67,9 +68,17 @@ class Payement
      private $client;
 
      public function __construct() {
-       $this->date = new \DateTime();
+
      }
 
+     /**
+      * @ORM\PrePersist
+      * @ORM\PreUpdate
+      */
+     public function prePersist(){
+       $this->date = new \DateTime();
+       // die('aa'.$this->date->format('d/m/Y H:i'));
+     }
     /**
      * Get id
      *

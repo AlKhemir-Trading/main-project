@@ -12,33 +12,37 @@
 
 
             <label class="col-form-label font-weight-bold"> Historique de payements:</label>
+            <button class=" btn btn-info btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
+            <div class="clearfix"></div>
             <div class="row ">
 
                   <div class="card-body">
-                    <button class=" btn btn-primary btn-sm float-right mb-2" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
-                    <div class="clearfix"></div>
-                    <table class="table table-striped">
+
+                    <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered w-100 ">
                       <thead>
-                        <tr>
+                          <tr>
                           <th scope="col">#</th>
                           <th scope="col">Date</th>
                           <th>Methode</th>
                           <th scope="col">Montant</th>
-                          <th style="width:20px">
-                            <!-- <button class=" btn btn-primary btn-sm  "> Nouveau payement</button> -->
-                          </th>
+                          <!-- <th style="width:20px">
+
+                          </th> -->
                         </tr>
                       </thead>
                       <tbody>
+                        {% set total = 0 %}
                         {% for payement in payements %}
+                          {% set total = total + payement.montant %}
                         <tr>
-                          <th scope="row">1</th>
-                          <td>{% if payement.date %}{{ payement.date|date('Y-m-d H:m') }}{% endif %} </td>
+                          <th scope="row">{{loop.index}}</th>
+                          <td>{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
                           <th>{{ payement.type | capitalize }}</th>
-                          <td>{{ payement.montant }}</td>
-                          <td>
+                          <td>{{ payement.montant | number_format(0, '.', ' ') }} D</td>
+                          <!-- <td>
                             <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>
-                          </td>
+                          </td> -->
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -46,19 +50,20 @@
                         <tr>
                           <th scope="col"></th>
                           <th></th>
-                          <th scope="col">Total Payé</th>
-                          <th scope="col">2 500</th>
+                          <th scope="col"></th>
+                          <th scope="col">{{ total |number_format(0, '.', ' ') }} D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                         <tr>
                           <th scope="col"></th>
                           <th></th>
-                          <th scope="col">Restant</th>
-                          <th scope="col">500</th>
+                          <th scope="col">+ / -</th>
+                          <th scope="col" class="btn-info">+ 500 D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                       </tfoot>
-                    </table>
+                  </table>
+                  </div>
 
                   </div>
 
@@ -112,7 +117,7 @@
         <div class="modal fade" id="ModalPayement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header btn-info">
                 <h5 class="modal-title" id="exampleModalLabel">Payement</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -138,7 +143,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="formPayementButton" type="button" class="btn btn-primary">Payement</button>
+                <button id="formPayementButton" type="button" class="btn btn-info">Payement</button>
               </div>
             </div>
           </div>
@@ -186,8 +191,14 @@
 {% block javascripts %}
 {{parent()}}
 <!-- <script type="text/javascript" src="{{ asset('template/js/plugins/sweetalert.min.js') }}"></script> -->
+<script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+<script type="text/javascript">$('#sampleTable').DataTable();</script>
 <script type="text/javascript">
   $(document).ready(function() {
+    var table = $('#example').DataTable();
+    table.order( [1, 'desc' ] ).draw();
+
     var modalConfirm = function(callback){
       $("#confirm-delete-button").on("click", function(){
         callback(true);

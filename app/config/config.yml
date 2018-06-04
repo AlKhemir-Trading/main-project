@@ -38,6 +38,8 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         newDatesNb: 3
+    date:
+        timezone: Africa/Tunis
 
 # Doctrine Configuration
 doctrine:

@@ -83,6 +83,9 @@ class ClientController extends Controller
         $formPayement = $this->createForm('AppBundle\Form\PayementType', $payement);
         // $formPayement->handleRequest($request);
 
+        // $a = new \DateTime();
+        // die('aa'.$a->format('d/m/Y h:i:s'));
+
         return $this->render('client/show.html.twig', array(
             'client' => $client,
             'delete_form' => $deleteForm->createView(),
