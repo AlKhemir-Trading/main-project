@@ -66,7 +66,7 @@ class Vente
     /**
      * @var string
      *
-     * @ORM\Column(name="montant_paye", type="decimal", precision=10, scale=3)
+     * @ORM\Column(name="montant_paye", type="decimal", precision=10, scale=3 , nullable=true)
      */
     private $montantPaye;
 

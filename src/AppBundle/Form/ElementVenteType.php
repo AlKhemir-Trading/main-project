@@ -38,7 +38,7 @@ class ElementVenteType extends AbstractType
           'required' => false,
           'attr' => array(
             "min" => 0,
-            "step" => 0.001,
+            "step" => 0.100,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )
@@ -51,7 +51,7 @@ class ElementVenteType extends AbstractType
           'required' => false,
           'attr' => array(
             "min" => 0,
-            "step" => 0.001,
+            "step" => 0.100,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )

@@ -30,7 +30,7 @@ class Arrivage
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateCreation", type="datetime")
+     * @ORM\Column(name="date_creation", type="datetime")
      */
     private $dateCreation;
 
@@ -65,7 +65,9 @@ class Arrivage
     private $montant;
 
     public function __construct() {
+
       $this->dateCreation = new \DateTime();
+      // die('aa'.$this->dateCreation->format('d/m/Y H:i'));
       $this->elementArrivages = new ArrayCollection();
       $this->montant = 0;
     }

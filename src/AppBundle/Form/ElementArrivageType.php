@@ -35,7 +35,7 @@ class ElementArrivageType extends AbstractType
           // 'scale' => 3,
           'attr' => array(
             "min" => 0,
-            "step" => 0.001,
+            "step" => 0.1,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )
@@ -46,7 +46,7 @@ class ElementArrivageType extends AbstractType
           // 'scale' => 3,
           'attr' => array(
             "min" => 0,
-            "step" => 0.001,
+            "step" => 0.1,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )

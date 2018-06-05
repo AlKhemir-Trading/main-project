@@ -62,14 +62,14 @@
                               </td>
                               <td>
                                 {{ vente.client.name }}
-                              </td> 
+                              </td>
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td>
                                 {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td>{{ vente.date|date('Y-m-d') }}</td>
+                              <td>{{ vente.date|date('d/m/Y (H:i)') }}</td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">

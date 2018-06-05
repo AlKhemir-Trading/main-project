@@ -104,6 +104,8 @@ class VenteController extends Controller
               );
               return $this->redirectToRoute('vente_new');
             }
+            $dateNow = new \DateTime();
+            $vente->setDate($dateNow);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($vente);
@@ -351,6 +353,7 @@ class VenteController extends Controller
 
           $elementsVente = $vente->getElementsVente();
           foreach( $elementsVente as $element){
+            // echo $element->getQuantite()."<br />";
             if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
               && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
               $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
@@ -362,22 +365,29 @@ class VenteController extends Controller
             }
 
           }
-
+          // die('qq');
+          $this->getDoctrine()->getManager()->flush();
           // MAJ ELEMENT_ARRIVAGE
           foreach ($elementsArrivageUsed as $id){
             $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
             $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
+            // foreach($elementsVenteConcerne as $elt)
+            //   echo $elt->getId()."+";
+            // echo "/<br />q: ";
             $qte_vendu = 0;
             foreach($elementsVenteConcerne as $elt){
+              // echo $elt->getQuantite()."+<br />";
               $qte_vendu += $elt->getQuantite();
             }
             $elementArrivage->setQuantiteVendu($qte_vendu);
             //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
+            // echo "---<br />";
           }
-
+          //die('---');
+            $vente->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('vente_edit', array('id' => $vente->getId()));
+            return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
         }
 
         return $this->render('vente/edit.html.twig', array(

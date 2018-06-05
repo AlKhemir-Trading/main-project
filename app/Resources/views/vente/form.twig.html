@@ -57,7 +57,7 @@
                             <th>Produit</th>
                             <th>Fournisseur</th>
                             <th >Date d'arrivée</th>
-                            <th style="width:180px!important" >Quantite / Restant</th>
+                            <th style="width:180px!important" >Quantite / Stock</th>
                             <th > Prix Unitaire </th>
                             <th >Montant</th>
                             <th style="width:28px!important"></th>
@@ -85,10 +85,11 @@
                               {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d') }}
                             </td>
                             <td>
-                                {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante %}
-
+                              {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante %}
+                              {% set quantite = attribute(vente.elementsVente,loop.index0).quantite %}
+                                {% set max = quantite + quantiteRestante %}
                                 <div class="input-group">
-                                  {{ form_widget(element.quantite, {'attr': {'class': 'form-control quantite','max': quantiteRestante, 'min':0 }}) }}
+                                  {{ form_widget(element.quantite, {'attr': {'class': 'form-control quantite','max': max, 'min':0 }}) }}
                                   <div class="input-group-append">
                                     <span class="input-group-text">
                                       / {{ quantiteRestante }}
@@ -107,7 +108,7 @@
                               </div>
 
                             </td>
-                            <td>
+                            <td data-name="sel">
                               {{ form_widget(element.montant, {'attr': {'class': 'form-control montant', 'readonly':'readonly'}}) }}
                             </td>
                             <td>
@@ -118,6 +119,19 @@
                         </tr>
                       {% endfor %}
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <input type="text" id="montant" class="form-control" readonly="readonly" value="{{vente.montant}}">
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
                   </table>
                   </div>
 

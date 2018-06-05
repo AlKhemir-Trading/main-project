@@ -126,6 +126,22 @@
         autoclose: true
     });
 
+    function removeCommas(str){
+      return str.replace(/\s/g, '');
+    }
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+        }
+        return x1 + x2;
+    }
+
     $('.quantite').each(function( index2 ) {
         MajTr($(this));
     });
@@ -133,14 +149,15 @@
     $('.tableVente').on('click', '.row-remove', function() {
         let myParent = $(this).closest("tr");
 
-        myParent.find('.quantite').attr('value',0);
-        myParent.find('.prixUnit').attr('value',0);
-        myParent.find('.montant').attr('value',0);
+        myParent.find('.quantite').val(0);
+        MajRestant(myParent.find('.quantite'));
+        myParent.find('.prixUnit').val(0);
+        myParent.find('.montant').val(0);
 
         myParent.css("background-color", "");
         myParent.css("color", "black");
         $(this).addClass('disabled d-none');
-        //MajMontant();
+        MajMontantGlobal();
 
     });
 
@@ -149,6 +166,7 @@
     $('.tableVente').on('change keyup paste', '.quantite', function() {
       MajMontantRow($(this));
       MajTr($(this));
+      MajRestant($(this));
     });
     $('.tableVente').on('change keyup paste', '.prixUnit', function() {
       MajMontantRow($(this));
@@ -166,10 +184,12 @@
         myParent.css("background-color", "#009688");
         myParent.css("color", "white");
         button.removeClass('disabled d-none');
+
       }else{
         myParent.css("background-color", "");
         myParent.css("color", "black");
         button.addClass('disabled d-none');
+
       }
       //myParent.find('.montant').val( quantite * prixUnit );
     }
@@ -181,16 +201,25 @@
       let prixUnit = myParent.find('.prixUnit').val();
       myParent.find('.montant').val( quantite * prixUnit );
 
-      //MajMontantGlobal();
+      MajMontantGlobal();
     }
 
     function MajMontantGlobal(){
       let res = 0;
       $('.tableVente tbody td[data-name="sel"]').each( function(index2){
         res += +(removeCommas( $(this).find('input').val() ) );
-        $('#montant').val( addCommas(res) );
-        //alert( $(this).find('input').val() );
-      })
+      });
+
+      $('#montant').val( addCommas(res) );
+    }
+
+    function MajRestant(element){
+      //dynamic increase/decrease
+      let max = element.attr('max');
+      let currentValue = element.val();
+      let stockRestant = max - currentValue;
+      let divParent = $(element).closest(".input-group");
+      divParent.find('.input-group-text').html('/ '+stockRestant);
     }
 
     function alertMessage(type,message){

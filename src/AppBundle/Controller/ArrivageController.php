@@ -62,6 +62,9 @@ class ArrivageController extends Controller
               $elementArrivage->setArrivage($arrivage);
             }
             //die;
+            $dateNow = new \DateTime();
+            $arrivage->setDateCreation($dateNow);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
             $em->flush();
