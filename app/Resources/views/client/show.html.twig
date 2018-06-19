@@ -58,7 +58,11 @@
                           <th scope="col"></th>
                           <th></th>
                           <th scope="col">+ / -</th>
-                          <th scope="col" class="btn-info">+ 500 D</th>
+                          {% if plusOuMoins >= 0 %}
+                            <th scope="col" class="btn-info">+ {{plusOuMoins |number_format(0, '.', ' ') }} D</th>
+                          {% else %}
+                            <th scope="col" class="btn-danger">- {{plusOuMoins |abs |number_format(0, '.', ' ') }} D</th>
+                          {% endif %}
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                       </tfoot>

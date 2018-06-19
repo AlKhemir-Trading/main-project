@@ -55,7 +55,11 @@
                           <th scope="col"></th>
                           <th></th>
                           <th scope="col">+ / -</th>
-                          <th scope="col" class="btn-info">+ 500 D</th>
+                          {% if plusOuMoins >= 0 %}
+                            <th scope="col" class="btn-info">+ {{plusOuMoins |number_format(0, '.', ' ') }} D</th>
+                          {% else %}
+                            <th scope="col" class="btn-danger">- {{plusOuMoins |abs |number_format(0, '.', ' ') }} D</th>
+                          {% endif %}
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                       </tfoot>
@@ -160,8 +164,15 @@
 
 {% block javascripts%}
 {{parent()}}
+<script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+<script type="text/javascript">$('#sampleTable').DataTable();</script>
+
 <script type="text/javascript">
   $(document).ready(function(){
+    var table = $('#example').DataTable();
+    table.order( [1, 'desc' ] ).draw();
+
     $('#appbundle_client_name').focus();
     //Modal handling
     var modalConfirm = function(callback){

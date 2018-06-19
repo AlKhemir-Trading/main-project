@@ -50,7 +50,8 @@ class PayementController extends Controller
             $em->persist($payement);
             $em->flush();
 
-            return $this->redirectToRoute('payement_show', array('id' => $payement->getId()));
+            // return $this->redirectToRoute('payement_show', array('id' => $payement->getId()));
+            return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));
         }
 
         return $this->render('payement/new.html.twig', array(
@@ -117,7 +118,8 @@ class PayementController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('payement_index');
+        return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));
+        // return $this->redirectToRoute('payement_index');
     }
 
 

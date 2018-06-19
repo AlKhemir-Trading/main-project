@@ -10,4 +10,23 @@ namespace AppBundle\Repository;
  */
 class VenteRepository extends \Doctrine\ORM\EntityRepository
 {
+
+  public function venteByClientId($id)
+  {
+      // return $this->getEntityManager()
+      //     ->createQuery('
+      //         SELECT p. FROM AppBundle:Payement p
+      //         where p.client = '.$id.'
+      //     ')
+      //     //ORDER BY p.quantite ASC
+      //     ->getResult();
+
+      return  $this->createQueryBuilder('v')
+                    ->andWhere('v.client = :id')
+                    ->setParameter('id', $id)
+                    ->select('SUM(v.montant) as Total')
+                    ->getQuery()
+                    ->getOneOrNullResult();
+  }
+
 }

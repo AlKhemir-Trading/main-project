@@ -10,4 +10,22 @@ namespace AppBundle\Repository;
  */
 class PayementRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function payementByClientId($id)
+  {
+      // return $this->getEntityManager()
+      //     ->createQuery('
+      //         SELECT p. FROM AppBundle:Payement p
+      //         where p.client = '.$id.'
+      //     ')
+      //     //ORDER BY p.quantite ASC
+      //     ->getResult();
+
+      return  $this->createQueryBuilder('p')
+                    ->andWhere('p.client = :id')
+                    ->setParameter('id', $id)
+                    ->select('SUM(p.montant) as Total')
+                    ->getQuery()
+                    ->getOneOrNullResult();
+  }
+
 }

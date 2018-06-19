@@ -86,12 +86,19 @@ class ClientController extends Controller
         // $a = new \DateTime();
         // die('aa'.$a->format('d/m/Y h:i:s'));
 
+        $TotalePaye = $em->getRepository('AppBundle:Payement')->payementByClientId($client->getId())['Total'];
+        $TotaleAchete = $em->getRepository('AppBundle:Vente')->venteByClientId($client->getId())['Total'];
+        // $TotalePaye = 5000;
+        // $TotaleAchete = 20000;
+        $plusOuMoins = $TotalePaye - $TotaleAchete;
+
         return $this->render('client/show.html.twig', array(
             'client' => $client,
             'delete_form' => $deleteForm->createView(),
             'form' => $editForm->createView(),
             'formPayement' => $formPayement->createView(),
             'payements' => $payements,
+            'plusOuMoins' => $plusOuMoins
         ));
     }
 
@@ -124,12 +131,17 @@ class ClientController extends Controller
             return $this->redirectToRoute('client_show', array('id' => $client->getId()));
         }
 
+        $TotalePaye = $em->getRepository('AppBundle:Payement')->payementByClientId($client->getId())['Total'];
+        $TotaleAchete = $em->getRepository('AppBundle:Vente')->venteByClientId($client->getId())['Total'];
+        $plusOuMoins = $TotalePaye - $TotaleAchete;
+
         return $this->render('client/edit.html.twig', array(
             'client' => $client,
             'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'payements' => $payements,
             'payementDeleteForm' => $payementDeleteForm->createView(),
+            'plusOuMoins' => $plusOuMoins
         ));
     }
 
