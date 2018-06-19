@@ -7,6 +7,67 @@
           {{ form_start(form) }}
             {{ include("client/form.html.twig") }}
 
+
+            <label class="col-form-label font-weight-bold"> Historique de payements:</label>
+            <button class=" btn btn-info btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
+            <div class="clearfix"></div>
+            <div class="row ">
+
+                  <div class="card-body">
+
+                    <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered w-100 ">
+                      <thead>
+                          <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th>Methode</th>
+                          <th scope="col">Montant</th>
+                          <th style="width:10px">
+
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% set total = 0 %}
+                        {% for payement in payements %}
+                          {% set total = total + payement.montant %}
+                        <tr data-id="{{payement.id}}">
+                          <th scope="row">{{loop.index}}</th>
+                          <td class="datePayement">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
+                          <th>{{ payement.type | capitalize }}</th>
+                          <td class="montantPayement">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
+                          <td>
+                            <button type="button" class="btn btn-edit-xs btn-sm btn-table-sm modalDeletePayementBtn"><i class="fa fa-close fa-fix"></i></button>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th scope="col"></th>
+                          <th></th>
+                          <th scope="col"></th>
+                          <th scope="col">{{ total |number_format(0, '.', ' ') }} D</th>
+                          <!-- <th scope="col">Handle</th> -->
+                        </tr>
+                        <tr>
+                          <th scope="col"></th>
+                          <th></th>
+                          <th scope="col">+ / -</th>
+                          <th scope="col" class="btn-info">+ 500 D</th>
+                          <!-- <th scope="col">Handle</th> -->
+                        </tr>
+                      </tfoot>
+                  </table>
+                  </div>
+
+                  </div>
+
+            </div>
+
+        <hr />
+
             <div class="form-group row">
               <div class="col-sm-3 mt-3 mt-sm-0 order-2 order-sm-1">
                 <a class="btn btn-primary d-block " type="button" href="{{ path('client_index') }}">
@@ -52,7 +113,26 @@
             </div>
           </div>
 
-
+          <!-- Modal Delete Payement-->
+          <div class="modal fade" id="deletePayementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title text-center" id="deletePayementModalLabel"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- <div class="modal-body">
+                  <h6>Confirmer la suppression du client <b style="color:red">{{client.name}}</b> ? </h6>
+                </div> -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" id="delete-payement">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          </div>
 {#
     <h1>Client edit</h1>
 
@@ -72,6 +152,10 @@
         </li>
     </ul>
 #}
+
+{{ form_start( payementDeleteForm, {'attr': {'id': 'payementDeleteForm'}} ) }}
+{{ form_end(payementDeleteForm) }}
+
 {% endblock %}
 
 {% block javascripts%}
@@ -92,6 +176,35 @@
         form.submit();
       }
     });
+
+    //delete payement:
+    $(".modalDeletePayementBtn").on("click", function(){
+      let parent = $(this).closest('tr');
+      let id = parent.data("id");
+      let date = parent.find('.datePayement').html();
+      let montant = parent.find('.montantPayement').html();
+
+      $("#deletePayementModal").data('id', id);
+      $("#deletePayementModal").data('date', date);
+      $("#deletePayementModal").data('montant', montant);
+
+      $('#deletePayementModalLabel').html('Supprimer le Payement de valeur <b style="color:red">'+montant+' </b> payé à : <b style="color:red">'+ date +'</b> ?');
+      // alert($("#deletePayementModal").data('montant'));
+      $('#deletePayementModal').modal('show');
+
+    });
+
+    $("#delete-payement").on("click", function(){
+      let id = $("#deletePayementModal").data('id');
+      let action = $("#payementDeleteForm").attr('action');
+      action = action.replace("id", id);
+      $("#payementDeleteForm").attr('action',action);
+      // alert(action);
+      // $('#payementDeleteForm').find('input').attr('value',id);
+      $('#deletePayementModal').modal('hide');
+      $('#payementDeleteForm').submit();
+    });
+
   });
 </script>
 {% endblock %}

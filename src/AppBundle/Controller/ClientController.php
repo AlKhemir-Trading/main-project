@@ -107,6 +107,17 @@ class ClientController extends Controller
         $editForm = $this->createForm('AppBundle\Form\ClientType', $client);
         $editForm->handleRequest($request);
 
+        #Payements:
+        $em = $this->getDoctrine()->getManager();
+        $payements = $em->getRepository('AppBundle:Payement')->findBy(array('client' => $client->getId()));
+
+        #Payement Delete Form
+        $payementDeleteForm = $this->createFormBuilder()
+            ->setAction($this->generateUrl('payement_delete', array('id' => 'id' )))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -117,6 +128,8 @@ class ClientController extends Controller
             'client' => $client,
             'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'payements' => $payements,
+            'payementDeleteForm' => $payementDeleteForm->createView(),
         ));
     }
 
