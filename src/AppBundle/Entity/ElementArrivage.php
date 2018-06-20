@@ -84,6 +84,14 @@ class ElementArrivage
      */
     private $elementsVente;
 
+    /**
+     *
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Perte", mappedBy="elementArrivage", cascade={"remove"}, orphanRemoval=FALSE)
+     */
+    private $perdus;
+
     public function __construct() {
       $this->quantite = 0;
       $this->prixUnit = 0;
@@ -318,5 +326,39 @@ class ElementArrivage
     public function getQuantiteRestante()
     {
         return $this->quantiteRestante;
+    }
+
+    /**
+     * Add perdus
+     *
+     * @param \AppBundle\Entity\Perte $perdus
+     *
+     * @return ElementArrivage
+     */
+    public function addPerdus(\AppBundle\Entity\Perte $perdus)
+    {
+        $this->perdus[] = $perdus;
+
+        return $this;
+    }
+
+    /**
+     * Remove perdus
+     *
+     * @param \AppBundle\Entity\Perte $perdus
+     */
+    public function removePerdus(\AppBundle\Entity\Perte $perdus)
+    {
+        $this->perdus->removeElement($perdus);
+    }
+
+    /**
+     * Get perdus
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPerdus()
+    {
+        return $this->perdus;
     }
 }
