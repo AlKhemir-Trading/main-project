@@ -138,6 +138,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Perdu</th>
                     <th scope="col">Raison</th>
+                    <th scope="col">#</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,6 +148,7 @@
                     <td>{{perte.date | date('d/m/Y (H:i)') }}</td>
                     <td>{{perte.perdu}}</td>
                     <td>{{perte.raison}}</td>
+                    <td> <button class="deletePerte btn btn-sm btn-danger" data-id="{{perte.id}}"><i class="fa fa-close"></i></button> </td>
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -182,14 +184,26 @@
 
   {% endfor %}
 
-{#
-  {% for element in monstock %}
-    {% set form = dataPertes[element.id]['deleteForm'] %}
-    {{form_start(form)}}
-    {{form(form)}}
-    {{form_end(form)}}
-  {% endfor %}
-#}
+  <!-- Modal Delete Perte-->
+  <div class="modal fade" id="ModalDeletePerte" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalPerteLabel">Supprimer cette perte ?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="confirm-delete-button">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ form_start( deletePerteForm, {'attr': {'id': 'deletePerteForm'}} ) }}
+  {{ form_end(deletePerteForm) }}
 
   {% endblock %}
 
@@ -225,6 +239,31 @@
           }else{
             let alert = parent.find('.alert-danger');
             alert.show();
+          }
+        });
+
+        $('.deletePerte').on('click', function(e){
+          let id = $(this).data('id');
+          $('#ModalDeletePerte').data('perte-id',id);
+          $('#ModalDeletePerte').modal('show');
+
+        });
+
+        var modalConfirm = function(callback){
+          $("#confirm-delete-button").on("click", function(){
+            callback(true);
+            $("#exampleModal").modal('hide');
+          });
+        };
+
+        modalConfirm(function(confirm){
+          if(confirm){
+            let id = $('#ModalDeletePerte').data('perte-id');
+            let action = $("#deletePerteForm").attr('action');
+            action = action.replace("id", id);
+            $("#deletePerteForm").attr('action',action);
+            var form = document.getElementById("deletePerteForm");
+            form.submit();
           }
         });
 

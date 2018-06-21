@@ -119,11 +119,13 @@ class PerteController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $perte->getElementArrivage()->removePerdus($perte);
+            $perte->getElementArrivage()->updateTotalPerdu();            
             $em->remove($perte);
             $em->flush();
         }
 
-        return $this->redirectToRoute('perte_index');
+        return $this->redirectToRoute('monstock_index');
     }
 
     /**
