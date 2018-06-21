@@ -92,12 +92,20 @@ class ElementArrivage
      */
     private $perdus;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total_perdu", type="integer")
+     */
+    private $totalPerdu;
+
     public function __construct() {
       $this->quantite = 0;
       $this->prixUnit = 0;
       $this->montant = 0;
       $this->quantiteVendu = 0;
       $this->quantiteRestante = 0;
+      $this->totalPerdu = 0;
     }
 
     /**
@@ -113,7 +121,14 @@ class ElementArrivage
      */
     public function preUpdate()
     {
-      $this->quantiteRestante = $this->quantite - $this->quantiteVendu;
+      $this->quantiteRestante = $this->quantite - ($this->quantiteVendu + $this->totalPerdu);
+    }
+
+    public function updateTotalPerdu(){
+      $totalPerdu = 0;
+      foreach ($this->perdus as $perdu)
+        $totalPerdu += $perdu->getPerdu();
+      $this->setTotalPerdu($totalPerdu);
     }
 
     /**
@@ -360,5 +375,29 @@ class ElementArrivage
     public function getPerdus()
     {
         return $this->perdus;
+    }
+
+    /**
+     * Set totalPerdu
+     *
+     * @param integer $totalPerdu
+     *
+     * @return ElementArrivage
+     */
+    public function setTotalPerdu($totalPerdu)
+    {
+        $this->totalPerdu = $totalPerdu;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPerdu
+     *
+     * @return integer
+     */
+    public function getTotalPerdu()
+    {
+        return $this->totalPerdu;
     }
 }

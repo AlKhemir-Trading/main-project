@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Perte</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ perte.id }}</td>
+            </tr>
+            <tr>
+                <th>Perdu</th>
+                <td>{{ perte.perdu }}</td>
+            </tr>
+            <tr>
+                <th>Raison</th>
+                <td>{{ perte.raison }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('perte_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('perte_edit', { 'id': perte.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

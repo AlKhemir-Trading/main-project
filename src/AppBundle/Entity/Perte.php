@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="perte")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PerteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Perte
 {
@@ -36,13 +37,32 @@ class Perte
     private $raison;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+     private $date;
+
+    /**
      *
      * @var ElementArrivage
      *
-     * @ORM\ManyToOne(targetEntity="ElementArrivage", inversedBy="perdus")
+     * @ORM\ManyToOne(targetEntity="ElementArrivage", inversedBy="perdus", cascade={"persist"} )
      * @ORM\JoinColumn(name="element_arrivage_id", referencedColumnName="id", nullable=FALSE)
      */
     private $elementArrivage;
+
+    public function __construct(){
+
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist(){
+      $this->date = new \DateTime();
+      // die('aa'.$this->date->format('d/m/Y H:i'));
+    }
 
     /**
      * Get id
@@ -124,5 +144,29 @@ class Perte
     public function getElementArrivage()
     {
         return $this->elementArrivage;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Perte
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

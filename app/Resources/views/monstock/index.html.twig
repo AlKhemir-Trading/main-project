@@ -69,18 +69,18 @@
                               <td class="text-center">
                                 {{ element.quantite }}
                               </td>
-                              <td class="text-center">
+                              <td class="text-center btn-success">
                                 {{ element.quantiteVendu }}
                               </td>
-                              <td class="text-center">
-                                {{ element.quantiteVendu }}
+                              <td class="text-center btn-danger">
+                                {{ element.totalPerdu }}
                               </td>
-                              <td class="text-center"> {{ element.quantite - element.quantiteVendu }} </td>
+                              <td class="text-center btn-warning"> {{ element.quantiteRestante }} </td>
                               <td>
                                   {% set restantPercent = ( (element.quantite - element.quantiteVendu)/element.quantite) * 100 %}
                                 <div class="bs-component mb-2">
                                   <div class="progress" style="background:chartreuse">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{restantPercent}}%;" ></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{restantPercent}}%;" ></div>
                                   </div>
                                 </div>
                                 {#
@@ -93,8 +93,9 @@
                                 </a> -->
 #}
                               </td>
+                              <!-- <td onclick="event.cancelBubble=true; return false;"> -->
                               <td>
-                                <button class="btn btn-info">Perte</button>
+                                <button data-element-id={{element.id}} class="btn btn-info perteAction">Perte</button>
                               </td>
                           </tr>
                         {% endfor %}
@@ -110,6 +111,86 @@
           </div>
       </div><!-- .animated -->
   </div><!-- .content -->
+
+  {% for element in monstock %}
+    {% set formPerte = dataPertes[element.id]['newForm'] %}
+  <!-- Modal Perte -->
+    <div class="modal fade" id="ModalPerte{{element.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header btn-info">
+            <h5 class="modal-title" id="exampleModalLabel">Perdus</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" role="alert">
+              Le champ Perdu doit etre supérieur à zero!
+            </div>
+            <div class="form-group">
+              <label class='col-form-label font-weight-bold'>Historique Pertes</label>
+
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <!-- <th scope="col">#</th> -->
+                    <th scope="col">Date</th>
+                    <th scope="col">Perdu</th>
+                    <th scope="col">Raison</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for perte in element.perdus %}
+                  <tr>
+                    <!-- <th scope="row">{{perte.id}}</th> -->
+                    <td>{{perte.date | date('d/m/Y (H:i)') }}</td>
+                    <td>{{perte.perdu}}</td>
+                    <td>{{perte.raison}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+
+            </div>
+            <hr />
+
+            {{ form_start(formPerte, {'action': path('perte_new'),'attr': {'id': 'formPerte'~element.id}}) }}
+
+            {% for entity in formPerte.children %}
+              {% if entity.vars.name != '_token' %}
+                  <!-- {{dump(entity.vars.name)}} -->
+                  <div class="form-group">
+                    {{ form_label(attribute(formPerte,entity.vars.name), null,
+                      { 'label_attr': {'class': 'col-form-label font-weight-bold'} }) }}
+                      {{ form_widget(attribute(formPerte,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+
+                  </div>
+              {% endif %}
+            {% endfor%}
+            {{form_end(formPerte)}}
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button data-form="formPerte{{element.id}}" type="button" class="btn btn-info formPerteButton">Declarer Nouvelle Perte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% endfor %}
+
+{#
+  {% for element in monstock %}
+    {% set form = dataPertes[element.id]['deleteForm'] %}
+    {{form_start(form)}}
+    {{form(form)}}
+    {{form_end(form)}}
+  {% endfor %}
+#}
+
   {% endblock %}
 
   {% block javascripts %}
@@ -126,6 +207,27 @@
         //$('#ArrivagesItem').toggleClass('active');
         var table = $('#example').DataTable();
         table.order( [ 4, 'desc' ] ).draw();
+
+        $('.perteAction').on('click', function(e){
+            $('.alert-danger').hide();
+            e.stopPropagation();
+            let id = $(this).data("element-id");
+            $('#ModalPerte'+id).modal('show');
+        });
+
+        $('.formPerteButton').on('click', function(e){
+          let parent = $(this).closest('.modal-content');
+          let perdu = parent.find('#appbundle_perte_perdu');
+          let val = perdu.val();
+          if ( val > 0 ){
+            let form = $(this).data('form');
+            $('#'+form).submit();
+          }else{
+            let alert = parent.find('.alert-danger');
+            alert.show();
+          }
+        });
+
       });
 
     </script>

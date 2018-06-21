@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pertes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Perdu</th>
+                <th>Raison</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for perte in pertes %}
+            <tr>
+                <td><a href="{{ path('perte_show', { 'id': perte.id }) }}">{{ perte.id }}</a></td>
+                <td>{{ perte.perdu }}</td>
+                <td>{{ perte.raison }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('perte_show', { 'id': perte.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('perte_edit', { 'id': perte.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('perte_new') }}">Create a new perte</a>
+        </li>
+    </ul>
+{% endblock %}

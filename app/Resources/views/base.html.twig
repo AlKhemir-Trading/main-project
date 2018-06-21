@@ -83,6 +83,12 @@
         </div>
         <ul class="app-menu">
           <li><a id="dashboard-item" class="app-menu__item " href="{{ path('homepage') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+          <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Dashboard</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+              <li><a class="treeview-item" href="bootstrap-components.html"><i class="icon fa fa-circle-o"></i>Absolu</a></li>
+              <li><a class="treeview-item" href="bootstrap-components.html"><i class="icon fa fa-circle-o"></i>Par Mois</a></li>
+            </ul>
+          </li>
           <li><a id="arrivage-item" class="app-menu__item " href="{{ path('arrivage_index') }}"><i class="app-menu__icon fa fa-angellist"></i><span class="app-menu__label">Arrivage</span></a></li>
           <li><a id="produit-item" class="app-menu__item " href="{{ path('produit_index') }}"><i class="app-menu__icon fa fa-shopping-basket"></i><span class="app-menu__label">Produit</span></a></li>
           <li><a id="monstock-item" class="app-menu__item " href="{{ path('monstock_index') }}"><i class="app-menu__icon fa fa-server"></i><span class="app-menu__label">Mon Stock</span></a></li>
