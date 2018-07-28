@@ -76,7 +76,7 @@
   $(document).ready(function() {
 
     var table = $('#example').DataTable();
-
+    table.order( [ 2, 'desc' ] ).draw();
     // Handle form submission event
        $('form').on('submit', function(e){
 

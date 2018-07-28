@@ -82,7 +82,7 @@
                               {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.fournisseur.name }}
                             </td>
                             <td>
-                              {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d') }}
+                              {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d (H:i)') }}
                             </td>
                             <td>
                               {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante %}
