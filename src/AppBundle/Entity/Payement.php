@@ -79,6 +79,17 @@ class Payement
        $this->date = new \DateTime();
        // die('aa'.$this->date->format('d/m/Y H:i'));
      }
+
+     /**
+      * @ORM\PrePersist
+      * @ORM\PreUpdate
+      * @ORM\PreRemove
+      */
+     public function updateClientFieldPlusOuMoins()
+     {
+       $this->getClient()->updatePlusOuMoins();
+     }
+
     /**
      * Get id
      *

@@ -46,6 +46,7 @@ class PayementController extends Controller
         // die('qqq'.$payement->getMontant());
         // die("ss".$form->get('client ')->getData());
         if ($form->isSubmitted() && $form->isValid()) {
+            $payement->getClient()->addPayement($payement);
             $em = $this->getDoctrine()->getManager();
             $em->persist($payement);
             $em->flush();

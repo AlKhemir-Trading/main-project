@@ -61,9 +61,9 @@
                                     <span class="flag-icon flag-icon-{{ client.pays|lower }}"></span>
                                   </td>
                                   {% if (client.plusOuMoins < 0 ) %}
-                                    <td>- {{client.plusOuMoins|abs}}</td>
+                                    <td class="btn-danger">- {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D</td>
                                   {% else %}
-                                    <td>+ {{client.plusOuMoins|abs}}</td>
+                                    <td class="btn-success">+ {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D</td>
                                   {% endif %}
                                   <td>
 

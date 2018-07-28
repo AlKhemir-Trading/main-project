@@ -9,8 +9,8 @@
 
 
             <label class="col-form-label font-weight-bold"> Historique de payements:</label>
-            <button class=" btn btn-info btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
-            <div class="clearfix"></div>
+            <!-- <button class=" btn btn-info btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
+            <div class="clearfix"></div> -->
             <div class="row ">
 
                   <div class="card-body">
@@ -55,10 +55,10 @@
                           <th scope="col"></th>
                           <th></th>
                           <th scope="col">+ / -</th>
-                          {% if plusOuMoins >= 0 %}
-                            <th scope="col" class="btn-info">+ {{plusOuMoins |number_format(0, '.', ' ') }} D</th>
+                          {% if client.plusOuMoins >= 0 %}
+                            <th scope="col" class="btn-info">+ {{client.plusOuMoins |number_format(0, '.', ' ') }} D</th>
                           {% else %}
-                            <th scope="col" class="btn-danger">- {{plusOuMoins |abs |number_format(0, '.', ' ') }} D</th>
+                            <th scope="col" class="btn-danger">- {{client.plusOuMoins |abs |number_format(0, '.', ' ') }} D</th>
                           {% endif %}
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
