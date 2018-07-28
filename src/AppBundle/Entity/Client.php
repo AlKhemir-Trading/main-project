@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ClientRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Client
 {
@@ -66,13 +67,53 @@ class Client
      */
     private $payements;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plus_ou_moins", type="decimal", precision=10, scale=3 , nullable=true)
+     */
+    private $plusOuMoins;
+
     public function __construct() {
       $this->dateCreation = new \DateTime();
       $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->plusOuMoins = 0;
     }
-    // public function __toString() {
-    //     return "".$this->id."";
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    // public function prePersistOrUpdate()
+    // {
+    //   die('persist or update Client');
     // }
+
+    // /**
+    //  * @ORM\PostLoad
+    //  */
+    // public function postRefresh()
+    // {
+    //   die('Refresh');
+    // }
+
+    public function updatePlusOuMoins(){
+      $totalVendu = 0;
+      foreach( $this->getVentes() as $vente){
+        $totalVendu += $vente->getMontant();
+        // echo $vente->getMontant()."<br />";
+      }
+// die;
+      $totalPaye = 0;
+      foreach( $this->getPayements() as $payement)
+        $totalPaye += $payement->getMontant();
+
+      // echo $totalPaye ."/". $totalVendu;
+      $this->plusOuMoins = $totalPaye - $totalVendu;
+      // echo "paye".$totalPaye."  vendu".$totalVendu."<br />";
+      // echo "+-".$this->plusOuMoins."<br />";
+      // die("qqqq");
+    }
 
     /**
      * Get id
@@ -246,5 +287,29 @@ class Client
     public function getPayements()
     {
         return $this->payements;
+    }
+
+    /**
+     * Set plusOuMoins
+     *
+     * @param string $plusOuMoins
+     *
+     * @return Client
+     */
+    public function setPlusOuMoins($plusOuMoins)
+    {
+        $this->plusOuMoins = $plusOuMoins;
+
+        return $this;
+    }
+
+    /**
+     * Get plusOuMoins
+     *
+     * @return string
+     */
+    public function getPlusOuMoins()
+    {
+        return $this->plusOuMoins;
     }
 }

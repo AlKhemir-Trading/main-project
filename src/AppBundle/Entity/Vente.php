@@ -51,7 +51,7 @@ class Vente
      * @var Client
      * @Assert\NotNull(message=" Vous devez specifier un Client. Veuillez aller à l'onglet Client et créer au moins un Client!")
      *
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist","refresh"})
      */
     private $client;
 
@@ -78,6 +78,7 @@ class Vente
         $this->elementsVente = new \Doctrine\Common\Collections\ArrayCollection();
         // $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->date = new \DateTime();
+        $this->montantPaye = 0;
     }
 
 
@@ -92,6 +93,17 @@ class Vente
           $montant += $element->getMontant();
         $this->montant = $montant;
     }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * @ORM\PreRemove
+     */
+    public function updateClientFieldPlusOuMoins()
+    {
+      $this->getClient()->updatePlusOuMoins();
+    }
+
     /**
      * Get id
      *

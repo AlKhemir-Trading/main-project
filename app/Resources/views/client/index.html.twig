@@ -2,6 +2,11 @@
 
 {% set action = "Liste des Clients" %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="{{ asset('template/bower_components/flag-icon-css/css/flag-icon.min.css') }}">
+{% endblock %}
+
 {% block container %}
 {%endblock%}
 
@@ -31,6 +36,7 @@
                                   <th>Nom</th>
                                   <th>Tel</th>
                                   <th>Pays</th>
+                                  <th>+/-</th>
                                   <th>Actions</th>
                               </tr>
                           </thead>
@@ -50,7 +56,15 @@
                                     {%endif%}
                                   </td>
                                   <td>{{ client.tel }}</td>
-                                  <td>{{ client.pays }}</td>
+
+                                  <td>
+                                    <span class="flag-icon flag-icon-{{ client.pays|lower }}"></span>
+                                  </td>
+                                  {% if (client.plusOuMoins < 0 ) %}
+                                    <td>- {{client.plusOuMoins|abs}}</td>
+                                  {% else %}
+                                    <td>+ {{client.plusOuMoins|abs}}</td>
+                                  {% endif %}
                                   <td>
 
                                     <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('client_show', { 'id': client.id }) }}">

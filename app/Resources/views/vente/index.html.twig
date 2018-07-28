@@ -36,8 +36,9 @@
                               <th>Matricule</th>
                               <th>Client</th>
                               <th>Produits</th>
-                              <th>Montant</th>
                               <th>Date de vente</th>
+                              <th>Montant</th>
+                              <th>Payé</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
@@ -66,10 +67,11 @@
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
-                              <td>
+                              <td data-order="{{vente.date|date('YmdHi')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
+                              <td class="btn-success" data-order="{{vente.montant}}">
                                 {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td>{{ vente.date|date('d/m/Y (H:i)') }}</td>
+                              <td>payé</td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">
@@ -118,7 +120,7 @@
       $(document).ready(function(){
         //$('#ArrivagesItem').toggleClass('active');
         var table = $('#example').DataTable();
-        table.order( [ 4, 'desc' ] ).draw();
+        table.order( [ 0, 'desc' ] ).draw();
       });
 
     </script>

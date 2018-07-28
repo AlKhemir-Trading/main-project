@@ -78,18 +78,19 @@ class VenteController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
-// print_r(count($monstock)); die('qSq');
+
         foreach ($monstock as $elementArrivage){
           $eltVente = new ElementVente();
           $eltVente->setElementArrivage($elementArrivage);
           $eltVente->setVente($vente);
           $vente->addElementsVente($eltVente);
         }
-  // print_r(count($vente->getElementsVente())); die('qqqs');
+
         $form = $this->createForm('AppBundle\Form\VenteType', $vente);
         $form->handleRequest($request);
- // print_r(count($vente->getElementsVente())); die('qqqs');
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $vente->getClient()->addVente($vente);
 
             $elementsVente = $vente->getElementsVente();
             foreach( $elementsVente as $element){
@@ -123,6 +124,8 @@ class VenteController extends Controller
               $elementArrivage->setQuantiteVendu($qte_vendu);
               //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
             }
+
+            //echo $vente->getClient()->getPlusOuMoins(); die('qqss');
 
             $em->flush();
 
@@ -409,6 +412,8 @@ class VenteController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $vente->getClient()->removeVente($vente);
+            
             $em = $this->getDoctrine()->getManager();
             $em->remove($vente);
             $em->flush();
