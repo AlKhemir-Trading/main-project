@@ -67,11 +67,11 @@
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
-                              <td data-order="{{vente.date|date('YmdHi')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
+                              <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
                               <td class="btn-success" data-order="{{vente.montant}}">
                                 {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td>payé</td>
+                              <td> {{ vente.montantPaye | number_format(0, '.', ' ') }} D </td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">

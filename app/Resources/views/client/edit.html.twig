@@ -34,7 +34,7 @@
                           {% set total = total + payement.montant %}
                         <tr data-id="{{payement.id}}">
                           <th scope="row">{{loop.index}}</th>
-                          <td class="datePayement">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
+                          <td class="datePayement" data-order="{{payement.date|date('YmdHis')}}">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
                           <th>{{ payement.type | capitalize }}</th>
                           <td class="montantPayement">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
                           <td>

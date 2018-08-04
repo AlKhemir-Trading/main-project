@@ -29,4 +29,72 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
                     ->getOneOrNullResult();
   }
 
+  public function ventesNonPayes($id)
+  {
+      return $this->getEntityManager()
+          ->createQuery('
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye < v.montant
+              AND v.client = '.$id.'
+              ORDER BY v.date ASC
+          ')
+          ->getResult();
+  }
+
+  public function getPayementVentes($id,$limit)
+  {
+      return $this->getEntityManager()
+          ->createQuery('
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye > 0
+              AND v.client = '.$id.'
+              ORDER BY v.date ASC
+          ')
+          ->setMaxResults($limit)
+          ->getResult();
+  }
+
+  public function SumMontantLastVentes($limitRequest,$clientId){
+    // return $this->createQueryBuilder('v')
+    //   ->andWhere('v.client = :client')
+    //   ->andWhere('v.montantPaye > 0')
+    //   ->setParameter('client', $clientId)
+    //   ->setMaxResults($limitRequest)
+    //   ->select('SUM(v.montantPaye) as Total')
+    //   ->orderBy('v.date', 'ASC')
+    //   //->setFirstResult(0)
+    //   ->getQuery()
+    //   ->getResult();
+
+    // return $this->createQueryBuilder('v')
+    //   ->andWhere('v.client = :client')
+    //   ->andWhere('v.montantPaye > 0')
+    //   ->setParameter('client', $clientId)
+    //   ->setMaxResults($limitRequest)
+    //   ->select('v.montantPaye')
+    //   ->orderBy('v.date', 'ASC')
+    //   ->getQuery();
+        //->setFirstResult(0)
+        //->getDQL();
+
+    // return $this->createQueryBuilder('u')
+    //         ->select('SUM(v.montantPaye) as Total')
+    //         ->from($subquery,'v')
+    //         ->getQuery()
+            // ->getOneOrNullResult();
+
+    return $this->getEntityManager()
+      ->createQuery('
+          SELECT SUM(montantPaye) as Total
+          FROM
+            SELECT v.montantPaye
+            FROM AppBundle:Vente v
+            where v.montantPaye > 0
+            AND v.client = '.$clientId.'
+            ORDER BY v.date ASC
+            limit '.$limitRequest.'
+      ')
+      ->getResult();
+  }
+
 }

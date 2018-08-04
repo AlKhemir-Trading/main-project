@@ -48,6 +48,27 @@ class PayementController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $payement->getClient()->addPayement($payement);
             $em = $this->getDoctrine()->getManager();
+            $ventesNonPayes = $em->getRepository('AppBundle:Vente')->ventesNonPayes($payement->getClient()->getId());
+
+            $montantPayement = $payement->getMontant();
+            foreach ($ventesNonPayes as $vente) {
+              if ( $montantPayement == 0)
+                break;
+              // $montantVente = $vente->getMontant();
+              // $montantPayeVente = $vente->getMontantPaye();
+              $montantVenteRestant = $vente->getMontant() - $vente->getMontantPaye();
+              if ($montantVenteRestant <= $montantPayement ){
+                $vente->setMontantPaye($vente->getMontant());
+                $montantPayement -= $montantVenteRestant;
+              }else{
+                $nouveauMontantPaye = $vente->getMontantPaye() + $montantPayement;
+                $montantPayement = 0;
+                $vente->setMontantPaye($nouveauMontantPaye);
+              }
+              //echo $vente->getId()."/".$vente->getDate()->format('Y-m-d H:i:s')."<br />";
+              $em->persist($vente);
+            }
+
             $em->persist($payement);
             $em->flush();
 
@@ -114,7 +135,36 @@ class PayementController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $payement->getClient()->removePayement($payement);
             $em = $this->getDoctrine()->getManager();
+            $montantPayement = $payement->getMontant();
+
+            $venteRepository = $em->getRepository('AppBundle:Vente');
+
+            $sumMontantRequest = 0;
+            $limitRequest = 0;
+            $ventesPayement = array();
+            while($sumMontantRequest < $montantPayement){
+              $limitRequest += 1;
+              $ventesPayement = $venteRepository->getPayementVentes($payement->getClient()->getId(),$limitRequest);
+              $sumMontantRequest = 0;
+              foreach ($ventesPayement as $vente){
+                $sumMontantRequest += $vente->getMontantPaye();
+              }
+              // echo $sumMontantRequest .count($ventesPayement). "<br />";
+            }
+
+            foreach($ventesPayement as $vente){
+              if ($montantPayement >= $vente->getMontantPaye() ){
+                $montantPayement -= $vente->getMontantPaye();
+                $vente->setMontantPaye(0);
+              }else{
+                $vente->setMontantPaye($vente->getMontantPaye()-$montantPayement);
+                $montantPayement = 0;
+              }
+              $em->persist($vente);
+            }
+
             $em->remove($payement);
             $em->flush();
         }
