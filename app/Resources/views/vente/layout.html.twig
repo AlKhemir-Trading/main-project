@@ -97,6 +97,9 @@
           alertMessage(type,message);
         }
 
+        $('#appbundle_vente_montant').val(removeCommas($('#appbundle_vente_montant').val()));
+
+          // datatable posting
           var form = this;
 
           // Encode a set of form elements from all pages as an array of names and values
@@ -210,7 +213,7 @@
         res += +(removeCommas( $(this).find('input').val() ) );
       });
 
-      $('#montant').val( addCommas(res) );
+      $('#appbundle_vente_montant').val( addCommas(res) );
     }
 
     function MajRestant(element){

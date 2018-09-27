@@ -20,18 +20,6 @@
     {%endfor%}
 {%endif%}
 
-<div class="form-group">
-  {{ form_label(form.client, null,
-  { 'label_attr': {'class': 'font-weight-bold'} }) }}
-  {{ form_widget(form.client ,{'attr': {'class': 'form-control'} }) }}
-</div>
-
-<div class="form-group">
-  {{ form_label(form.date, null,
-  { 'label_attr': {'class': 'font-weight-bold'} }) }}
-  {{ form_widget(form.date ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
-</div>
-<hr />
 <label class="font-weight-bold">Produits Dispo :</label>
 
 <div class="content mt-3">
@@ -127,7 +115,8 @@
                         <td></td>
                         <td></td>
                         <td class="btn-info">
-                          <input type="text" id="montant" class="form-control" readonly="readonly" value="{{vente.montant}}">
+                          <!-- <input type="text" id="montant" class="form-control" readonly="readonly" value="{{vente.montant}}"> -->
+                          {{ form_widget(form.montant ,{'attr': {'class': 'form-control',"readonly":"readonly"} }) }}
                         </td>
                         <td></td>
                       </tr>
@@ -144,6 +133,19 @@
     </div><!-- .animated -->
 </div><!-- .content -->
 
+<hr />
+
+<div class="form-group">
+  {{ form_label(form.client, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_widget(form.client ,{'attr': {'class': 'form-control'} }) }}
+</div>
+
+<div class="form-group">
+  {{ form_label(form.date, null,
+  { 'label_attr': {'class': 'font-weight-bold'} }) }}
+  {{ form_widget(form.date ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
+</div>
 
 <hr />
 {#

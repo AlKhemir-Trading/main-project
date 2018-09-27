@@ -60,23 +60,25 @@
 
 
     //init:
+    $('.prixUnit').prop('type', 'number');
     $('.prixUnit').each(function( index2 ) {
-      $(this).val( addCommas( $(this).val() ) );
+      $(this).val( ( $(this).val() ) );
     });
 
+    $('.montant').prop('type', 'number');
     $('.montant').each(function( index2 ) {
-      $(this).val( addCommas( $(this).val() ) );
+      $(this).val( ( $(this).val() ) );
     });
 
     $('form').submit(function() {
       $('.prixUnit').prop('type', 'text');
       $('.prixUnit').each(function( index2 ) {
-        $(this).val( removeCommas( $(this).val() ) );
+        $(this).val( ( $(this).val() ) );
       });
 
       $('.montant').prop('type', 'text');
       $('.montant').each(function( index2 ) {
-        $(this).val( removeCommas( $(this).val() ) );
+        $(this).val( ( $(this).val() ) );
       });
 
     })
@@ -99,15 +101,15 @@
 
     //$('.number').prop('type', 'number');
 
-    $('body').on('focusout', '.prixUnit', function() {
-      $(this).prop('type', 'text');
-      $(this).val (  addCommas( $(this).val() ) );
-    });
-
-    $('body').on('focus','.prixUnit',function(){
-      $(this).val (  removeCommas( $(this).val() ) );
-      $(this).prop('type', 'number');
-    });
+    // $('body').on('focusout', '.prixUnit', function() {
+    //   $(this).prop('type', 'text');
+    //   $(this).val (  addCommas( $(this).val() ) );
+    // });
+    //
+    // $('body').on('focus','.prixUnit',function(){
+    //   $(this).val (  removeCommas( $(this).val() ) );
+    //   $(this).prop('type', 'number');
+    // });
 
 
     $('#appbundle_arrivage_dateCreation').datepicker({
@@ -186,8 +188,8 @@
       let myParent = $(element).closest("tr");
 
       let quantite = myParent.find('.quantite').val();
-      let prixUnit = removeCommas( myParent.find('.prixUnit').val() );
-      myParent.find('.montant').val( addCommas( quantite * prixUnit ) );
+      let prixUnit = ( myParent.find('.prixUnit').val() );
+      myParent.find('.montant').val( ( quantite * prixUnit ) );
 
       MajMontantGlobal();
     }
@@ -195,8 +197,8 @@
     function MajMontantGlobal(){
       let res = 0;
       $('#tab_logic tbody td[data-name="sel"]').each( function(index2){
-        res += +(removeCommas( $(this).find('input').val() ) );
-        $('#montant').val( addCommas(res) );
+        res += +(( $(this).find('input').val() ) );
+        $('#montant').val( (res) );
         //alert( $(this).find('input').val() );
       })
     }

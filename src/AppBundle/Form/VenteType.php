@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class VenteType extends AbstractType
 {
@@ -29,6 +30,19 @@ class VenteType extends AbstractType
             //'attr' => ['class' => 'js-datepicker'],
         ))
         //->add('montant')
+        ->add('montant', NumberType::class, array(
+          //"grouping" => true,
+          //'data' => 0.000,
+          //'currency' => '',
+          // 'scale' => 3,
+          'required' => false,
+          'attr' => array(
+            "min" => 0,
+            "step" => 0.100,
+            "placeholder" => "0.000",
+            //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
+          )
+        ))
         ->add('elementsVente', CollectionType::class, array(
             'entry_type' => ElementVenteType::class,
             'allow_add' => true,
