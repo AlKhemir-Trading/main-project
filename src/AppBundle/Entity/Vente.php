@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as Assert2;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+
 /**
  * Vente
  *
@@ -51,7 +53,7 @@ class Vente
      * @var Client
      * @Assert\NotNull(message=" Vous devez specifier un Client. Veuillez aller à l'onglet Client et créer au moins un Client!")
      *
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist","refresh"})
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="ventes", cascade={"persist"})
      */
     private $client;
 
@@ -79,30 +81,55 @@ class Vente
         // $this->payements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->date = new \DateTime();
         $this->montantPaye = 0;
+        $this->montant = 0;
     }
 
+    //
+    // /**
+    //  * @ORM\PrePersist
+    //  * @ORM\PreUpdate
+    //  */
+    // public function prePersistOrUpdate()
+    // {
+    //     $montant = 0;
+    //     foreach ($this->elementsVente as $element)
+    //       $montant += $element->getMontant();
+    //     $this->montant = $montant;
+    // }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function prePersistOrUpdate()
-    {
-        $montant = 0;
-        foreach ($this->elementsVente as $element)
-          $montant += $element->getMontant();
-        $this->montant = $montant;
-    }
+    // /**
+    //  * @ORM\PrePersist
+    //  * @ORM\PreUpdate
+    //  * @ORM\PreRemove
+    //  */
+    // public function updateClientFieldPlusOuMoins()
+    // {
+    //   $this->getClient()->updatePlusOuMoins();
+    // }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     * @ORM\PreRemove
-     */
-    public function updateClientFieldPlusOuMoins()
-    {
-      $this->getClient()->updatePlusOuMoins();
-    }
+    // /**
+    //  * @ORM\PreUpdate
+    //  */
+    //  public function preUpdate(PreUpdateEventArgs $event)
+    // {
+    //   if ($event->hasChangedField('montant')) {
+    //     die("AA");
+    //   }
+    //   die('BB'.$event->getNewValue('montant'));
+    //   die('old'.$event->getOldValue('montant')."<br />".$event->getNewValue('id'));
+    //     if ( floatval($event->getOldValue('montant')) != $event->getNewValue('montant') ) {
+    //       // die('old'.$event->getOldValue('montant')."<br />".$event->getNewValue('montant'));
+    //       // die("qqs".$this->getMontant());
+    //         if( floatval($event->getOldValue('montant')) > $event->getNewValue('montant') ){
+    //           if( $this->getClient()->getPlusOuMoins() > 0 ){
+    //             die('OK');
+    //           }else{
+    //             die('OKKK');
+    //           }
+    //         }
+    //         die('NOK');
+    //     }
+    // }
 
     /**
      * Get id

@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 /**
  * Client
  *
@@ -60,10 +60,11 @@ class Client
      */
     private $ventes;
 
+    //cascade={"persist", "remove"}, orphanRemoval=TRUE
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="Payement", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(targetEntity="Payement", mappedBy="client")
      */
     private $payements;
 
@@ -80,13 +81,15 @@ class Client
       $this->plusOuMoins = 0;
     }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    // public function prePersistOrUpdate()
+    // /**
+    //  * @ORM\PreUpdate
+    //  */
+    //  public function preUpdate(PreUpdateEventArgs $event)
     // {
-    //   die('persist or update Client');
+    //     // if ($event->hasChangedField('tel')) {
+    //     //     die('old'.$event->getOldValue('tel')."<br />".$event->getNewValue('tel'));
+    //     // }
+    //     die('client update');
     // }
 
     // /**
@@ -98,9 +101,11 @@ class Client
     // }
 
     public function updatePlusOuMoins(){
+      //echo "<br />UPDATEO".$this->getId()."<br />";
       $totalVendu = 0;
       foreach( $this->getVentes() as $vente){
         $totalVendu += $vente->getMontant();
+        // echo "<br />".$vente->getMontant()."<br />";
         // echo $vente->getMontant()."<br />";
       }
 // die;
@@ -108,8 +113,10 @@ class Client
       foreach( $this->getPayements() as $payement)
         $totalPaye += $payement->getMontant();
 
+      // die($totalPaye ."/". $totalVendu);
       // echo $totalPaye ."/". $totalVendu;
       $this->plusOuMoins = $totalPaye - $totalVendu;
+      //echo "<br />AA:".$this->plusOuMoins."<br />";
       // echo "paye".$totalPaye."  vendu".$totalVendu."<br />";
       // echo "+-".$this->plusOuMoins."<br />";
       // die("qqqq");

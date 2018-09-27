@@ -76,11 +76,12 @@ class ElementArrivage
      */
     private $quantiteRestante;
 
+    //, cascade={"persist","remove"}, orphanRemoval=FALSE
     /**
      *
      * @var ElementVente
      *
-     * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="elementArrivage", cascade={"remove"}, orphanRemoval=FALSE)
+     * @ORM\OneToMany(targetEntity="ElementVente", mappedBy="elementArrivage")
      */
     private $elementsVente;
 
@@ -121,6 +122,12 @@ class ElementArrivage
      */
     public function preUpdate()
     {
+      // die('update');
+      // $QteVendu = 0;
+      // foreach($this->$elementsVente as $eltVente){
+      //   $QteVendu += $eltVente->getQuantite();
+      // }
+      // $this->quantiteVendu = $QteVendu;
       $this->quantiteRestante = $this->quantite - ($this->quantiteVendu + $this->totalPerdu);
     }
 

@@ -41,6 +41,61 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
           ->getResult();
   }
 
+  // public function ventesNonPayesUntilPreparation($id,$date)
+  // {
+  //     return $this->getEntityManager()
+  //         ->createQuery('
+  //             SELECT SUM(v.montant - v.montantPaye)
+  //             FROM AppBundle:Vente v
+  //             where v.montantPaye < v.montant
+  //             AND v.client = '.$id.'
+  //             AND v.date > :date
+  //             ORDER BY v.date ASC
+  //         ')
+  //         ->setParameter('date',$date,\Doctrine\DBAL\Types\Type::DATETIME)
+  //         ->getResult();
+  // }
+
+  public function ventesNonPayesUntil($id,$limit,$date)
+    { //$date = new \DateTime();
+      //die($date->format('Y-m-d H:i:s'));
+      return $this->getEntityManager()
+          ->createQuery("
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye < v.montant
+              AND v.client = ".$id."
+              AND v.date > '".$date."'
+              ORDER BY v.date ASC
+          ")
+          ->setMaxResults($limit)
+          ->getResult();
+  }
+
+  public function ventesPayesUntil($id,$limit,$date)
+  {
+      return $this->getEntityManager()
+          ->createQuery("
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye > 0
+              AND v.client = ".$id."
+              AND v.date > '".$date."'
+              ORDER BY v.date DESC
+          ")
+          ->setMaxResults($limit)
+          ->getResult();
+  }
+
+  public function montantOriginal($id)
+  {
+      return $this->getEntityManager()
+          ->createQuery('
+              SELECT v.montant
+              FROM AppBundle:Vente v
+              where v.id = '.$id.'
+          ')
+          ->getResult();
+  }
+
   public function getPayementVentes($id,$limit)
   {
       return $this->getEntityManager()

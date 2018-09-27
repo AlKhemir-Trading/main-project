@@ -82,11 +82,16 @@ class VenteController extends Controller
         foreach ($monstock as $elementArrivage){
           $eltVente = new ElementVente();
           $eltVente->setElementArrivage($elementArrivage);
+          //$elementArrivage->addElementsVente($eltVente);----
           $eltVente->setVente($vente);
           $vente->addElementsVente($eltVente);
         }
 
         $form = $this->createForm('AppBundle\Form\VenteType', $vente);
+        //print_r( $form->getData("montant")); die('qs');
+        // die('tt'.$request->request->get('date'));
+        //print_r($request->request);
+        // die('qq');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,8 +99,12 @@ class VenteController extends Controller
 
             $elementsVente = $vente->getElementsVente();
             foreach( $elementsVente as $element){
-               if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 )
-                $vente->removeElementsVente($element);
+                if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
+                  $vente->removeElementsVente($element);
+                }else{
+                  $element->getElementArrivage()->addElementsVente($element);
+                  //$em->persist($element->getElementArrivage());
+                }
             }
 
             if (count($elementsVente) == 0 ){
@@ -108,25 +117,46 @@ class VenteController extends Controller
             $dateNow = new \DateTime();
             $vente->setDate($dateNow);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($vente);
-            $em->flush();
+            // $em = $this->getDoctrine()->getManager();
+            // $em->persist($vente);
+            // $em->flush();
 
-            // MAJ ELEMENT_ARRIVAGE
-            foreach ($elementsVente as $elt){
-              $id = $elt->getElementArrivage()->getId(); //echo "--".$id;
-              $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
-              $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
-              $qte_vendu = 0; //print_r($elementsVenteConcerne); die;
-              foreach($elementsVenteConcerne as $elt){
-                $qte_vendu += $elt->getQuantite();
+            // MAJ QTE VENDU ELEMENT_ARRIVAGE
+            foreach ($elementsVente as $elementVente){
+              $QteVendu = 0;
+              foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+                $QteVendu += $eltVente->getQuantite();
               }
-              $elementArrivage->setQuantiteVendu($qte_vendu);
-              //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
+              $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
+              //$em->persist($elementVente->getElementArrivage());
             }
+            // foreach ($elementsVente as $elt){
+            //   $id = $elt->getElementArrivage()->getId(); //echo "--".$id;
+            //   $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
+            //   $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
+            //   $qte_vendu = 0; //print_r($elementsVenteConcerne); die;
+            //   foreach($elementsVenteConcerne as $elt){
+            //     $qte_vendu += $elt->getQuantite();
+            //   }
+            //   $elementArrivage->setQuantiteVendu($qte_vendu);
+            //   //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
+            // }
 
-            //echo $vente->getClient()->getPlusOuMoins(); die('qqss');
+            #payer vente auto
+            // echo "aaa".is_numeric($vente->getClient()->getPlusOuMoins())."/".is_numeric($vente->getMontant())."<br />";
+            // die("qsd".$vente->getClient()->getPlusOuMoins());
 
+            if( $vente->getClient()->getPlusOuMoins() > 0 ){
+              if ($vente->getMontant() >= $vente->getClient()->getPlusOuMoins() ){
+                $vente->setMontantPaye($vente->getClient()->getPlusOuMoins());
+                $vente->getClient()->setPlusOuMoins(0);
+              }else{
+                $vente->setMontantPaye($vente->getMontant());
+                $vente->getClient()->setPlusOuMoins($vente->getClient()->getPlusOuMoins() - $vente->getMontant());
+              }
+            }
+            //die("aaa".$vente->getMontantPaye());
+            $em->persist($vente);
             $em->flush();
 
             return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
@@ -357,38 +387,44 @@ class VenteController extends Controller
           $elementsVente = $vente->getElementsVente();
           foreach( $elementsVente as $element){
             // echo $element->getQuantite()."<br />";
-            if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
-              && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
-              $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
-              // $qte_vendu = $element->getElementArrivage()->getQuantiteVendu();
-              // $element->getElementArrivage()->setQuantiteVendu( $qte_vendu + ($element->getQuantite() - $elementVenteInitial[$element->getId()]) );
-            }
+            // if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
+            //   && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
+            //   $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
+            //   // $qte_vendu = $element->getElementArrivage()->getQuantiteVendu();
+            //   // $element->getElementArrivage()->setQuantiteVendu( $qte_vendu + ($element->getQuantite() - $elementVenteInitial[$element->getId()]) );
+            // }
             if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
               $vente->removeElementsVente($element);
+            }else{
+              $element->getElementArrivage()->addElementsVente($element);
             }
 
           }
           // die('qq');
-          $this->getDoctrine()->getManager()->flush();
-          // MAJ ELEMENT_ARRIVAGE
-          foreach ($elementsArrivageUsed as $id){
-            $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
-            $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
-            // foreach($elementsVenteConcerne as $elt)
-            //   echo $elt->getId()."+";
-            // echo "/<br />q: ";
-            $qte_vendu = 0;
-            foreach($elementsVenteConcerne as $elt){
-              // echo $elt->getQuantite()."+<br />";
-              $qte_vendu += $elt->getQuantite();
+          // $this->getDoctrine()->getManager()->flush();
+
+          // MAJ QTE VENDU ELEMENT_ARRIVAGE
+          foreach ($elementsVente as $elementVente){
+            $QteVendu = 0;
+            foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+              $QteVendu += $eltVente->getQuantite();
             }
-            $elementArrivage->setQuantiteVendu($qte_vendu);
-            //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
-            // echo "---<br />";
+            $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
+            //$em->persist($elementVente->getElementArrivage());
           }
-          //die('---');
-            $vente->prePersistOrUpdate();
+
+            //$vente->prePersistOrUpdate();
+            //die("qss".$vente->getMontant());
+            #payement new dispertion:
+            // echo "<br />old:".$vente->getClient()->getPlusOuMoins()."<br />";
+            $this->refreshDistribution($vente);
+            // echo "<br />after refresh:".$vente->getClient()->getPlusOuMoins()."<br />";
+
+            // echo "<br />before flush:".$vente->getClient()->getPlusOuMoins()."<br />";
+            $vente->getClient()->updatePlusOuMoins();
             $this->getDoctrine()->getManager()->flush();
+            // echo "<br />after flush:".$vente->getClient()->getPlusOuMoins()."<br />";
+            // die("ss".$vente->getClient()->getPlusOuMoins());
 
             return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
         }
@@ -413,7 +449,7 @@ class VenteController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $vente->getClient()->removeVente($vente);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($vente);
             $em->flush();
@@ -453,5 +489,122 @@ class VenteController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function refreshDistribution(Vente $vente){
+      $em = $this->getDoctrine()->getManager();
+      $venteRepository = $em->getRepository('AppBundle:Vente');
+      $originalMontant = $venteRepository->montantOriginal($vente->getId())[0]['montant'];
+      $plusOuMoins = $vente->getClient()->getPlusOuMoins();
+
+      #Cas Exces:
+      if($vente->getMontantPaye() > $vente->getMontant()){
+        $diff = $vente->getMontantPaye() - $vente->getMontant();
+        $vente->setMontantPaye($vente->getMontant());
+        //get ventes not paye asc
+        // if diff>0 pm += diff
+        if($plusOuMoins >= 0){ // OK;
+          //$vente->getClient()->setPlusOuMoins($plusOuMoins+$diff);
+          $vente->setMontantPaye($vente->getMontant());
+        }else{ // OK
+          //get Ventes Inpayes ASC Until somme montant > diffMontant
+          $limitRequest = 0;
+          $ventesPayement = array();
+          $sumMontantRestant = 0;
+
+          do {
+            $limitRequest += 1;
+            $ventesPayement = $venteRepository->ventesNonPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format("Y-m-d H:i:s"));
+            $sumMontantRestant = 0;
+            foreach ($ventesPayement as $venteX){
+              $sumMontantRestant += $venteX->getMontant() - $venteX->getMontantPaye();
+            }
+            // echo $sumMontantRestant ."/". $diff."<br />";
+            // echo count($ventesPayement) ."/". $limitRequest."<br />";
+            // echo $limitRequest."/".count($ventesPayement)."<br />";
+            // if ($limitRequest == 5)
+            // die('aazzeeerr');
+          } while ($sumMontantRestant < $diff && count($ventesPayement) == $limitRequest );
+          //die('2222sss');
+          // echo "l".$limitRequest."<br />";
+          // echo "qq".$sumMontantRestant;
+          // die('aaz');
+          // echo "****".$limitRequest."<br />";
+          //die("ciaos".count($ventesPayement));
+          foreach($ventesPayement as $venteZ){
+            if ( $diff >= $venteZ->getMontant() - $venteZ->getMontantPaye() ){
+              $diff -= $venteZ->getMontant() - $venteZ->getMontantPaye();
+              $venteZ->setMontantPaye($venteZ->getMontant());
+            }else{
+              $venteZ->setMontantPaye($venteZ->getMontantPaye() + $diff);
+              $diff = 0;
+            }
+            //$em->persist($venteZ);
+          }
+          // if ( $diff > 0 ){
+          //   // $vente->getClient()->setPlusOuMoins($plusOuMoins + $diff);
+          //   $vente->getClient()->updatePlusOuMoins();
+          // }
+
+        }
+      # Cas Perte:
+      //else if montantPaye < montant && cette vente n'etait pas au top des vente payé cad qu'elle doit prendre le montant de ses successeur pour qu'elle soit payé
+      }elseif( $vente->getMontantPaye() < $vente->getMontant() && $vente->getMontantPaye() == $originalMontant ){
+        $diff = $vente->getMontant() - $vente->getMontantPaye();
+
+        if($plusOuMoins > 0){
+          if ($plusOuMoins >= $diff){ //OK
+            //$vente->getClient()->setPlusOuMoins($plusOuMoins-$diff);
+            $vente->setMontantPaye($vente->getMontant());
+            $diff = 0;
+          }else{ // OK2
+            $vente->setMontantPaye($vente->getMontantPaye() + $plusOuMoins);
+            $diff -= $plusOuMoins;
+            //$vente->getClient()->setPlusOuMoins(0);
+          }
+        }
+
+        if($diff > 0){ //  OK2
+          //get ventes paye desc where date > vente.date and montant_paye > 0
+          $limitRequest = 0;
+          $ventesPayement = array();
+          $sumMontantPaye = 0;
+
+          do {
+            $limitRequest += 1;
+            $ventesPayement = $venteRepository->ventesPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format("Y-m-d H:i:s"));
+            $sumMontantPaye = 0;
+            foreach ($ventesPayement as $venteY){
+              $sumMontantPaye += $venteY->getMontantPaye();
+            }
+
+            // echo $limitRequest."/".count($ventesPayement)."<br />";
+            // if ($limitRequest == 5)
+            // die('aazzeeerr');
+          } while ($sumMontantPaye < $diff && count($ventesPayement) == $limitRequest );
+
+          $saveDiff = $diff;
+          foreach ($ventesPayement as $venteY) {
+            if ($venteY->getMontantPaye() >= $diff){
+              $venteY->setMontantPaye($venteY->getMontantPaye() - $diff);
+              $diff = 0;
+            }else{
+              $diff -= $venteY->getMontantPaye();
+              $venteY->setMontantPaye(0);
+            }
+            //$em->persist($venteY);
+          }
+
+          $vente->setMontantPaye($vente->getMontant()-$diff);
+
+          // if($diff > 0)
+          //   $vente->getClient()->setPlusOuMoins($plusOuMoins-$diff);
+
+          //$em->persist($vente);
+        }
+
+        //die('3eme Cas');
+      }
+
     }
 }
