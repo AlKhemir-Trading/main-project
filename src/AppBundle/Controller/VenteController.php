@@ -449,26 +449,33 @@ class VenteController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $vente->getClient()->removeVente($vente);
-
             $em = $this->getDoctrine()->getManager();
-            $em->remove($vente);
-            $em->flush();
 
             $elementsVente = $vente->getElementsVente();
-            // MAJ ELEMENT_ARRIVAGE
-            foreach ($elementsVente as $elt){
-              $id = $elt->getElementArrivage()->getId(); //echo "--".$id;
-              $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
-              $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
-              $qte_vendu = 0; //print_r($elementsVenteConcerne); die;
-              foreach($elementsVenteConcerne as $elt){
-                $qte_vendu += $elt->getQuantite();
+            // MAJ QTE VENDU ELEMENT_ARRIVAGE
+            foreach ($elementsVente as $elementVente){
+              //remove elementVente from elementArrivage
+              $elementVente->getElementArrivage()->removeElementsVente($elementVente);
+
+              $QteVendu = 0;
+              foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+                $QteVendu += $eltVente->getQuantite();
               }
-              $elementArrivage->setQuantiteVendu($qte_vendu);
-              //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
+              $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
+
             }
 
+            $vente->setMontant(0);
+            $this->refreshDistribution($vente);
+
+            $vente->getClient()->removeVente($vente);
+            $vente->getClient()->updatePlusOuMoins();
+            $em->flush();
+
+            $this->refreshDestribution2($vente);
+            $em->flush();
+
+            $em->remove($vente);
             $em->flush();
 
         }
