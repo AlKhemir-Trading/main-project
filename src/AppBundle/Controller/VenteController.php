@@ -350,7 +350,6 @@ class VenteController extends Controller
      */
     public function editAction(Request $request, Vente $vente)
     {
-
       $elementVenteInitial = array();
       $elementsArrivageUsed = array();
       foreach ($vente->getElementsVente() as $elt){
@@ -377,63 +376,65 @@ class VenteController extends Controller
         }
       }
 
-        $deleteForm = $this->createDeleteForm($vente);
-        $editForm = $this->createForm('AppBundle\Form\VenteType', $vente);
-        $editForm->handleRequest($request);
+      $deleteForm = $this->createDeleteForm($vente);
+      $editForm = $this->createForm('AppBundle\Form\VenteType', $vente);
+      $editForm->handleRequest($request);
 
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+      if ($editForm->isSubmitted() && $editForm->isValid()) {
 
-          $elementsVente = $vente->getElementsVente();
-          foreach( $elementsVente as $element){
-            // echo $element->getQuantite()."<br />";
-            // if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
-            //   && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
-            //   $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
-            //   // $qte_vendu = $element->getElementArrivage()->getQuantiteVendu();
-            //   // $element->getElementArrivage()->setQuantiteVendu( $qte_vendu + ($element->getQuantite() - $elementVenteInitial[$element->getId()]) );
-            // }
-            if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
-              $vente->removeElementsVente($element);
-            }else{
-              $element->getElementArrivage()->addElementsVente($element);
-            }
-
-          }
-          // die('qq');
-          // $this->getDoctrine()->getManager()->flush();
-
-          // MAJ QTE VENDU ELEMENT_ARRIVAGE
-          foreach ($elementsVente as $elementVente){
-            $QteVendu = 0;
-            foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-              $QteVendu += $eltVente->getQuantite();
-            }
-            $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
-            //$em->persist($elementVente->getElementArrivage());
+        $elementsVente = $vente->getElementsVente();
+        foreach( $elementsVente as $element){
+          // echo $element->getQuantite()."<br />";
+          // if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
+          //   && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
+          //   $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
+          //   // $qte_vendu = $element->getElementArrivage()->getQuantiteVendu();
+          //   // $element->getElementArrivage()->setQuantiteVendu( $qte_vendu + ($element->getQuantite() - $elementVenteInitial[$element->getId()]) );
+          // }
+          if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
+            $vente->removeElementsVente($element);
+          }else{
+            $element->getElementArrivage()->addElementsVente($element);
           }
 
-            //$vente->prePersistOrUpdate();
-            //die("qss".$vente->getMontant());
-            #payement new dispertion:
-            // echo "<br />old:".$vente->getClient()->getPlusOuMoins()."<br />";
-            $this->refreshDistribution($vente);
-            // echo "<br />after refresh:".$vente->getClient()->getPlusOuMoins()."<br />";
+        }
+        // die('qq');
+        // $this->getDoctrine()->getManager()->flush();
 
-            // echo "<br />before flush:".$vente->getClient()->getPlusOuMoins()."<br />";
-            $vente->getClient()->updatePlusOuMoins();
-            $this->getDoctrine()->getManager()->flush();
-            // echo "<br />after flush:".$vente->getClient()->getPlusOuMoins()."<br />";
-            // die("ss".$vente->getClient()->getPlusOuMoins());
-
-            return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
+        // MAJ QTE VENDU ELEMENT_ARRIVAGE
+        foreach ($elementsVente as $elementVente){
+          $QteVendu = 0;
+          foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+            $QteVendu += $eltVente->getQuantite();
+          }
+          $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
+          //$em->persist($elementVente->getElementArrivage());
         }
 
-        return $this->render('vente/edit.html.twig', array(
-            'vente' => $vente,
-            'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        //$vente->prePersistOrUpdate();
+        //die("qss".$vente->getMontant());
+        #payement new dispertion:
+        // echo "<br />old:".$vente->getClient()->getPlusOuMoins()."<br />";
+        $this->refreshDistribution($vente);
+        // echo "<br />after refresh:".$vente->getClient()->getPlusOuMoins()."<br />";
+        // echo "<br />before flush:".$vente->getClient()->getPlusOuMoins()."<br />";
+        $vente->getClient()->updatePlusOuMoins();
+        $em->flush();
+
+        $this->refreshDestribution2($vente);
+        $em->flush();
+
+        // echo "<br />after flush:".$vente->getClient()->getPlusOuMoins()."<br />";
+        // die("ss".$vente->getClient()->getPlusOuMoins());
+        return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
+      }
+
+      return $this->render('vente/edit.html.twig', array(
+          'vente' => $vente,
+          'form' => $editForm->createView(),
+          'delete_form' => $deleteForm->createView(),
+      ));
     }
 
     /**
@@ -514,7 +515,8 @@ class VenteController extends Controller
 
           do {
             $limitRequest += 1;
-            $ventesPayement = $venteRepository->ventesNonPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format("Y-m-d H:i:s"));
+            //$ventesPayement = $venteRepository->ventesNonPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format("Y-m-d H:i:s"));
+            $ventesPayement = $venteRepository->ventesNonPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getId());
             $sumMontantRestant = 0;
             foreach ($ventesPayement as $venteX){
               $sumMontantRestant += $venteX->getMontant() - $venteX->getMontantPaye();
@@ -572,7 +574,7 @@ class VenteController extends Controller
 
           do {
             $limitRequest += 1;
-            $ventesPayement = $venteRepository->ventesPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format("Y-m-d H:i:s"));
+            $ventesPayement = $venteRepository->ventesPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getId());
             $sumMontantPaye = 0;
             foreach ($ventesPayement as $venteY){
               $sumMontantPaye += $venteY->getMontantPaye();
@@ -604,6 +606,59 @@ class VenteController extends Controller
         }
 
         //die('3eme Cas');
+      }
+
+    }
+
+    function refreshDestribution2(Vente $vente){
+      $em = $this->getDoctrine()->getManager();
+      $venteRepository = $em->getRepository('AppBundle:Vente');
+
+      $lastVenteMontantPayeNotZero = null;
+      $firstVenteUmpayed = null;
+
+      $res1 = $venteRepository->getLastVenteMontantPayeNotZero($vente->getClient()->getId());
+      if (!empty($res1))
+        $lastVenteMontantPayeNotZero = $res1[0];
+
+      $res2 = $venteRepository->firstVenteUmpayed($vente->getClient()->getId());
+      if(!empty($res2))
+        $firstVenteUmpayed = $res2[0];
+
+      if( $lastVenteMontantPayeNotZero
+          && $firstVenteUmpayed
+          && $lastVenteMontantPayeNotZero->getId() != $firstVenteUmpayed->getId()
+          &&  $lastVenteMontantPayeNotZero->getDate() > $firstVenteUmpayed->getDate() ){
+
+            //get ventes from first umpayed to last montant paye > 0
+            $vts = $venteRepository->getVentesToTreat($vente->getClient()->getId(),$firstVenteUmpayed->getDate()->format('Y-m-d H:i:s'),$lastVenteMontantPayeNotZero->getDate()->format("Y-m-d H:i:s"));
+            $i = 0;
+            $j = count($vts) - 1;
+            // die('zz'.$i.$j);
+            while($i < $j){
+              //echo 'zz'.$i."/".$j;
+              // die('zz'.$i.$j.$vts[$i]->getMontantPaye());
+              if($vts[$i]->getMontantPaye() > 0){
+                if( $vts[$j]->getMontantPaye() < $vts[$j]->getMontant() ){
+                  $restant = $vts[$j]->getMontant() - $vts[$j]->getMontantPaye();
+                  if ( $restant <= $vts[$i]->getMontantPaye() ){
+                    $vts[$i]->setMontantPaye( $vts[$i]->getMontantPaye() - $restant );
+                    $vts[$j]->setMontantPaye($vts[$j]->getMontant());
+                    $j--;
+                    // die($j."J1");
+                  }else{ // restant > v[i].montantPaye()
+                    $vts[$j]->setMontantPaye( $vts[j]->getMontantPaye() + $vts[$i]->getMontantPaye() );
+                    $vts[$i]->setMontantPaye(0);
+                    $i++;
+                    // die($i."I1");
+                  }
+                }
+              }else{
+                $i++;
+                // die($i."I2");
+              }
+            }
+            // die('qqqs');
       }
 
     }

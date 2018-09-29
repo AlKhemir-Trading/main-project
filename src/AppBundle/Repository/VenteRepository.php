@@ -56,33 +56,74 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
   //         ->getResult();
   // }
 
-  public function ventesNonPayesUntil($id,$limit,$date)
+  public function ventesNonPayesUntil($idClient,$limit,$idVente)
     { //$date = new \DateTime();
       //die($date->format('Y-m-d H:i:s'));
       return $this->getEntityManager()
           ->createQuery("
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye < v.montant
-              AND v.client = ".$id."
-              AND v.date > '".$date."'
+              AND v.client = ".$idClient."
+              AND v.id != ".$idVente."
               ORDER BY v.date ASC
           ")
+          //  AND v.date > '".$date."'
           ->setMaxResults($limit)
           ->getResult();
   }
 
-  public function ventesPayesUntil($id,$limit,$date)
+  public function ventesPayesUntil($idClient,$limit,$idVente)
   {
       return $this->getEntityManager()
           ->createQuery("
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye > 0
-              AND v.client = ".$id."
-              AND v.date > '".$date."'
+              AND v.client = ".$idClient."
+              AND v.id != ".$idVente."
               ORDER BY v.date DESC
           ")
+          //AND v.date > '".$date."'
           ->setMaxResults($limit)
           ->getResult();
+  }
+
+  public function getLastVenteMontantPayeNotZero($idClient){
+      return $this->getEntityManager()
+          ->createQuery("
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye > 0
+              AND v.client = ".$idClient."
+              ORDER BY v.date DESC
+          ")
+          //AND v.date > '".$date."'
+          ->setMaxResults(1)
+          ->getResult();
+  }
+
+  public function firstVenteUmpayed($idClient){
+      return $this->getEntityManager()
+          ->createQuery("
+              SELECT v FROM AppBundle:Vente v
+              where v.montantPaye < v.montant
+              AND v.client = ".$idClient."
+              ORDER BY v.date ASC
+          ")
+          //AND v.date > '".$date."'
+          ->setMaxResults(1)
+          ->getResult();
+  }
+
+  public function getVentesToTreat($idClient,$date1,$date2){
+    return $this->getEntityManager()
+        ->createQuery("
+            SELECT v FROM AppBundle:Vente v
+            WHERE v.client = ".$idClient."
+            AND v.date BETWEEN '".$date1."' AND '".$date2."'
+            ORDER BY v.date DESC
+        ")
+        //AND v.date > '".$date."'
+        //->setMaxResults($limit)
+        ->getResult();
   }
 
   public function montantOriginal($id)
