@@ -65,7 +65,9 @@
                               <td>
                                 {{ element.arrivage.fournisseur.name }}
                               </td>
-                              <td>{{ element.arrivage.dateCreation|date('d/m/Y (H:i)') }}</td>
+                              <td data-order="{{element.arrivage.dateCreation|date('YmdHis')}}">
+                                {{ element.arrivage.dateCreation|date('d/m/Y (H:i)') }}
+                              </td>
                               <td class="text-center">
                                 {{ element.quantite }}
                               </td>
@@ -75,7 +77,7 @@
                               <td class="text-center {%if element.totalPerdu > 0 %}btn-danger{%endif%}">
                                 {{ element.totalPerdu }}
                               </td>
-                              <td class="text-center {%if element.quantiteRestante > 0 %}btn-warning{%endif%}"> 
+                              <td class="text-center {%if element.quantiteRestante > 0 %}btn-warning{%endif%}">
                                 {{ element.quantiteRestante }} </td>
                               <td>
                                   {% set restantPercent = ( (element.quantite - element.quantiteVendu)/element.quantite) * 100 %}

@@ -61,10 +61,12 @@
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
-                              <td class="btn-warning">
+                              <td class="btn-warning" data-order="{{arrivage.montant}}">
                                 {{ arrivage.montant |number_format(0, '.', ' ') }} D
                               </td>
-                              <td>{{ arrivage.dateCreation|date('d/m/Y (H:i)') }}</td>
+                              <td data-order="{{arrivage.dateCreation|date('YmdHis')}}">
+                                {{ arrivage.dateCreation|date('d/m/Y (H:i)') }}
+                              </td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">

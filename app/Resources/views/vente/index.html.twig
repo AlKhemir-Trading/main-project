@@ -37,8 +37,8 @@
                               <th>Client</th>
                               <th>Produits</th>
                               <th>Date de vente</th>
-                              <th>Montant</th>
                               <th>Payé</th>
+                              <th>Montant</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
@@ -68,10 +68,24 @@
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
-                              <td class="btn-success" data-order="{{vente.montant}}">
+                              {% set montantClass ="" %}
+                              {% set montantPayeClass ="" %}
+                              {% if (vente.montantPaye == vente.montant) %}
+                                {% set montantPayeClass = "btn-success" %}
+                                {% set montantClass = "btn-success" %}
+                              {% elseif (vente.montantPaye == 0) %}
+                                {% set montantPayeClass = "btn-danger" %}
+                                {% set montantClass = "btn-dark" %}
+                              {% else %}
+                                {% set montantPayeClass = "btn-warning" %}
+                                {% set montantClass = "btn-dark" %}
+                              {% endif %}
+                                {% set montantClass = "btn-info" %}
+                              <td class="{{montantPayeClass}}" data-order="{{vente.montantPaye}}">
+                                {{ vente.montantPaye | number_format(0, '.', ' ') }} D </td>
+                              <td class="{{montantClass}}" data-order="{{vente.montant}}">
                                 {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td> {{ vente.montantPaye | number_format(0, '.', ' ') }} D </td>
                               <td>
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">

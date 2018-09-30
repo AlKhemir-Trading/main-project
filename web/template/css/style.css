@@ -123,9 +123,10 @@
 }
 
 .tableData tbody tr:hover{
-  background: #009688!important;
-  color:white!important;
+  background: powderblue!important;
+  /* color:white!important; */
   cursor: pointer;
+  /* font-size: 18px; */
 }
 
 #tab_logic{
@@ -140,12 +141,13 @@
   font-weight: bold!important;
 }
 .tableData,.tableVente th{
-  background-color: powderblue!important;
+  //background-color: powderblue!important;
   cursor:row-resize!important;
   /* color:white!important; */
 }
 .tableData th:hover{
   background-color: #17a2b8!important;
+  color: white;
 }
 
 .datepicker{

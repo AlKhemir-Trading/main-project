@@ -57,13 +57,17 @@
                                   </td>
                                   <td>{{ client.tel }}</td>
 
-                                  <td>
+                                  <td data-order="{{client.pays}}">
                                     <span class="flag-icon flag-icon-{{ client.pays|lower }}"></span>
                                   </td>
                                   {% if (client.plusOuMoins < 0 ) %}
-                                    <td class="btn-danger">- {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D</td>
+                                    <td class="btn-danger" data-order="{{client.plusOuMoins}}">
+                                      - {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
+                                    </td>
                                   {% else %}
-                                    <td class="btn-success">+ {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D</td>
+                                    <td class="btn-success" data-order="{{client.plusOuMoins}}">
+                                      + {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
+                                    </td>
                                   {% endif %}
                                   <td>
 
