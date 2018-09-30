@@ -129,6 +129,12 @@
   /* font-size: 18px; */
 }
 
+.tableVente tbody tr:hover{
+  background: powderblue!important;
+  color: black!important;
+  cursor: pointer;
+}
+
 #tab_logic{
   min-width: 656px;
 }
@@ -141,11 +147,11 @@
   font-weight: bold!important;
 }
 .tableData,.tableVente th{
-  //background-color: powderblue!important;
+  /* //background-color: powderblue!important; */
   cursor:row-resize!important;
   /* color:white!important; */
 }
-.tableData th:hover{
+.tableData th:hover,.tableVente th:hover{
   background-color: #17a2b8!important;
   color: white;
 }

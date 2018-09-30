@@ -49,7 +49,7 @@
                               {% endif %}
                               <tr class="{{class}}" onclick="window.location.href = '{{ path('client_show', { 'id': client.id }) }}';">
                                   <td>{{ "%05d"|format(client.id) }}</td>
-                                  <td>
+                                  <td class="btn-info">
                                     {{ client.name }}
                                     {% if( class != '' ) %}
                                         <span class="badge badge-info">New</span>

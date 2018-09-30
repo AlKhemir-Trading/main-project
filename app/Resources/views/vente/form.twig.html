@@ -19,10 +19,10 @@
         {%endfor%}
     {%endfor%}
 {%endif%}
+<!--
+<label class="font-weight-bold">Produits Dispo :</label> -->
 
-<label class="font-weight-bold">Produits Dispo :</label>
-
-<div class="content mt-3">
+<div class="content">
     <div class="animated fadeIn">
         <div class="row">
 
@@ -72,7 +72,7 @@
                             <td>
                               {{ attribute(vente.elementsVente,loop.index0).elementArrivage.arrivage.dateCreation|date('Y-m-d (H:i)') }}
                             </td>
-                            <td>
+                            <td data-order="{{attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante}}">
                               {% set quantiteRestante = attribute(vente.elementsVente,loop.index0).elementArrivage.quantiteRestante %}
                               {% set quantite = attribute(vente.elementsVente,loop.index0).quantite %}
                                 {% set max = quantite + quantiteRestante %}
@@ -85,7 +85,7 @@
                                 </div>
 
                             </td>
-                            <td>
+                            <td data-order="{{attribute(vente.elementsVente,loop.index0).elementArrivage.prixUnit}}">
 
                               <div class="input-group  w-230">
                                 {{ form_widget(element.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}

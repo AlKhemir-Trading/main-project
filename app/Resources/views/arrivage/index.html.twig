@@ -61,7 +61,7 @@
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
-                              <td class="btn-warning" data-order="{{arrivage.montant}}">
+                              <td class="btn-info" data-order="{{arrivage.montant}}">
                                 {{ arrivage.montant |number_format(0, '.', ' ') }} D
                               </td>
                               <td data-order="{{arrivage.dateCreation|date('YmdHis')}}">
