@@ -131,6 +131,14 @@ class ElementArrivage
       $this->quantiteRestante = $this->quantite - ($this->quantiteVendu + $this->totalPerdu);
     }
 
+    public function updateQutantiteVendu(){
+      $QteVendu = 0;
+      foreach($this->elementsVente as $eltVente){
+        $QteVendu += $eltVente->getQuantite();
+      }
+      $this->quantiteVendu = $QteVendu;
+    }
+
     public function updateTotalPerdu(){
       $totalPerdu = 0;
       foreach ($this->perdus as $perdu)

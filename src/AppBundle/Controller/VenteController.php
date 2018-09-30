@@ -123,12 +123,12 @@ class VenteController extends Controller
 
             // MAJ QTE VENDU ELEMENT_ARRIVAGE
             foreach ($elementsVente as $elementVente){
-              $QteVendu = 0;
-              foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-                $QteVendu += $eltVente->getQuantite();
-              }
-              $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
-              //$em->persist($elementVente->getElementArrivage());
+              $elementVente->getElementArrivage()->updateQutantiteVendu();
+              // $QteVendu = 0;
+              // foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+              //   $QteVendu += $eltVente->getQuantite();
+              // }
+              // $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
             }
             // foreach ($elementsVente as $elt){
             //   $id = $elt->getElementArrivage()->getId(); //echo "--".$id;
@@ -350,12 +350,12 @@ class VenteController extends Controller
      */
     public function editAction(Request $request, Vente $vente)
     {
-      $elementVenteInitial = array();
-      $elementsArrivageUsed = array();
-      foreach ($vente->getElementsVente() as $elt){
-         $elementVenteInitial[$elt->getId()] = $elt->getQuantite();
-         $elementsArrivageUsed[] = $elt->getElementArrivage()->getId();
-      }
+      // $elementVenteInitial = array();
+      // $elementsArrivageUsed = array();
+      // foreach ($vente->getElementsVente() as $elt){
+      //    $elementVenteInitial[$elt->getId()] = $elt->getQuantite();
+      //    $elementsArrivageUsed[] = $elt->getElementArrivage()->getId();
+      // }
 
       $em = $this->getDoctrine()->getManager();
       $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
@@ -385,13 +385,6 @@ class VenteController extends Controller
 
         $elementsVente = $vente->getElementsVente();
         foreach( $elementsVente as $element){
-          // echo $element->getQuantite()."<br />";
-          // if( $element->getQuantite() > 0 && $element->getPrixUnit() > 0
-          //   && !in_array( $element->getElementArrivage()->getId(), $elementsArrivageUsed ) ){
-          //   $elementsArrivageUsed[] = $element->getElementArrivage()->getId();
-          //   // $qte_vendu = $element->getElementArrivage()->getQuantiteVendu();
-          //   // $element->getElementArrivage()->setQuantiteVendu( $qte_vendu + ($element->getQuantite() - $elementVenteInitial[$element->getId()]) );
-          // }
           if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
             $vente->removeElementsVente($element);
           }else{
@@ -399,26 +392,20 @@ class VenteController extends Controller
           }
 
         }
-        // die('qq');
-        // $this->getDoctrine()->getManager()->flush();
 
         // MAJ QTE VENDU ELEMENT_ARRIVAGE
         foreach ($elementsVente as $elementVente){
-          $QteVendu = 0;
-          foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-            $QteVendu += $eltVente->getQuantite();
-          }
-          $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
-          //$em->persist($elementVente->getElementArrivage());
+          $elementVente->getElementArrivage()->updateQutantiteVendu();
+          // $QteVendu = 0;
+          // foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+          //   $QteVendu += $eltVente->getQuantite();
+          // }
+          // $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
         }
 
-        //$vente->prePersistOrUpdate();
-        //die("qss".$vente->getMontant());
         #payement new dispertion:
-        // echo "<br />old:".$vente->getClient()->getPlusOuMoins()."<br />";
         $this->refreshDistribution($vente);
-        // echo "<br />after refresh:".$vente->getClient()->getPlusOuMoins()."<br />";
-        // echo "<br />before flush:".$vente->getClient()->getPlusOuMoins()."<br />";
+
         $vente->getClient()->updatePlusOuMoins();
         $em->flush();
 
@@ -456,12 +443,13 @@ class VenteController extends Controller
             foreach ($elementsVente as $elementVente){
               //remove elementVente from elementArrivage
               $elementVente->getElementArrivage()->removeElementsVente($elementVente);
+              $elementVente->getElementArrivage()->updateQutantiteVendu();
 
-              $QteVendu = 0;
-              foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-                $QteVendu += $eltVente->getQuantite();
-              }
-              $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
+              // $QteVendu = 0;
+              // foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
+              //   $QteVendu += $eltVente->getQuantite();
+              // }
+              // $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
 
             }
 

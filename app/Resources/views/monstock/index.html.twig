@@ -69,13 +69,14 @@
                               <td class="text-center">
                                 {{ element.quantite }}
                               </td>
-                              <td class="text-center btn-success">
+                              <td class="text-center {%if element.quantiteVendu > 0 %}btn-success{%endif%}">
                                 {{ element.quantiteVendu }}
                               </td>
-                              <td class="text-center btn-danger">
+                              <td class="text-center {%if element.totalPerdu > 0 %}btn-danger{%endif%}">
                                 {{ element.totalPerdu }}
                               </td>
-                              <td class="text-center btn-warning"> {{ element.quantiteRestante }} </td>
+                              <td class="text-center {%if element.quantiteRestante > 0 %}btn-warning{%endif%}"> 
+                                {{ element.quantiteRestante }} </td>
                               <td>
                                   {% set restantPercent = ( (element.quantite - element.quantiteVendu)/element.quantite) * 100 %}
                                 <div class="bs-component mb-2">
