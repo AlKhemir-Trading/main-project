@@ -21,6 +21,10 @@ class VenteType extends AbstractType
         ->add('client', EntityType::class, array(
             'class' => 'AppBundle:Client',
             'choice_label' => 'name',
+            'placeholder' => 'Selectionnez Un Client',
+            'empty_data'  => null,
+            'required' => true
+
         ))
         ->add('date', DateType::class, array(
             'widget' => 'single_text',

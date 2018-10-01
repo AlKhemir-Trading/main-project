@@ -47,7 +47,8 @@
                               {% else %}
                                 {% set class = '' %}
                               {% endif %}
-                              <tr class="{{class}}" onclick="window.location.href = '{{ path('client_show', { 'id': client.id }) }}';">
+                              <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('client_show', { 'id': client.id }) }}';"> -->
+                              <tr class="{{class}}">
                                   <td>{{ "%05d"|format(client.id) }}</td>
                                   <td class="btn-info">
                                     {{ client.name }}

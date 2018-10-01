@@ -123,16 +123,16 @@
 }
 
 .tableData tbody tr:hover{
-  background: powderblue!important;
+  background: powderblue;
   /* color:white!important; */
-  cursor: pointer;
+  /* cursor: pointer; */
   /* font-size: 18px; */
 }
 
 .tableVente tbody tr:hover{
-  background: powderblue!important;
+  background: powderblue;
   color: black!important;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 #tab_logic{
@@ -148,7 +148,7 @@
 }
 .tableData,.tableVente th{
   /* //background-color: powderblue!important; */
-  cursor:row-resize!important;
+  /* cursor:row-resize!important; */
   /* color:white!important; */
 }
 .tableData th:hover,.tableVente th:hover{

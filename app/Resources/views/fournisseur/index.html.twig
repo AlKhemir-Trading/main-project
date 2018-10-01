@@ -49,7 +49,8 @@
                               {% else %}
                                 {% set class = '' %}
                               {% endif %}
-                              <tr class="{{class}}" onclick="window.location.href = '{{ path('fournisseur_show', { 'id': fournisseur.id }) }}';">
+                              <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('fournisseur_show', { 'id': fournisseur.id }) }}';"> -->
+                              <tr class="{{class}}">
                                   <td>
                                     {{ "%05d"|format(fournisseur.id) }}
                                     {% if( class != '' )%}

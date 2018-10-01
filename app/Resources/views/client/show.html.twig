@@ -2,19 +2,6 @@
 
 {% set action = "Détails Client" %}
 
-{% block stylesheets %}
-  {{ parent() }}
-  <style>
-  input,select {
-      background: blanchedalmond!important;
-      font-weight: bold!important;
-  }
-  #add_row, .row-remove{
-    background: burlywood!important;
-  }
-  </style>
-{% endblock %}
-
 {% block body2 %}
 
         <form>
@@ -52,7 +39,7 @@
                           <th scope="row">{{loop.index}}</th>
                           <td data-order="{{payement.date|date('YmdHis')}}">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
                           <th>{{ payement.type | capitalize }}</th>
-                          <td>{{ payement.montant | number_format(0, '.', ' ') }} D</td>
+                          <td class="btn-info">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
                           <!-- <td>
                             <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>
                           </td> -->
@@ -63,8 +50,8 @@
                         <tr>
                           <th scope="col"></th>
                           <th></th>
-                          <th scope="col"></th>
-                          <th scope="col">{{ total |number_format(0, '.', ' ') }} D</th>
+                          <th scope="col">Total</th>
+                          <th scope="col" class="btn-secondary">{{ total |number_format(0, '.', ' ') }} D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                         <tr>
@@ -72,7 +59,7 @@
                           <th></th>
                           <th scope="col">+ / -</th>
                           {% if client.plusOuMoins >= 0 %}
-                            <th scope="col" class="btn-info">+ {{client.plusOuMoins |number_format(0, '.', ' ') }} D</th>
+                            <th scope="col" class="btn-success">+ {{client.plusOuMoins |number_format(0, '.', ' ') }} D</th>
                           {% else %}
                             <th scope="col" class="btn-danger">- {{client.plusOuMoins |abs |number_format(0, '.', ' ') }} D</th>
                           {% endif %}

@@ -48,7 +48,8 @@
                             {% set produitArray = produitArray|merge([element.produit.name]) %}
                           {% endfor %}
 
-                          <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';">
+                          <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';"> -->
+                          <tr class="{{class}}">
                               <td>{{ "%05d"|format(arrivage.id) }}
                                 {% if( class != '' ) %}
                                     <span class="badge badge-info">New</span>

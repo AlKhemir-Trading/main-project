@@ -2,7 +2,7 @@
 
 {% set action = "Détails Arrivage" %}
 
-{%block stylesheets%}
+{# {%block stylesheets%}
   {{ parent() }}
   <style>
   input,select {
@@ -13,7 +13,7 @@
     background: burlywood!important;
   }
   </style>
-{% endblock %}
+{% endblock %} #}
 
 {% block body2 %}
 
@@ -52,7 +52,7 @@
 
 {% block javascripts %}
   {{parent()}}
-    
+
   <script type="text/javascript">
   $(document).ready(function(){
     $('textarea').attr("placeholder", "");

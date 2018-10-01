@@ -26,7 +26,7 @@ class ElementVenteValidator extends ConstraintValidator
               || ( ($element->getQuantite() == 0 && $element->getPrixUnit() != 0)
                     || ($element->getQuantite() != 0 && $element->getPrixUnit() == 0) )  ){
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ string }}', "Verifiez votre saisi pour les elements d'arrivage.")
+                ->setParameter('{{ string }}', "Verifiez votre saisi pour les elements de vente.")
                 ->addViolation();
           }
         }

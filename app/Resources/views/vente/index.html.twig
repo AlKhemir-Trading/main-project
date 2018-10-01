@@ -37,8 +37,8 @@
                               <th>Client</th>
                               <th>Produits</th>
                               <th>Date de vente</th>
-                              <th>Payé</th>
-                              <th>Montant</th>
+                              <th style="width:65px;">Payé</th>
+                              <th style="width:65px;">Montant</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
@@ -55,7 +55,8 @@
                             {% set produitArray = produitArray|merge([element.elementArrivage.produit.name]) %}
                           {% endfor %}
 
-                          <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';">
+                          <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';"> -->
+                          <tr class="{{class}}">
                               <td>{{ "%05d"|format(vente.id) }}
                                 {% if( class != '' ) %}
                                     <span class="badge badge-info">New</span>
@@ -64,7 +65,7 @@
                               <td>
                                 {{ vente.client.name }}
                               </td>
-                              <td>
+                              <td style="overflow:hidden;text-overflow:ellipsis;max-width:80px;">
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
