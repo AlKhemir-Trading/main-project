@@ -24,9 +24,10 @@
                     <table id="example" class="table table-striped table-bordered w-100 ">
                       <thead>
                           <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Date</th>
+                          <th scope="col" style="width:50px">#</th>
+                          <th scope="col" style="width:100px">Date</th>
                           <th>Methode</th>
+                          <th>Note</th>
                           <th scope="col">Montant</th>
                           <th style="width:10px">
 
@@ -40,7 +41,12 @@
                         <tr data-id="{{payement.id}}">
                           <th scope="row">{{loop.index}}</th>
                           <td class="datePayement" data-order="{{payement.date|date('YmdHis')}}">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
-                          <th>{{ payement.type | capitalize }}</th>
+                          {% if payement.type == "cash" %}
+                            <th>{{ payement.type | capitalize }}</th>
+                          {% else %}
+                            <th>{{ payement.type | capitalize }} : {{payement.numCheque}}</th>
+                          {% endif %}
+                          <td>{{payement.note}}</td>
                           <td class="montantPayement btn-info">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
                           <td>
                             <button type="button" class="btn btn-edit-xs btn-sm btn-table-sm modalDeletePayementBtn"><i class="fa fa-close fa-fix"></i></button>
@@ -52,12 +58,14 @@
                         <tr>
                           <th scope="col"></th>
                           <th></th>
+                          <th></th>
                           <th scope="col">Total</th>
                           <th scope="col" class="btn-secondary">{{ total |number_format(0, '.', ' ') }} D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                         <tr>
                           <th scope="col"></th>
+                          <th></th>
                           <th></th>
                           <th scope="col">+ / -</th>
                           {% if client.plusOuMoins >= 0 %}

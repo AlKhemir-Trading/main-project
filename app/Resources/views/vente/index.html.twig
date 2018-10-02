@@ -33,12 +33,12 @@
                     <table id="example" class="table table-striped table-bordered w-100 tableData">
                       <thead>
                           <tr>
-                              <th>Matricule</th>
+                              <th style="width:50px;">Matricule</th>
                               <th>Client</th>
                               <th>Produits</th>
                               <th>Date de vente</th>
-                              <th style="width:65px;">Payé</th>
-                              <th style="width:65px;">Montant</th>
+                              <th style="width:50px;">Payé</th>
+                              <th style="width:50px;">Montant</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
@@ -65,7 +65,7 @@
                               <td>
                                 {{ vente.client.name }}
                               </td>
-                              <td style="overflow:hidden;text-overflow:ellipsis;max-width:80px;">
+                              <td style="overflow:hidden;text-overflow:ellipsis;max-width:170px;">
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
