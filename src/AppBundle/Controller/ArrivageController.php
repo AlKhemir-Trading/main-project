@@ -110,13 +110,44 @@ class ArrivageController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
+            $em = $this->getDoctrine()->getManager();
+            $uow = $em->getUnitOfWork();
             $elementArrivages = $arrivage->getElementArrivages();
+
+            $error = false;
             foreach( $elementArrivages as $elementArrivage){
+              $originalElt = $uow->getOriginalEntityData($elementArrivage);
+              // echo $elementArrivage->getQuantiteVendu()."/".$elementArrivage->getQuantite() ."<br />";
+              // echo $originalElt['quantiteVendu']."/".$originalElt['quantite'] ."<br />--<br />";
+
+              if ( $elementArrivage->getQuantite() < $originalElt['quantiteVendu'] ){
+                $error = true;
+                $this->addFlash(
+                    'danger',
+                    'Vous avez déja vendu '.$originalElt['quantiteVendu'].' de '.$elementArrivage->getProduit()->getName()." de Cet Arrivage."
+                );
+              }
                //print_r($elementArrivage->getMontant());
               $elementArrivage->setArrivage($arrivage);
             }
- //die;
+
+            if($error){
+              $this->addFlash(
+                  'info',
+                  "Si vous y insister, vous devez supprimer les ventes relatives à cet element d'arrivage."
+              );
+              $this->addFlash(
+                  'warning',
+                  " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
+              );
+
+              return $this->render('arrivage/edit.html.twig', array(
+                  'arrivage' => $arrivage,
+                  'form' => $editForm->createView(),
+                  'delete_form' => $deleteForm->createView(),
+              ));
+            }
+            // die('aaq');
             $arrivage->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 

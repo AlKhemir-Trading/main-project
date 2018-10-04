@@ -63,7 +63,7 @@ class Payement
      /**
       * @var Client
       *
-      * @ORM\ManyToOne(targetEntity="Client", inversedBy="payements")
+      * @ORM\ManyToOne(targetEntity="Client", inversedBy="payements", cascade={"persist"})
       */
      private $client;
 

@@ -21,6 +21,20 @@
     </ul>
   </div>
 
+  <div class="row justify-content-lg-center">
+    <div class="col-lg-9">
+      <div class="bs-component messageContainer">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+              <div class="alert alert-dismissible alert-{{label}}">
+                <button class="close" type="button" data-dismiss="alert">×</button><strong>{{ message }}</strong>
+              </div>
+            {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   {% block container %}
   <div class="row justify-content-lg-center">
     <div class="col-lg-9">
