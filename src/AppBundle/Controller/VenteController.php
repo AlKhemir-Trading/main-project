@@ -114,49 +114,32 @@ class VenteController extends Controller
               );
               return $this->redirectToRoute('vente_new');
             }
-            $dateNow = new \DateTime();
-            $vente->setDate($dateNow);
-
-            // $em = $this->getDoctrine()->getManager();
-            // $em->persist($vente);
-            // $em->flush();
+            // $dateNow = new \DateTime();
+            // $vente->setDate($dateNow);
 
             // MAJ QTE VENDU ELEMENT_ARRIVAGE
             foreach ($elementsVente as $elementVente){
               $elementVente->getElementArrivage()->updateQutantiteVendu();
-              // $QteVendu = 0;
-              // foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-              //   $QteVendu += $eltVente->getQuantite();
-              // }
-              // $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
             }
-            // foreach ($elementsVente as $elt){
-            //   $id = $elt->getElementArrivage()->getId(); //echo "--".$id;
-            //   $elementArrivage = $em->getRepository('AppBundle:ElementArrivage')->find($id);
-            //   $elementsVenteConcerne = $em->getRepository('AppBundle:ElementVente')->findBy( ['elementArrivage' => $id] );
-            //   $qte_vendu = 0; //print_r($elementsVenteConcerne); die;
-            //   foreach($elementsVenteConcerne as $elt){
-            //     $qte_vendu += $elt->getQuantite();
-            //   }
-            //   $elementArrivage->setQuantiteVendu($qte_vendu);
-            //   //$elementArrivage->setQuantiteRestante($elementArrivage->getQuantite() - $qte_vendu);
-            // }
 
             #payer vente auto
             // echo "aaa".is_numeric($vente->getClient()->getPlusOuMoins())."/".is_numeric($vente->getMontant())."<br />";
             // die("qsd".$vente->getClient()->getPlusOuMoins());
-
             if( $vente->getClient()->getPlusOuMoins() > 0 ){
-              if ($vente->getMontant() >= $vente->getClient()->getPlusOuMoins() ){
-                $vente->setMontantPaye($vente->getClient()->getPlusOuMoins());
-                $vente->getClient()->setPlusOuMoins(0);
-              }else{
+              if ($vente->getClient()->getPlusOuMoins() >= $vente->getMontant()){
                 $vente->setMontantPaye($vente->getMontant());
-                $vente->getClient()->setPlusOuMoins($vente->getClient()->getPlusOuMoins() - $vente->getMontant());
+                //$vente->getClient()->setPlusOuMoins(0);
+              }else{
+                $vente->setMontantPaye($vente->getClient()->getPlusOuMoins());
+                //$vente->getClient()->setPlusOuMoins($vente->getClient()->getPlusOuMoins() - $vente->getMontant());
               }
             }
             //die("aaa".$vente->getMontantPaye());
+            $vente->getClient()->updatePlusOuMoins();
             $em->persist($vente);
+            $em->flush();
+
+            $this->refreshDestribution2($vente);
             $em->flush();
 
             return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
@@ -487,6 +470,7 @@ class VenteController extends Controller
         ;
     }
 
+    # called when a vente is updated an its montant_paye > montant or it was already payed but when updated it needs to get payement from the lastest to get payed
     private function refreshDistribution(Vente $vente){
       $em = $this->getDoctrine()->getManager();
       $venteRepository = $em->getRepository('AppBundle:Vente');
@@ -604,7 +588,8 @@ class VenteController extends Controller
       }
 
     }
-
+    # check is there an erlier vente payed before a lastest vente, if its the case, refresh destribution
+    # Called when a date vente is changed as earliest or a vente created as earliest
     function refreshDestribution2(Vente $vente){
       $em = $this->getDoctrine()->getManager();
       $venteRepository = $em->getRepository('AppBundle:Vente');
@@ -627,6 +612,7 @@ class VenteController extends Controller
 
             //get ventes from first umpayed to last montant paye > 0
             $vts = $venteRepository->getVentesToTreat($vente->getClient()->getId(),$firstVenteUmpayed->getDate()->format('Y-m-d H:i:s'),$lastVenteMontantPayeNotZero->getDate()->format("Y-m-d H:i:s"));
+
             $i = 0;
             $j = count($vts) - 1;
             // die('zz'.$i.$j);
@@ -642,7 +628,7 @@ class VenteController extends Controller
                     $j--;
                     // die($j."J1");
                   }else{ // restant > v[i].montantPaye()
-                    $vts[$j]->setMontantPaye( $vts[j]->getMontantPaye() + $vts[$i]->getMontantPaye() );
+                    $vts[$j]->setMontantPaye( $vts[$j]->getMontantPaye() + $vts[$i]->getMontantPaye() );
                     $vts[$i]->setMontantPaye(0);
                     $i++;
                     // die($i."I1");

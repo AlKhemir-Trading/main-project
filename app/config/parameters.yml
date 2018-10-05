@@ -1,12 +1,30 @@
 # This file is auto-generated during the composer install
 parameters:
+    # database_host: sql2.freemysqlhosting.net
+    # database_port: 3306
+    # database_name: sql2239992
+    # database_user: sql2239992
+    # database_password: rF9*yC3!
+
     database_host: 127.0.0.1
     database_port: null
-    database_name: trading
-    database_user: root
-    database_password: 
+    database_name: iheb_db_2
+    database_user: iheb_user
+    database_password: '0000'
+
+
     mailer_transport: gmail
+#    mailer_host: smtp.gmail.com
+#    mailer_port: 587
     mailer_user: tunisiewebpro@gmail.com
     mailer_password: KarimMahdi2017
+
     secret: 0114e534eaab9159b3c8adf88dea944632670e13
-    mailer_host: 127.0.0.1
+
+    html_to_pdf_apikey: 4c143f72-6ca0-4010-8870-338f8ccfa4ae
+
+    # database_host: sql7.freemysqlhosting.net
+    # database_port: 3306
+    # database_name: sql7234887
+    # database_user: sql7234887
+    # database_password: rrNSYF3Jjk
