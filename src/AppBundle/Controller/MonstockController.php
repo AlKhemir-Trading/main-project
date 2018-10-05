@@ -27,12 +27,12 @@ class MonstockController extends Controller
         $newPerte->setElementArrivage($elementArrivage);
         $newPerteForm = $this->createForm('AppBundle\Form\PerteType', $newPerte);
         $dataPertes[$elementArrivage->getId()]['newForm'] = $newPerteForm->createView();
-
-        $deletePerteForm = $this->createFormBuilder()
-            ->setAction($this->generateUrl('perte_delete', array('id' => 'id')))
-            ->setMethod('DELETE')
-            ->getForm();
       }
+
+      $deletePerteForm = $this->createFormBuilder()
+          ->setAction($this->generateUrl('perte_delete', array('id' => 'id')))
+          ->setMethod('DELETE')
+          ->getForm();
 
       return $this->render('monstock/index.html.twig', array(
         "monstock" => $monstock,
