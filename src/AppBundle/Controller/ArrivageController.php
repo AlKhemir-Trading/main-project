@@ -104,42 +104,71 @@ class ArrivageController extends Controller
      */
     public function editAction(Request $request, Arrivage $arrivage)
     {
+        $originalElementArrivage = array();
+        $backup = array();
+        foreach ($arrivage->getElementArrivages() as $elementArrivage) {
+          // echo"<br />".$elementArrivage ->getQuantite() ."/". $elementArrivage->getQuantiteRestante()."<br />";
+          $originalElementArrivage[$elementArrivage->getId()] = $elementArrivage ->getQuantite() - $elementArrivage->getQuantiteRestante();
+          $backup[$elementArrivage->getId()] = $elementArrivage;
+        }
 
+        // die('count'.count($elementArrivages = $arrivage->getElementArrivages()) );
         $deleteForm = $this->createDeleteForm($arrivage);
         $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
         $editForm->handleRequest($request);
 
+        // die("qq".count($originalElementArrivage));
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $uow = $em->getUnitOfWork();
             $elementArrivages = $arrivage->getElementArrivages();
-
+            $arrivageOriginal = $uow->getOriginalEntityData($arrivage);
+            # Unite of work doesn't care about Collection:
+            // die("asa".count($arrivageOriginal['elementArrivages']));
             $error = false;
+            // echo "c=".count($elementArrivages)."/".count($originalElementArrivage);
             foreach( $elementArrivages as $elementArrivage){
               $originalElt = $uow->getOriginalEntityData($elementArrivage);
               // echo $elementArrivage->getQuantiteVendu()."/".$elementArrivage->getQuantite() ."<br />";
               // echo $originalElt['quantiteVendu']."/".$originalElt['quantite'] ."<br />--<br />";
 
-              if ( $elementArrivage->getQuantite() < $originalElt['quantiteVendu'] ){
+              if ( $originalElt && $elementArrivage->getQuantite() < $originalElt['quantiteVendu'] ){
                 $error = true;
                 $this->addFlash(
                     'danger',
-                    'Vous avez déja vendu '.$originalElt['quantiteVendu'].' de '.$elementArrivage->getProduit()->getName()." de Cet Arrivage."
+                    'Vous avez déja vendu '.$originalElt['quantiteVendu'].'et déclarer un nombre d\'unité perdu de '.$originalElt['totalPerdu'].' de '.$elementArrivage->getProduit()->getName()." de Cet Arrivage."
                 );
               }
                //print_r($elementArrivage->getMontant());
               $elementArrivage->setArrivage($arrivage);
+              unset($originalElementArrivage[$elementArrivage->getId()]);
             }
-
+            // echo "<br />c2=".count($elementArrivages)."/".count($originalElementArrivage);
+            // echo"<br />//".count($arrivage->getElementArrivages());
+            foreach($originalElementArrivage as $id => $val){
+              if( $val != 0){ // > 0
+                $error = true;
+                $this->addFlash(
+                    'danger',
+                    'Vous avez déja vendu '.$backup[$id]->getQuantiteVendu().' et déclarer un nombre d\'unité perdu de '.$backup[$id]->getTotalPerdu().' de '.$backup[$id]->getProduit()->getName()." de Cet Arrivage."
+                );
+                $arrivage->addElementArrivage($backup[$id]);
+                $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+                // echo"<br />#".count($arrivage->getElementArrivages());
+                // echo "<br />zz=".$val."/".$backup[$id]->getQuantiteRestante()."<br />";
+              }
+            }
+            // die("<br />=".count($arrivage->getElementArrivages()));
+            // die('qaq');
             if($error){
               $this->addFlash(
                   'info',
                   "Si vous y insister, vous devez supprimer les ventes relatives à cet element d'arrivage."
               );
-              $this->addFlash(
-                  'warning',
-                  " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
-              );
+              // $this->addFlash(
+              //     'warning',
+              //     " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
+              // );
 
               return $this->render('arrivage/edit.html.twig', array(
                   'arrivage' => $arrivage,
@@ -173,6 +202,37 @@ class ArrivageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $error = false;
+            foreach($arrivage->getElementArrivages() as $eltArrivage){
+              if( $eltArrivage->getQuantiteRestante() < $eltArrivage ->getQuantite() ){
+                $error = true;
+                $this->addFlash(
+                    'danger',
+                    'Vous avez déja vendu '.$eltArrivage->getQuantiteVendu().' et déclarer un nombre d\'unité perdu de '.$eltArrivage->getTotalPerdu().' de '.$eltArrivage->getProduit()->getName()." de Cet Arrivage."
+                );
+              }
+            }
+
+            if($error){
+              $this->addFlash(
+                  'info',
+                  "Si vous y insister, vous devez supprimer les ventes ainsi que les pertes relatives à chaque element de cette arrivage."
+              );
+              // $this->addFlash(
+              //     'warning',
+              //     " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
+              // );
+
+              $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+              $deleteForm = $this->createDeleteForm($arrivage);
+
+              return $this->render('arrivage/edit.html.twig', array(
+                  'arrivage' => $arrivage,
+                  'form' => $editForm->createView(),
+                  'delete_form' => $deleteForm->createView(),
+              ));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($arrivage);
             $em->flush();

@@ -615,7 +615,7 @@ class VenteController extends Controller
 
             $i = 0;
             $j = count($vts) - 1;
-            // die('zz'.$i.$j);
+            // die($i."//".$j);
             while($i < $j){
               //echo 'zz'.$i."/".$j;
               // die('zz'.$i.$j.$vts[$i]->getMontantPaye());
@@ -633,6 +633,8 @@ class VenteController extends Controller
                     $i++;
                     // die($i."I1");
                   }
+                }else{
+                  $j--;
                 }
               }else{
                 $i++;
