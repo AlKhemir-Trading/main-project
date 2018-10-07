@@ -8,7 +8,7 @@ parameters:
 
     database_host: 127.0.0.1
     database_port: null
-    database_name: iheb_db_2
+    database_name: iheb_db_3
     database_user: iheb_user
     database_password: '0000'
 

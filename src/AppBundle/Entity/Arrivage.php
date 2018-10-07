@@ -44,6 +44,7 @@ class Arrivage
 
     /**
      * @var Collection
+     *
      * @Assert2\ElementArrivage()
      *
      * @ORM\OneToMany(targetEntity="ElementArrivage", mappedBy="arrivage", cascade={"persist", "remove"}, orphanRemoval=TRUE)

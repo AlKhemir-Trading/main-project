@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Arrivage;
 use AppBundle\Entity\ElementVente;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * ElementArrivage
  *
@@ -35,6 +37,7 @@ class ElementArrivage
 
      /**
       * @var Produit
+      *
       *
       * @ORM\ManyToOne(targetEntity="Produit", inversedBy="elementArrivages")
       * @ORM\JoinColumn(name="produit_id", referencedColumnName="id", nullable=FALSE)

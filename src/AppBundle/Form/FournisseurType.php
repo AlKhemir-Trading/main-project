@@ -19,6 +19,7 @@ class FournisseurType extends AbstractType
     {
         $builder
         ->add('name',TextType::class, array(
+          'required' => true,
         ))
         ->add('pays',CountryType::class, array(
         ))

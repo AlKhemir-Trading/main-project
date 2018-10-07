@@ -54,7 +54,7 @@ class ElementVente
      *
      * @var ElementArrivage
      *
-     * @ORM\ManyToOne(targetEntity="ElementArrivage", inversedBy="elementsVente")
+     * @ORM\ManyToOne(targetEntity="ElementArrivage", inversedBy="elementsVente", cascade={"persist"})
      * @ORM\JoinColumn(name="element_arrivage_id", referencedColumnName="id", nullable=FALSE)
      */
     private $elementArrivage;
@@ -67,6 +67,10 @@ class ElementVente
         $this->quantite = 0;
         $this->prixUnit = 0;
         $this->montant = 0;
+    }
+
+    public function __toString(){
+      return $this->id."Karim's toString=>".$this->quantite."/".$this->prixUnit ."/".$this->montant;
     }
 
     /**

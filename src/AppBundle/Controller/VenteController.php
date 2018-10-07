@@ -354,28 +354,27 @@ class VenteController extends Controller
         foreach( $elementsVente as $element){
           if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
             $vente->removeElementsVente($element);
+            $element->getElementArrivage()->removeElementsVente($element);
           }else{
             $element->getElementArrivage()->addElementsVente($element);
           }
+          $element->getElementArrivage()->updateQutantiteVendu();
         }
 
-        // MAJ QTE VENDU ELEMENT_ARRIVAGE
-        foreach ($elementsVente as $elementVente){
-          $elementVente->getElementArrivage()->updateQutantiteVendu();
-          // $QteVendu = 0;
-          // foreach($elementVente->getElementArrivage()->getElementsVente() as $eltVente){
-          //   $QteVendu += $eltVente->getQuantite();
-          // }
-          // $elementVente->getElementArrivage()->setQuantiteVendu($QteVendu);
-        }
+        // // MAJ QTE VENDU ELEMENT_ARRIVAGE
+        // foreach ($elementsVente as $elementVente){
+        //   $elementVente->getElementArrivage()->updateQutantiteVendu();
+        // }
 
         #payement new dispertion:
         $this->refreshDistribution($vente);
 
         $vente->getClient()->updatePlusOuMoins();
+        $em->persist($vente);
         $em->flush();
 
         $this->refreshDestribution2($vente);
+        $em->persist($vente);
         $em->flush();
 
         // echo "<br />after flush:".$vente->getClient()->getPlusOuMoins()."<br />";

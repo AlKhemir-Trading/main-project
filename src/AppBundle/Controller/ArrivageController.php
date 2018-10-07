@@ -62,8 +62,8 @@ class ArrivageController extends Controller
               $elementArrivage->setArrivage($arrivage);
             }
             //die;
-            $dateNow = new \DateTime();
-            $arrivage->setDateCreation($dateNow);
+            // $dateNow = new \DateTime();
+            // $arrivage->setDateCreation($dateNow);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
@@ -104,6 +104,7 @@ class ArrivageController extends Controller
      */
     public function editAction(Request $request, Arrivage $arrivage)
     {
+      // die('aaaaaa');
         $originalElementArrivage = array();
         $backup = array();
         foreach ($arrivage->getElementArrivages() as $elementArrivage) {
@@ -119,6 +120,7 @@ class ArrivageController extends Controller
 
         // die("qq".count($originalElementArrivage));
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+// die('aass');
             $em = $this->getDoctrine()->getManager();
             $uow = $em->getUnitOfWork();
             $elementArrivages = $arrivage->getElementArrivages();
@@ -153,7 +155,12 @@ class ArrivageController extends Controller
                     'Vous avez déja vendu '.$backup[$id]->getQuantiteVendu().' et déclarer un nombre d\'unité perdu de '.$backup[$id]->getTotalPerdu().' de '.$backup[$id]->getProduit()->getName()." de Cet Arrivage."
                 );
                 $arrivage->addElementArrivage($backup[$id]);
-                $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+
+                // $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+                $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage, array(
+                  'action' => $this->generateUrl('arrivage_edit',array('id' => $arrivage->getId())),
+                  'method' => 'POST',
+                ));
                 // echo"<br />#".count($arrivage->getElementArrivages());
                 // echo "<br />zz=".$val."/".$backup[$id]->getQuantiteRestante()."<br />";
               }
@@ -169,7 +176,7 @@ class ArrivageController extends Controller
               //     'warning',
               //     " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
               // );
-
+// die('aaa');
               return $this->render('arrivage/edit.html.twig', array(
                   'arrivage' => $arrivage,
                   'form' => $editForm->createView(),
@@ -180,7 +187,7 @@ class ArrivageController extends Controller
             $arrivage->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('arrivage_edit', array('id' => $arrivage->getId()));
+            return $this->redirectToRoute('arrivage_show', array('id' => $arrivage->getId()));
         }
 
         return $this->render('arrivage/edit.html.twig', array(
@@ -223,7 +230,12 @@ class ArrivageController extends Controller
               //     " NB: Vous pouvez vous appuiyer sur la date de l'arrivage pour déduire les ventes relatives à cet element d'arrivage dans la page 'Ventes'"
               // );
 
-              $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+              // $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
+              $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage, array(
+                'action' => $this->generateUrl('arrivage_edit',array('id' => $arrivage->getId())),
+                'method' => 'POST',
+              ));
+
               $deleteForm = $this->createDeleteForm($arrivage);
 
               return $this->render('arrivage/edit.html.twig', array(

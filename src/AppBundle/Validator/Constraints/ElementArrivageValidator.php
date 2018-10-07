@@ -16,12 +16,15 @@ class ElementArrivageValidator extends ConstraintValidator
       else{
         $products_ids = array();
         foreach ($value as $elementArrivage){
-          if ($elementArrivage->getQuantite() <= 0 || $elementArrivage->getPrixUnit() <= 0 || $elementArrivage->getMontant() <=0 || is_null( $elementArrivage->getProduit() ) ){
+          // die('qq'.is_null( $elementArrivage->getProduit() ));
+          if ($elementArrivage->getQuantite() <= 0 || $elementArrivage->getPrixUnit() <= 0
+              || $elementArrivage->getMontant() <=0 || is_null( $elementArrivage->getProduit() ) ){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', "Verifiez votre saisi pour les elements d'arrivage.")
                 ->addViolation();
+          }else{
+            $products_ids[] = $elementArrivage->getProduit()->getName();
           }
-          $products_ids[] = $elementArrivage->getProduit()->getName();
         }
 
         $products_non_duplicated = array();

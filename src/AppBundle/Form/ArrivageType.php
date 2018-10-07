@@ -22,6 +22,9 @@ class ArrivageType extends AbstractType
         ->add('fournisseur', EntityType::class, array(
             'class' => 'AppBundle:Fournisseur',
             'choice_label' => 'name',
+            'placeholder' => 'Selectionnez Un Fournisseur',
+            'empty_data'  => null,
+            'required' => true,
         ))
         ->add('dateCreation', DateType::class, array(
             'widget' => 'single_text',
