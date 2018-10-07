@@ -107,13 +107,6 @@ class VenteController extends Controller
                 }
             }
 
-            if (count($elementsVente) == 0 ){
-              $this->addFlash(
-                  'danger',
-                  'Une Vente doit contenir au moins un produit!'
-              );
-              return $this->redirectToRoute('vente_new');
-            }
             // $dateNow = new \DateTime();
             // $vente->setDate($dateNow);
 
@@ -333,17 +326,8 @@ class VenteController extends Controller
      */
     public function editAction(Request $request, Vente $vente)
     {
-      // $elementVenteInitial = array();
-      // $elementsArrivageUsed = array();
-      // foreach ($vente->getElementsVente() as $elt){
-      //    $elementVenteInitial[$elt->getId()] = $elt->getQuantite();
-      //    $elementsArrivageUsed[] = $elt->getElementArrivage()->getId();
-      // }
-
       $em = $this->getDoctrine()->getManager();
       $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
-
-      // print_r($vente->getElementsVente()); die;
 
       $monstock_utilise = array();
       foreach( $vente->getElementsVente() as $elt){
@@ -373,7 +357,6 @@ class VenteController extends Controller
           }else{
             $element->getElementArrivage()->addElementsVente($element);
           }
-
         }
 
         // MAJ QTE VENDU ELEMENT_ARRIVAGE
