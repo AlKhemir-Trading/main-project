@@ -31,7 +31,7 @@
   </div>
 
   <div class="row justify-content-lg-center">
-    <div class="col-lg-9">
+    <div class="col-lg-12">
       <div class="tile tile2">
         <div class="row">
           <div class="container">
@@ -176,7 +176,7 @@
       console.log('start');
       var index = $('#tab_logic').data("index");
       $('#tab_logic').data("index",index + 1);
-      var newRow = $('<tr></tr>').append(prototype);
+      var newRow = $('<tr class="badge-secondary"></tr>').append(prototype);
       //console.log(newRow);
       //set tr index
       newRow.attr('data-id',index);
@@ -210,6 +210,10 @@
       let myParent = $(element).closest("tr");
 
       let quantite = myParent.find('.quantite').val();
+      let vendu = myParent.find('.vendu').html();
+      let perdu = myParent.find('.perdu').html();
+      let restant = (quantite - vendu - perdu);
+      myParent.find('.restant').html(restant);
       let prixUnit = ( myParent.find('.prixUnit').val() );
       myParent.find('.montant').val( ( quantite * prixUnit ) );
 

@@ -47,7 +47,7 @@ class ElementArrivageType extends AbstractType
           'attr' => array(
             "min" => 0,
             "step" => 0.1,
-            "placeholder" => "0.000",
+            // "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )
         ))
