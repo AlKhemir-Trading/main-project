@@ -149,6 +149,17 @@ class ElementArrivage
       $this->setTotalPerdu($totalPerdu);
     }
 
+    public function exceedQuantite(){
+      $sum = 0;
+      foreach ($this->elementsVente as $elt) {
+        $sum += $elt->getQuantite();
+      }
+      $sum += $this->totalPerdu;
+      if ($sum > $this->quantite)
+        return true;
+      return false;
+    }
+
     /**
      * Get id
      *

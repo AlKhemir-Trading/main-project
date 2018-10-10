@@ -30,7 +30,9 @@
                               <th>Matricule</th>
                               <th>Fournisseur</th>
                               <th>Produits</th>
+                              <th>Restant</th>
                               <th>Montant</th>
+                              <th>Entrant</th>
                               <th>Date d'arrivée</th>
                               <th>Actions</th>
                           </tr>
@@ -43,13 +45,26 @@
                             {% set class = '' %}
                           {% endif %}
 
+                          {% set quantiteTotal = 0 %}
+                          {% set quantiteRestanteTotal = 0 %}
+                          {% set montantEntrant = 0 %}
                           {% set produitArray = [] %}
                           {% for element in arrivage.elementArrivages %}
                             {% set produitArray = produitArray|merge([element.produit.name]) %}
+
+                            {% set quantiteTotal = quantiteTotal + element.quantite %}
+                            {% set quantiteRestanteTotal = quantiteRestanteTotal + element.quantiteRestante %}
+                            {% for eltVente in element.elementsVente %}
+                              {% set montantEntrant = montantEntrant + eltVente.montant %}
+                            {% endfor %}
                           {% endfor %}
 
-                          <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';"> -->
-                          <tr class="{{class}}">
+                          {% set finished = false %}
+                          {% if quantiteRestanteTotal == 0 %}
+                            {% set finished = true %}
+                          {% endif %}
+                          {# <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';"> --> #}
+                          <tr class="{{class}}" role="row">
                               <td>{{ "%05d"|format(arrivage.id) }}
                                 {% if( class != '' ) %}
                                     <span class="badge badge-info">New</span>
@@ -57,13 +72,16 @@
                               </td>
                               <td>
                                 {{ arrivage.fournisseur.name }}
-
                               </td>
                               <td>
                                 {{ produitArray|join(' + ') }}
                               </td>
-                              <td class="btn-info" data-order="{{arrivage.montant}}">
+                              <td class="{% if finished %} btn-primary {% endif %}"> {{quantiteRestanteTotal}}/{{quantiteTotal}} </td>
+                              <td class="btn-secondary" data-order="{{arrivage.montant}}">
                                 {{ arrivage.montant |number_format(0, '.', ' ') }} D
+                              </td>
+                              <td class="{%if finished%}{%if montantEntrant >= arrivage.montant%}btn-success{%else%}btn-danger{%endif%}{%endif%}" data-order="{{montantEntrant}}">
+                                {{montantEntrant|number_format(0, '.', ' ') }} D
                               </td>
                               <td data-order="{{arrivage.dateCreation|date('YmdHis')}}">
                                 {{ arrivage.dateCreation|date('d/m/Y (H:i)') }}
@@ -88,6 +106,11 @@
 
                               </td>
                           </tr>
+                          <!-- <tr class="">
+                            <td class="details-row btn-primary" colspan="6">
+                              AA
+                            </td>
+                          </tr> -->
                         {% endfor %}
                       </tbody>
                     </table>
@@ -115,8 +138,25 @@
 
       $(document).ready(function(){
         //$('#ArrivagesItem').toggleClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable( {
+          // "columnDefs": [ {
+          //       "targets": [1,3],
+          //       "searchable": false,
+          //       "orderable": false
+          //     } ]
+          }
+        );
         table.order( [ 0, 'desc' ] ).draw();
+
+        // //details row:
+        // $(".data-row").click(function(){ alert('a');
+        //     //$this.next( ".details-row" );
+        // })
+        //
+        // $("#example tbody tr").click(function(){
+        //     alert("The paragraph was clicked.");
+        // });
+
       });
 
     </script>

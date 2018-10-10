@@ -15,7 +15,7 @@ class ElementArrivageRepository extends \Doctrine\ORM\EntityRepository
       return $this->getEntityManager()
           ->createQuery('
               SELECT p FROM AppBundle:ElementArrivage p
-              where p.quantite - p.quantiteVendu > 0
+              where p.quantiteRestante > 0
           ')
           //ORDER BY p.quantite ASC
           ->getResult();

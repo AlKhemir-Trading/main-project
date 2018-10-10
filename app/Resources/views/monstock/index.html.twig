@@ -36,6 +36,7 @@
                     <table id="example" class="table table-striped table-bordered w-100 tableData">
                       <thead>
                           <tr>
+                              <!-- <th class="text-nowrap">Arrivage</th> -->
                               <th class="text-nowrap" style="">Produit</th>
                               <th class="text-nowrap" style="">Fournisseur</th>
                               <th class="text-nowrap" style="">Date d'arrivage</th>
@@ -57,6 +58,9 @@
                           {% endif %}
 
                           <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': element.arrivage.id }) }}';" >
+                              <!-- <td class="text-center">
+                                #{{ "%05d"|format(element.arrivage.id) }}
+                              </td> -->
                               <td>{{ element.produit.name }}
                                 {% if( class != '' ) %}
                                     <span class="badge badge-info">New</span>
@@ -68,6 +72,7 @@
                               <td data-order="{{element.arrivage.dateCreation|date('YmdHis')}}">
                                 {{ element.arrivage.dateCreation|date('d/m/Y (H:i)') }}
                               </td>
+
                               <td class="text-center btn-info">
                                 {{ element.quantite }}
                               </td>

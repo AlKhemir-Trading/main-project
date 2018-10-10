@@ -29,7 +29,8 @@ class ElementVenteValidator extends ConstraintValidator
                 ->setParameter('{{ string }}', "Verifiez votre saisi pour les elements de vente.")
                 ->addViolation();
           }
-          elseif ( $elementVente->getQuantite() > $elementVente->getElementArrivage()->getQuantiteRestante() ) {
+          elseif ( $elementVente->getElementArrivage()->exceedQuantite() ) {
+            
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', "Vous avez saisie une quantite supérieur à celle du stock!")
                 ->addViolation();

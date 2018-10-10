@@ -62,8 +62,10 @@ class ArrivageController extends Controller
               $elementArrivage->setArrivage($arrivage);
             }
             //die;
-            // $dateNow = new \DateTime();
-            // $arrivage->setDateCreation($dateNow);
+            $dateNow = new \DateTime();
+            $hours = $dateNow->format('H');
+            $minutes = $dateNow->format('i');
+            $arrivage->getDateCreation()->setTime($hours,$minutes);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($arrivage);
@@ -154,8 +156,8 @@ class ArrivageController extends Controller
                     'danger',
                     'Vous avez déja vendu '.$backup[$id]->getQuantiteVendu().' et déclarer un nombre d\'unité perdu de '.$backup[$id]->getTotalPerdu().' de '.$backup[$id]->getProduit()->getName()." de Cet Arrivage."
                 );
-                $arrivage->addElementArrivage($backup[$id]);
-
+                //$arrivage->addElementArrivage($backup[$id]);
+                $em->refresh($arrivage);
                 // $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
                 $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage, array(
                   'action' => $this->generateUrl('arrivage_edit',array('id' => $arrivage->getId())),
@@ -170,7 +172,7 @@ class ArrivageController extends Controller
             if($error){
               $this->addFlash(
                   'info',
-                  "Si vous y insister, vous devez supprimer les ventes relatives à cet element d'arrivage."
+                  "Si vous y insister, vous devez supprimer les ventes ainsi que les pertes relatives à chaque element d'arrivage."
               );
               // $this->addFlash(
               //     'warning',

@@ -107,6 +107,10 @@ class VenteController extends Controller
                 }
             }
 
+            $dateNow = new \DateTime();
+            $hours = $dateNow->format('H');
+            $minutes = $dateNow->format('i');
+            $vente->getDate()->setTime($hours,$minutes);
             // $dateNow = new \DateTime();
             // $vente->setDate($dateNow);
 
@@ -349,13 +353,12 @@ class VenteController extends Controller
 
 
       if ($editForm->isSubmitted() && $editForm->isValid()) {
-
         $elementsVente = $vente->getElementsVente();
         foreach( $elementsVente as $element){
           if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
             $vente->removeElementsVente($element);
             $element->getElementArrivage()->removeElementsVente($element);
-          }else{
+          }elseif (! $element->getElementArrivage()->getElementsVente()->contains($element)){
             $element->getElementArrivage()->addElementsVente($element);
           }
           $element->getElementArrivage()->updateQutantiteVendu();
@@ -381,6 +384,12 @@ class VenteController extends Controller
         // die("ss".$vente->getClient()->getPlusOuMoins());
         return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
       }
+      // elseif ($editForm->isSubmitted()){
+      //   // foreach ($vente->getElementsVente() as $elt) {
+      //       $em->refresh($vente);
+      //       $editForm = $this->createForm('AppBundle\Form\VenteType', $vente);
+      //   // }
+      // }
 
       return $this->render('vente/edit.html.twig', array(
           'vente' => $vente,
