@@ -1,6 +1,6 @@
 {% extends 'fournisseur/layout.html.twig' %}
 
-{% set action = "Détails Fournisseur" %}
+{% set action = "Détails Fournisseur " ~ "#%05d"|format(fournisseur.id) %}
 
 {% block body2 %}
 

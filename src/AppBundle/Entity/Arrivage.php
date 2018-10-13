@@ -73,17 +73,17 @@ class Arrivage
       $this->montant = 0;
     }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function prePersistOrUpdate()
-    {
-        $montant = 0;
-        foreach ($this->elementArrivages as $element)
-          $montant += $element->getMontant();
-        $this->montant = $montant;
-    }
+    // /**
+    //  * @ORM\PrePersist
+    //  * @ORM\PreUpdate
+    //  */
+    // public function prePersistOrUpdate()
+    // {
+    //     $montant = 0;
+    //     foreach ($this->elementArrivages as $element)
+    //       $montant += $element->getMontant();
+    //     $this->montant = $montant;
+    // }
 
     /**
      * Get id

@@ -28,29 +28,29 @@ class ElementArrivageType extends AbstractType
           )
         ))
 
-        ->add('prixUnit', NumberType::class, array(
-          //"grouping" => true,
-          //'data' => 0.000,
-          //'currency' => '',
-          // 'scale' => 3,
-          'attr' => array(
-            "min" => 0,
-            "step" => 1,
-            "placeholder" => "0.000",
-            //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
-          )
-        ))
+        // ->add('prixUnit', NumberType::class, array(
+        //   //"grouping" => true,
+        //   //'data' => 0.000,
+        //   //'currency' => '',
+        //   // 'scale' => 3,
+        //   'attr' => array(
+        //     "min" => 0,
+        //     "step" => 1,
+        //     "placeholder" => "0.000",
+        //     //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
+        //   )
+        // ))
 
-        ->add('montant', NumberType::class, array(
-          //'data' => 0.000,
-          // 'scale' => 3,
-          'attr' => array(
-            "min" => 0,
-            "step" => 0.1,
-            // "placeholder" => "0.000",
-            //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
-          )
-        ))
+        // ->add('montant', NumberType::class, array(
+        //   //'data' => 0.000,
+        //   // 'scale' => 3,
+        //   'attr' => array(
+        //     "min" => 0,
+        //     "step" => 0.1,
+        //     // "placeholder" => "0.000",
+        //     //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
+        //   )
+        // ))
 
         //->add('arrivage')
         ->add('produit', EntityType::class, array(

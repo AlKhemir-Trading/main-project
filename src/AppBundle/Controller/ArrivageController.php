@@ -118,15 +118,21 @@ class ArrivageController extends Controller
         // die('count'.count($elementArrivages = $arrivage->getElementArrivages()) );
         $deleteForm = $this->createDeleteForm($arrivage);
         $editForm = $this->createForm('AppBundle\Form\ArrivageType', $arrivage);
-        $editForm->handleRequest($request);
 
+        $originalDate = new \DateTime($arrivage->getDateCreation()->format("Y-m-d H:i:s"));
+
+        $editForm->handleRequest($request);
         // die("qq".count($originalElementArrivage));
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-// die('aass');
+
             $em = $this->getDoctrine()->getManager();
             $uow = $em->getUnitOfWork();
             $elementArrivages = $arrivage->getElementArrivages();
             $arrivageOriginal = $uow->getOriginalEntityData($arrivage);
+
+            if ( $arrivage->getDateCreation()->format("Y-m-d") == $originalDate->format("Y-m-d") )
+              $arrivage->setDateCreation($originalDate);
+
             # Unite of work doesn't care about Collection:
             // die("asa".count($arrivageOriginal['elementArrivages']));
             $error = false;
@@ -186,7 +192,7 @@ class ArrivageController extends Controller
               ));
             }
             // die('aaq');
-            $arrivage->prePersistOrUpdate();
+            // $arrivage->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('arrivage_show', array('id' => $arrivage->getId()));

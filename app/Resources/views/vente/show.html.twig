@@ -1,7 +1,7 @@
 {% extends 'vente/layout.html.twig' %}
 
 {% set show = true %}
-{% set action = "Détails Vente" %}
+{% set action = "Détails Vente " ~ "#%05d"|format(vente.id) %}
 
 {% block body2 %}
 <div class="row">

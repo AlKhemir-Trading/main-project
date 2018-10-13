@@ -1,6 +1,6 @@
 {% extends 'produit/layout.html.twig' %}
 
-{% set action = "Détails Produit" %}
+{% set action = "Détails Produit "~ "#%05d"|format(produit.id) %}
 
 {% block body2 %}
 

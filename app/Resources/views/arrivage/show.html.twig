@@ -1,6 +1,6 @@
 {% extends 'arrivage/layout.html.twig' %}
 
-{% set action = "Détails Arrivage" %}
+{% set action = "Détails Arrivage " ~ "#%05d"|format(arrivage.id) %}
 
 {# {%block stylesheets%}
   {{ parent() }}

@@ -349,10 +349,16 @@ class VenteController extends Controller
 
       $deleteForm = $this->createDeleteForm($vente);
       $editForm = $this->createForm('AppBundle\Form\VenteType', $vente);
+
+      $originalDate = new \DateTime($vente->getDate()->format("Y-m-d H:i:s"));
+
       $editForm->handleRequest($request);
 
 
       if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ( $vente->getDate()->format("Y-m-d") == $originalDate->format("Y-m-d") )
+          $vente->setDate($originalDate);
+
         $elementsVente = $vente->getElementsVente();
         foreach( $elementsVente as $element){
           if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){

@@ -34,7 +34,7 @@
           <th class="text-center" style="min-width:120px">
             Produit
           </th>
-          <th class="text-center">
+          <th class="text-center" style="width:150px">
             Quantite
           </th>
           <th class="text-center">
@@ -46,12 +46,12 @@
           <th class="text-center">
             Restant
           </th>
-          <th class="text-center">
+          <!-- <th class="text-center">
             Prix Unit
-          </th>
-          <th class="text-center">
+          </th> -->
+          <!-- <th class="text-center">
             Montant
-          </th>
+          </th> -->
           <th class="text-center">
             Entrant
           </th>
@@ -71,19 +71,20 @@
           <td class="btn-success text-center font-weight-bold vendu">0</td>
           <td class="btn-danger text-center font-weight-bold perdu">0</td>
           <td class="btn-warning text-center font-weight-bold restant">0</td>
-          <td data-name="desc">
+          {#
+          <!-- <td data-name="desc">
             <div class="input-group">
               {{ form_widget(form.elementArrivages.vars.prototype.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}
             <div class="input-group-append"><span class="input-group-text">D</span></div>
           </div>
-          </td>
-          <td data-name="sel">
+          </td> -->
+          <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant" disabled> -->
+          <!-- <td data-name="sel">
             <div class="input-group">
                 {{ form_widget(form.elementArrivages.vars.prototype.montant, {'attr': {'class': 'form-control montant', 'readonly':'readonly', "value":0}}) }}
-                <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant" disabled> -->
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
-          </td>
+          </td> -->#}
           <td class="btn-info text-center font-weight-bold">0</td>
           <td data-name="del">
             <button class="btn btn-danger item row-remove" type="button">
@@ -110,34 +111,38 @@
           <td class="btn-warning text-center font-weight-bold restant" >
             {{ attribute(arrivage.elementArrivages,loop.index0).quantiteRestante }}
           </td>
-          <td data-name="desc">
+          {#
+          <!-- <td data-name="desc">
             <div class="input-group">
               {{ form_widget(detail.prixUnit, {'attr': {'class': 'form-control prixUnit'}}) }}
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
-          </td>
-          <td data-name="sel">
+          </td> -->
+          <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant disabled"> -->
+          <!-- <td data-name="sel">
             <div class="input-group">
                 {{ form_widget(detail.montant, {'attr': {'class': 'form-control montant', 'readonly':'readonly'}}) }}
-                <!-- <input type="number" required="required" min="0" scale="3" step="0.001" placeholder="0.000" class="form-control montant disabled"> -->
               <div class="input-group-append"><span class="input-group-text">D</span></div>
             </div>
-          </td>
+          </td> -->
+          #}
           {% set entrant = 0 %}
           {% for eltVente in attribute(arrivage.elementArrivages,loop.index0).elementsVente %}
             {% set entrant = entrant + eltVente.montant %}
             {% set entrantGlobal = entrantGlobal + entrant %}
           {% endfor %}
           {% set currentEltArrivage = attribute(arrivage.elementArrivages,loop.index0) %}
-          {% set classEntrant = "btn-info" %}
+          {#
+          <!-- {% set classEntrant = "btn-info" %}
           {% if currentEltArrivage.quantiteRestante == 0 %}
             {% if entrant >= currentEltArrivage.montant %}
               {% set classEntrant="btn-success" %}
             {% else %}
               {% set classEntrant="btn-danger" %}
             {% endif %}
-          {% endif %}
-          <td class="text-center font-weight-bold {{classEntrant}}">{{entrant}}</td>
+          {% endif %} -->
+          #}
+          <td class="text-center font-weight-bold btn-info">{{entrant}}</td>
           <td data-name="del">
             <button class="btn btn-danger item row-remove" type="button">
             <i class="fa fa-close"></i>
@@ -152,18 +157,17 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td>
+        <!-- <td>
           <div class="input-group">
             <input id="montant" type="text" required="required" class="form-control" value="0" disabled>
             <div class="input-group-append"><span class="input-group-text">D</span></div>
           </div>
-        </td>
-        {% set classEntrantGlobal = "btn-danger" %}
+        </td> -->
+        {#<!-- {% set classEntrantGlobal = "btn-danger" %}
         {% if  entrantGlobal >= arrivage.montant %}
           {% set classEntrantGlobal = "btn-success" %}
-        {% endif %}
-        <td class="text-center font-weight-bold {{classEntrantGlobal}}" >{{entrantGlobal}}</td>
+        {% endif %} -->#}
+        <td class="text-center font-weight-bold btn-success" >{{entrantGlobal}}</td>
         <td>
           <button type="button" id="add_row" class='btn btn-primary'>
           <i class="fa fa-plus"></i>

@@ -51,19 +51,19 @@ class ElementArrivage
      */
     private $quantite;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prix_unit", type="decimal", precision=10, scale=3)
-     */
-    private $prixUnit;
+    // /**
+    //  * @var string
+    //  *
+    //  * @ORM\Column(name="prix_unit", type="decimal", precision=10, scale=3)
+    //  */
+    // private $prixUnit;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="montant", type="decimal", precision=10, scale=3)
-     */
-    private $montant;
+    // /**
+    //  * @var string
+    //  *
+    //  * @ORM\Column(name="montant", type="decimal", precision=10, scale=3)
+    //  */
+    // private $montant;
 
     /**
      * @var int
@@ -105,8 +105,8 @@ class ElementArrivage
 
     public function __construct() {
       $this->quantite = 0;
-      $this->prixUnit = 0;
-      $this->montant = 0;
+      // $this->prixUnit = 0;
+      // $this->montant = 0;
       $this->quantiteVendu = 0;
       $this->quantiteRestante = 0;
       $this->totalPerdu = 0;
@@ -300,53 +300,53 @@ class ElementArrivage
         return $this->elementsVente;
     }
 
-    /**
-     * Set prixUnit
-     *
-     * @param string $prixUnit
-     *
-     * @return ElementArrivage
-     */
-    public function setPrixUnit($prixUnit)
-    {
-        $this->prixUnit = $prixUnit;
+    // /**
+    //  * Set prixUnit
+    //  *
+    //  * @param string $prixUnit
+    //  *
+    //  * @return ElementArrivage
+    //  */
+    // public function setPrixUnit($prixUnit)
+    // {
+    //     $this->prixUnit = $prixUnit;
+    //
+    //     return $this;
+    // }
+    //
+    // /**
+    //  * Get prixUnit
+    //  *
+    //  * @return string
+    //  */
+    // public function getPrixUnit()
+    // {
+    //     return $this->prixUnit;
+    // }
 
-        return $this;
-    }
-
-    /**
-     * Get prixUnit
-     *
-     * @return string
-     */
-    public function getPrixUnit()
-    {
-        return $this->prixUnit;
-    }
-
-    /**
-     * Set montant
-     *
-     * @param string $montant
-     *
-     * @return ElementArrivage
-     */
-    public function setMontant($montant)
-    {
-        $this->montant = $montant;
-
-        return $this;
-    }
-
-    /**
-     * Get montant
-     *
-     * @return string
-     */
-    public function getMontant()
-    {
-        return $this->montant;
-    }
+    // /**
+    //  * Set montant
+    //  *
+    //  * @param string $montant
+    //  *
+    //  * @return ElementArrivage
+    //  */
+    // public function setMontant($montant)
+    // {
+    //     $this->montant = $montant;
+    //
+    //     return $this;
+    // }
+    //
+    // /**
+    //  * Get montant
+    //  *
+    //  * @return string
+    //  */
+    // public function getMontant()
+    // {
+    //     return $this->montant;
+    // }
 
     /**
      * Set quantiteRestante

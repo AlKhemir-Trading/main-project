@@ -1,6 +1,6 @@
 {% extends 'client/layout.html.twig' %}
 
-{% set action = "Détails Client" %}
+{% set action = "Détails Client " ~ "#%05d"|format(client.id) %}
 
 {% block body2 %}
 
