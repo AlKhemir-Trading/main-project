@@ -17,3 +17,5 @@
 /web/bundles/
 /.idea/*
 /web/facture/*
+/app/config/parameters.yml
+/app/config/config.yml
