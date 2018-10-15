@@ -142,6 +142,23 @@
                   </table>
                   </div>
 
+                  {% if show is defined and show == true %}
+                    {% set classMontantPaye="btn-success" %}
+                    {% if vente.montantPaye < vente.montant %}
+                      {% set classMontantPaye="btn-warning text-danger font-weight-bold" %}
+                    {% endif %}
+                    <div class="form-group clearfix">
+                      <label class="font-weight-bold required" for="montantPaye">Montant Paye</label>
+                      <div class="clearfix">
+                          <input id="montantPaye" type="text" class="form-control {{classMontantPaye}} w-50 float-left" disabled value="{{vente.montantPaye + 0}} / {{vente.montant + 0}}"/>
+                          <input id="montantPaye" type="text" class="form-control {{classMontantPaye}} w-25 float-right text-center" disabled value="Restant = {{vente.montant - vente.montantPaye}}"/>
+                      </div>
+                      {% if vente.montantPaye < vente.montant %}
+                        <button id="btn-payement" type="button" class="btn btn-success w-25 float-right mt-2" data-target="#ModalPayement" data-toggle="modal" >Effectuer Payement</button>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+
                 </div>
             </div>
         </div>

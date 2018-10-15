@@ -89,7 +89,7 @@ class Payement
      private $client;
 
      public function __construct() {
-       // $this->dateCheque = new \DateTime();
+       $this->dateCheque = new \DateTime();
      }
 
      /**

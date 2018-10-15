@@ -14,12 +14,13 @@
       <div class="col-md-12">
 
         <form>
-          <fieldset disabled>
+          <fieldset>
 
             {% include ('vente/form.twig.html') %}
 
           </fieldset>
         </form>
+
 
       </div>
     </div>
@@ -46,15 +47,108 @@
         </div>
       </div>
 
+      <!-- Modal Payement -->
+      <div class="modal fade" id="ModalPayement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header btn-info">
+              <h5 class="modal-title" id="exampleModalLabel">Payement</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              {{ form_start(formPayement, {'action': path('payement_new'),'attr': {'id': 'formPayement'}}) }}
+
+              {% for entity in formPayement.children %}
+                {% if entity.vars.name != '_token' %}
+                    <!-- {{dump(entity.vars.name)}} -->
+                    <div class="form-group">
+                      {{ form_label(attribute(formPayement,entity.vars.name), null,
+                        { 'label_attr': {'class': 'col-form-label font-weight-bold'} }) }}
+                        {% if entity.vars.name == "dateCheque" %}
+                          {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
+                        {% else %}
+                          {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+              {% endfor%}
+              {{form_end(formPayement)}}
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="formPayementButton" type="button" class="btn btn-info">Payement</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 {% endblock %}
 
 {% block javascripts %}
   {{parent()}}
-    {% block newEdit %}{% endblock %}
-
+  {% block newEdit %}{% endblock %}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
     $('textarea').attr("placeholder", "");
+    $('.quantite').prop('disabled', true);
+    $('.prixUnit').prop('disabled', true);
+    $('.montant').prop('disabled', true);
+    $('#appbundle_vente_client').prop('disabled', true);
+    $('#appbundle_vente_date').prop('disabled', true);
+
+    // Payement :
+    $('#appbundle_payement_dateCheque').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '2008-01-01',
+        endDate: 'y-12-31',
+        autoclose: true
+    });
+    let numCheque = $('#appbundle_payement_numCheque');
+    let pocesseur = $('#appbundle_payement_pocesseur');
+    let banque = $('#appbundle_payement_banque');
+    let dateCheque = $('#appbundle_payement_dateCheque');
+
+    let divNumCheque = numCheque.closest(".form-group");
+    let divPocesseur = pocesseur.closest(".form-group");
+    let divBanque = banque.closest(".form-group");
+    let divDateCheque = dateCheque.closest(".form-group");
+
+    $( "#appbundle_payement_type" ).val("cash");
+    divNumCheque.hide();
+    divPocesseur.hide();
+    divBanque.hide();
+    divDateCheque.hide();
+    $( "#appbundle_payement_type" ).change(function() {
+      if($( "#appbundle_payement_type" ).val() == "cash" ){
+        // numCheque.val('');
+        divNumCheque.hide();
+        divPocesseur.hide();
+        divBanque.hide();
+        divDateCheque.hide();
+      }else{
+        divNumCheque.show();
+        divPocesseur.show();
+        divBanque.show();
+        divDateCheque.show();
+        numCheque.focus();
+      }
+    });
+
+    $('#appbundle_payement_client').attr('disabled',true);
+    //button submit formPayement:
+    $("#formPayementButton").on("click", function(){
+      $('#appbundle_payement_client').removeAttr('disabled');
+      var form = document.getElementById("formPayement");
+      form.submit();
+      // $("#exampleModal").modal('hide');
+    });
+    // Fin Payement
+
   });
   </script>
 {% endblock %}

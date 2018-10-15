@@ -219,13 +219,6 @@
     var table = $('#example').DataTable();
     table.order( [1, 'desc' ] ).draw();
 
-    $('#appbundle_payement_dateCheque').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: '2008-01-01',
-        endDate: 'y-12-31',
-        autoclose: true
-    });
-
     var modalConfirm = function(callback){
       $("#confirm-delete-button").on("click", function(){
         callback(true);
@@ -243,7 +236,13 @@
     //montant
     $('#appbundle_payement_montant').prop('type', 'number');
 
-    //select Type Payement:
+    //Payement
+    $('#appbundle_payement_dateCheque').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '2008-01-01',
+        endDate: 'y-12-31',
+        autoclose: true
+    });
     let numCheque = $('#appbundle_payement_numCheque');
     let pocesseur = $('#appbundle_payement_pocesseur');
     let banque = $('#appbundle_payement_banque');

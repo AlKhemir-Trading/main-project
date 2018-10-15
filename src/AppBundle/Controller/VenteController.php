@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use AppBundle\Entity\Payement;
 
 /**
  * Vente controller.
@@ -167,6 +168,13 @@ class VenteController extends Controller
         //   print_r($element->getQuantite());
         // //die;
 
+        #Form Payement:
+        $payement = new Payement();
+        $payement->setClient($vente->getClient());
+        // die('aaa'.$payement->getClient()->getName());
+        $formPayement = $this->createForm('AppBundle\Form\PayementType', $payement);
+
+
         $pdfUrl = $this->generateUrl('facture', array("id"=>$vente->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->render('vente/show.html.twig', array(
@@ -174,6 +182,7 @@ class VenteController extends Controller
             'delete_form' => $deleteForm->createView(),
             'form' => $editForm->createView(),
             'pdfUrl' => $pdfUrl,
+            'formPayement' => $formPayement->createView(),
         ));
     }
 
