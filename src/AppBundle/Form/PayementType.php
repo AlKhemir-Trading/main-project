@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 
 class PayementType extends AbstractType
@@ -35,6 +37,15 @@ class PayementType extends AbstractType
             ),
         ))
         ->add('numCheque')
+        ->add('pocesseur')
+        ->add('banque')
+        ->add('dateCheque', DateType::class, array(
+            'widget' => 'single_text',
+            //'format' => 'dd/MM/yyyy',
+            'html5' => false,
+            // adds a class that can be selected in JavaScript
+            //'attr' => ['class' => 'js-datepicker'],
+        ))
         ->add('montant', NumberType::class, array(
           //'data' => 0.000,
           // 'scale' => 3,
@@ -45,12 +56,13 @@ class PayementType extends AbstractType
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"
           )
         ))
-        ->add('note', TextareaType::class, array(
-          'attr' => array(
-            //'class' => 'tinymce'
-          ),
-          'required' => false,
-        ));
+        // ->add('note', TextareaType::class, array(
+        //   'attr' => array(
+        //     //'class' => 'tinymce'
+        //   ),
+        //   'required' => false,
+        // ))
+        ;
 
     }/**
      * {@inheritdoc}

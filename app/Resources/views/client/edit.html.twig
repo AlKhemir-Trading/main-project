@@ -26,28 +26,36 @@
                           <tr>
                           <th scope="col" style="width:50px">#</th>
                           <th scope="col" style="width:100px">Date</th>
-                          <th>Methode</th>
-                          <th>Note</th>
                           <th scope="col">Montant</th>
-                          <th style="width:10px">
-
-                          </th>
+                          <th>Methode</th>
+                          <th>numCheque</th>
+                          <th>Pocesseur</th>
+                          <th>Banque</th>
+                          <th>dateCheque</th>
+                          <th style="width:10px"></th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="font-weight-bold">
                         {% set total = 0 %}
                         {% for payement in payements %}
                           {% set total = total + payement.montant %}
                         <tr data-id="{{payement.id}}">
                           <th scope="row">{{loop.index}}</th>
                           <td class="datePayement" data-order="{{payement.date|date('YmdHis')}}">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
+                          <td class="montantPayement btn-info">
+                            {{ payement.montant | number_format(0, '.', ' ') }} D
+                          </td>
+                          <th>{{ payement.type | capitalize }}</th>
+                          {% set empty = "" %}
                           {% if payement.type == "cash" %}
-                            <th>{{ payement.type | capitalize }}</th>
-                          {% else %}
-                            <th>{{ payement.type | capitalize }} : {{payement.numCheque}}</th>
+                            {% set empty = "-" %}
                           {% endif %}
-                          <td>{{payement.note}}</td>
-                          <td class="montantPayement btn-info">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
+                          <td>{{payement.numCheque}} {{empty}}</td>
+                          <td>{{payement.pocesseur}} {{empty}}</td>
+                          <td>{{payement.banque}} {{empty}}</td>
+                          <td>{% if not empty %}{{payement.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
+
+
                           <td>
                             <button type="button" class="btn btn-edit-xs btn-sm btn-table-sm modalDeletePayementBtn"><i class="fa fa-close fa-fix"></i></button>
                           </td>
@@ -57,16 +65,12 @@
                       <tfoot>
                         <tr>
                           <th scope="col"></th>
-                          <th></th>
-                          <th></th>
                           <th scope="col">Total</th>
                           <th scope="col" class="btn-secondary">{{ total |number_format(0, '.', ' ') }} D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                         <tr>
                           <th scope="col"></th>
-                          <th></th>
-                          <th></th>
                           <th scope="col">+ / -</th>
                           {% if client.plusOuMoins >= 0 %}
                             <th scope="col" class="btn-success">+ {{client.plusOuMoins |number_format(0, '.', ' ') }} D</th>

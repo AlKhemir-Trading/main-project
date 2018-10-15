@@ -61,6 +61,27 @@ class Payement
      private $numCheque;
 
      /**
+      * @var string
+      *
+      * @ORM\Column(name="pocesseur", type="string", length=255, nullable=true)
+      */
+     private $pocesseur;
+
+     /**
+      * @var string
+      *
+      * @ORM\Column(name="banque", type="string", length=255, nullable=true)
+      */
+     private $banque;
+
+     /**
+      * @var int
+      *
+      * @ORM\Column(name="date_cheque", type="datetime", nullable=true)
+      */
+      private $dateCheque;
+
+     /**
       * @var Client
       *
       * @ORM\ManyToOne(targetEntity="Client", inversedBy="payements", cascade={"persist"})
@@ -68,16 +89,22 @@ class Payement
      private $client;
 
      public function __construct() {
-
+       // $this->dateCheque = new \DateTime();
      }
 
      /**
       * @ORM\PrePersist
-      * @ORM\PreUpdate
       */
      public function prePersist(){
        $this->date = new \DateTime();
+       $this->dateCheque = null;
        // die('aa'.$this->date->format('d/m/Y H:i'));
+       if($this->type == 'cash'){
+         $this->numCheque = null;
+         $this->pocesseur = null;
+         $this->banque = null;
+         $this->dateCheque = null;
+       }
      }
 
      /**
@@ -267,5 +294,77 @@ class Payement
     public function getNumCheque()
     {
         return $this->numCheque;
+    }
+
+    /**
+     * Set pocesseur
+     *
+     * @param string $pocesseur
+     *
+     * @return Payement
+     */
+    public function setPocesseur($pocesseur)
+    {
+        $this->pocesseur = $pocesseur;
+
+        return $this;
+    }
+
+    /**
+     * Get pocesseur
+     *
+     * @return string
+     */
+    public function getPocesseur()
+    {
+        return $this->pocesseur;
+    }
+
+    /**
+     * Set banque
+     *
+     * @param string $banque
+     *
+     * @return Payement
+     */
+    public function setBanque($banque)
+    {
+        $this->banque = $banque;
+
+        return $this;
+    }
+
+    /**
+     * Get banque
+     *
+     * @return string
+     */
+    public function getBanque()
+    {
+        return $this->banque;
+    }
+
+    /**
+     * Set dateCheque
+     *
+     * @param \DateTime $dateCheque
+     *
+     * @return Payement
+     */
+    public function setDateCheque($dateCheque)
+    {
+        $this->dateCheque = $dateCheque;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCheque
+     *
+     * @return \DateTime
+     */
+    public function getDateCheque()
+    {
+        return $this->dateCheque;
     }
 }

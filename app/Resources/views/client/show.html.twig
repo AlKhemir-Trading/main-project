@@ -19,14 +19,18 @@
                   <div class="card-body">
 
                     <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered w-100 ">
+                    <table id="example" class="table table-striped table-bordered w-100 text-center">
                       <thead>
                           <tr>
                           <th scope="col" style="width:50px">#</th>
                           <th scope="col" style="width:140px">Date</th>
-                          <th>Methode</th>
-                          <th>Note</th>
                           <th scope="col">Montant</th>
+                          <th>Methode</th>
+                          <th>numCheque</th>
+                          <th>Pocesseur</th>
+                          <th>Banque</th>
+                          <th>dateCheque</th>
+
                           <!-- <th style="width:20px">
 
                           </th> -->
@@ -39,13 +43,17 @@
                         <tr>
                           <th scope="row">{{loop.index}}</th>
                           <td data-order="{{payement.date|date('YmdHis')}}">{% if payement.date %}{{ payement.date|date('Y-m-d (H:i)') }}{% endif %} </td>
-                          {% if payement.type == "cash" %}
-                            <th>{{ payement.type | capitalize }}</th>
-                          {% else %}
-                            <th>{{ payement.type | capitalize }} : {{payement.numCheque}}</th>
-                          {% endif %}
-                          <td>{{payement.note}}</td>
                           <td class="btn-info">{{ payement.montant | number_format(0, '.', ' ') }} D</td>
+                          <th>{{ payement.type | capitalize }}</th>
+                          {% set empty = "" %}
+                          {% if payement.type == "cash" %}
+                            {% set empty = "-" %}
+                          {% endif %}
+                          <td>{{payement.numCheque}} {{empty}}</td>
+                          <td>{{payement.pocesseur}} {{empty}}</td>
+                          <td>{{payement.banque}} {{empty}}</td>
+                          <td>{% if not empty %}{{payement.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
+
                           <!-- <td>
                             <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>
                           </td> -->
@@ -55,16 +63,12 @@
                       <tfoot>
                         <tr>
                           <th scope="col"></th>
-                          <th></th>
-                          <th></th>
                           <th scope="col">Total</th>
                           <th scope="col" class="btn-secondary">{{ total |number_format(0, '.', ' ') }} D</th>
                           <!-- <th scope="col">Handle</th> -->
                         </tr>
                         <tr>
                           <th scope="col"></th>
-                          <th></th>
-                          <th></th>
                           <th scope="col">+ / -</th>
                           {% if client.plusOuMoins >= 0 %}
                             <th scope="col" class="btn-success">+ {{client.plusOuMoins |number_format(0, '.', ' ') }} D</th>
@@ -145,8 +149,11 @@
                       <div class="form-group">
                         {{ form_label(attribute(formPayement,entity.vars.name), null,
                           { 'label_attr': {'class': 'col-form-label font-weight-bold'} }) }}
-                          {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
-
+                          {% if entity.vars.name == "dateCheque" %}
+                            {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control', 'data-format': "dd/MM/yyyy"} }) }}
+                          {% else %}
+                            {{ form_widget(attribute(formPayement,entity.vars.name) ,{'attr': {'class': 'form-control'} }) }}
+                          {% endif %}
                       </div>
                   {% endif %}
                 {% endfor%}
@@ -203,6 +210,7 @@
 {% block javascripts %}
 {{parent()}}
 <!-- <script type="text/javascript" src="{{ asset('template/js/plugins/sweetalert.min.js') }}"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="{{ asset('template/js/plugins/jquery.dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
@@ -210,6 +218,13 @@
   $(document).ready(function() {
     var table = $('#example').DataTable();
     table.order( [1, 'desc' ] ).draw();
+
+    $('#appbundle_payement_dateCheque').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '2008-01-01',
+        endDate: 'y-12-31',
+        autoclose: true
+    });
 
     var modalConfirm = function(callback){
       $("#confirm-delete-button").on("click", function(){
@@ -230,14 +245,32 @@
 
     //select Type Payement:
     let numCheque = $('#appbundle_payement_numCheque');
+    let pocesseur = $('#appbundle_payement_pocesseur');
+    let banque = $('#appbundle_payement_banque');
+    let dateCheque = $('#appbundle_payement_dateCheque');
+
     let divNumCheque = numCheque.closest(".form-group");
+    let divPocesseur = pocesseur.closest(".form-group");
+    let divBanque = banque.closest(".form-group");
+    let divDateCheque = dateCheque.closest(".form-group");
+
+    $( "#appbundle_payement_type" ).val("cash");
     divNumCheque.hide();
+    divPocesseur.hide();
+    divBanque.hide();
+    divDateCheque.hide();
     $( "#appbundle_payement_type" ).change(function() {
       if($( "#appbundle_payement_type" ).val() == "cash" ){
         // numCheque.val('');
         divNumCheque.hide();
+        divPocesseur.hide();
+        divBanque.hide();
+        divDateCheque.hide();
       }else{
         divNumCheque.show();
+        divPocesseur.show();
+        divBanque.show();
+        divDateCheque.show();
         numCheque.focus();
       }
     });
