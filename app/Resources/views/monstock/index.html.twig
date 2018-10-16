@@ -85,10 +85,10 @@
                               <td class="text-center {%if element.quantiteRestante > 0 %}btn-warning{%endif%}">
                                 {{ element.quantiteRestante }} </td>
                               <td>
-                                  {% set restantPercent = ( (element.quantite - element.quantiteVendu)/element.quantite) * 100 %}
+                                  {% set restantPercent = ( (element.quantite - element.quantiteRestante)/element.quantite) * 100 %}
                                 <div class="bs-component mb-2">
-                                  <div class="progress" style="background:chartreuse">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{restantPercent}}%;" ></div>
+                                  <div class="progress" style="background:red">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{restantPercent}}%;" ></div>
                                   </div>
                                 </div>
                                 {#
