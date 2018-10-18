@@ -63,7 +63,7 @@
 
               {% for entity in formPayement.children %}
                 {% if entity.vars.name != '_token' %}
-                    <!-- {{dump(entity.vars.name)}} -->
+                    {#<!-- {{dump(entity.vars.name)}} -->#}
                     <div class="form-group">
                       {{ form_label(attribute(formPayement,entity.vars.name), null,
                         { 'label_attr': {'class': 'col-form-label font-weight-bold'} }) }}

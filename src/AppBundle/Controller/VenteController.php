@@ -102,6 +102,7 @@ class VenteController extends Controller
             foreach( $elementsVente as $element){
                 if ( $element->getQuantite() == 0 || $element->getPrixUnit() == 0 ){
                   $vente->removeElementsVente($element);
+                  // $element->getElementArrivage()->removeElementsVente($element);
                 }else{
                   $element->getElementArrivage()->addElementsVente($element);
                   //$em->persist($element->getElementArrivage());
@@ -120,7 +121,7 @@ class VenteController extends Controller
               $elementVente->getElementArrivage()->updateQutantiteVendu();
             }
 
-            #payer vente auto
+            # Montant Paye:
             // echo "aaa".is_numeric($vente->getClient()->getPlusOuMoins())."/".is_numeric($vente->getMontant())."<br />";
             // die("qsd".$vente->getClient()->getPlusOuMoins());
             if( $vente->getClient()->getPlusOuMoins() > 0 ){
@@ -132,6 +133,7 @@ class VenteController extends Controller
                 //$vente->getClient()->setPlusOuMoins($vente->getClient()->getPlusOuMoins() - $vente->getMontant());
               }
             }
+
             //die("aaa".$vente->getMontantPaye());
             $vente->getClient()->updatePlusOuMoins();
             $em->persist($vente);
@@ -559,7 +561,7 @@ class VenteController extends Controller
 
           do {
             $limitRequest += 1;
-            $ventesPayement = $venteRepository->ventesPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getId());
+            $ventesPayement = $venteRepository->ventesPayesUntil($vente->getClient()->getId(),$limitRequest,$vente->getDate()->format('Y-m-d H:i:s'));
             $sumMontantPaye = 0;
             foreach ($ventesPayement as $venteY){
               $sumMontantPaye += $venteY->getMontantPaye();
@@ -570,7 +572,6 @@ class VenteController extends Controller
             // die('aazzeeerr');
           } while ($sumMontantPaye < $diff && count($ventesPayement) == $limitRequest );
 
-          $saveDiff = $diff;
           foreach ($ventesPayement as $venteY) {
             if ($venteY->getMontantPaye() >= $diff){
               $venteY->setMontantPaye($venteY->getMontantPaye() - $diff);

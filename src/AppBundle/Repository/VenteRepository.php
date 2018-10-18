@@ -72,17 +72,17 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
           ->getResult();
   }
 
-  public function ventesPayesUntil($idClient,$limit,$idVente)
+  public function ventesPayesUntil($idClient,$limit,$date)
   {
       return $this->getEntityManager()
           ->createQuery("
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye > 0
               AND v.client = ".$idClient."
-              AND v.id != ".$idVente."
+              AND v.date > '".$date."'
               ORDER BY v.date DESC
           ")
-          //AND v.date > '".$date."'
+          //AND v.id != ".$idVente."
           ->setMaxResults($limit)
           ->getResult();
   }
