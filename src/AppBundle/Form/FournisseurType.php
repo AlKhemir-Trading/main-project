@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 
 class FournisseurType extends AbstractType
@@ -22,6 +23,12 @@ class FournisseurType extends AbstractType
           'required' => true,
         ))
         ->add('pays',CountryType::class, array(
+        ))
+        ->add('contactPerson',TextType::class, array(
+          'required' => false,
+        ))
+        ->add('mail',EmailType::class, array(
+          'required' => false,
         ))
         ->add('tel',TelType::class, array(
           'required'   => false,

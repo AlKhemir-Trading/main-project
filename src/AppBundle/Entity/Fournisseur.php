@@ -39,6 +39,20 @@ class Fournisseur
     private $pays;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_person", type="string", length=50, nullable=true)
+     */
+    private $contactPerson;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=50, nullable=true)
+     */
+    private $mail;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="tel", type="bigint", nullable=true)
@@ -200,5 +214,53 @@ class Fournisseur
     public function getArrivages()
     {
         return $this->arrivages;
+    }
+
+    /**
+     * Set contactPerson
+     *
+     * @param string $contactPerson
+     *
+     * @return Fournisseur
+     */
+    public function setContactPerson($contactPerson)
+    {
+        $this->contactPerson = $contactPerson;
+
+        return $this;
+    }
+
+    /**
+     * Get contactPerson
+     *
+     * @return string
+     */
+    public function getContactPerson()
+    {
+        return $this->contactPerson;
+    }
+
+    /**
+     * Set mail
+     *
+     * @param string $mail
+     *
+     * @return Fournisseur
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    /**
+     * Get mail
+     *
+     * @return string
+     */
+    public function getMail()
+    {
+        return $this->mail;
     }
 }

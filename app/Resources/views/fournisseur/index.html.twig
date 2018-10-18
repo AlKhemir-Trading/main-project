@@ -37,8 +37,10 @@
                               <tr>
                                   <th>Matricule</th>
                                   <th>Nom</th>
-                                  <th>Tel</th>
                                   <th>Pays</th>
+                                  <th>Contact Person</th>
+                                  <th>Mail</th>
+                                  <th>Tel</th>
                                   <th>Actions</th>
                               </tr>
                           </thead>
@@ -60,10 +62,13 @@
                                   <td class="btn-info">
                                     {{ fournisseur.name }}
                                   </td>
-                                  <td>{{ fournisseur.tel }}</td>
                                   <td data-order="{{fournisseur.pays}}">
                                     <span class="flag-icon flag-icon-{{ fournisseur.pays|lower }}"></span>
                                   </td>
+                                  <td>{{ fournisseur.contactPerson }}</td>
+                                  <td>{{ fournisseur.mail }}</td>
+                                  <td>{{ fournisseur.tel }}</td>
+
                                   <td>
 
                                     <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('fournisseur_show', { 'id': fournisseur.id }) }}">
