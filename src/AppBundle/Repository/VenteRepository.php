@@ -65,7 +65,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
               where v.montantPaye < v.montant
               AND v.client = ".$idClient."
               AND v.id != ".$idVente."
-              ORDER BY v.date ASC
+              ORDER BY v.date ASC,v.id ASC
           ")
           //  AND v.date > '".$date."'
           ->setMaxResults($limit)
@@ -80,7 +80,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
               where v.montantPaye > 0
               AND v.client = ".$idClient."
               AND v.date > '".$date."'
-              ORDER BY v.date DESC
+              ORDER BY v.date DESC,v.id DESC
           ")
           //AND v.id != ".$idVente."
           ->setMaxResults($limit)
@@ -93,7 +93,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye > 0
               AND v.client = ".$idClient."
-              ORDER BY v.date DESC
+              ORDER BY v.date DESC,v.id DESC
           ")
           //AND v.date > '".$date."'
           ->setMaxResults(1)
@@ -106,7 +106,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye < v.montant
               AND v.client = ".$idClient."
-              ORDER BY v.date ASC
+              ORDER BY v.date ASC,v.id ASC
           ")
           //AND v.date > '".$date."'
           ->setMaxResults(1)
@@ -119,7 +119,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
             SELECT v FROM AppBundle:Vente v
             WHERE v.client = ".$idClient."
             AND v.date BETWEEN '".$date1."' AND '".$date2."'
-            ORDER BY v.date DESC
+            ORDER BY v.date DESC,v.id DESC
         ")
         //AND v.date > '".$date."'
         //->setMaxResults($limit)
@@ -144,7 +144,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
               SELECT v FROM AppBundle:Vente v
               where v.montantPaye > 0
               AND v.client = '.$id.'
-              ORDER BY v.date DESC
+              ORDER BY v.date DESC,v.id DESC
           ')
           ->setMaxResults($limit)
           ->getResult();
@@ -187,7 +187,7 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
             FROM AppBundle:Vente v
             where v.montantPaye > 0
             AND v.client = '.$clientId.'
-            ORDER BY v.date ASC
+            ORDER BY v.date ASC,v.id ASC
             limit '.$limitRequest.'
       ')
       ->getResult();

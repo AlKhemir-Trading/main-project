@@ -611,11 +611,15 @@ class VenteController extends Controller
       $res2 = $venteRepository->firstVenteUmpayed($vente->getClient()->getId());
       if(!empty($res2))
         $firstVenteUmpayed = $res2[0];
-
+         //echo"--".$lastVenteMontantPayeNotZero->getId()."/".$firstVenteUmpayed->getId(); die('aaq');
       if( $lastVenteMontantPayeNotZero
           && $firstVenteUmpayed
           && $lastVenteMontantPayeNotZero->getId() != $firstVenteUmpayed->getId()
-          &&  $lastVenteMontantPayeNotZero->getDate() > $firstVenteUmpayed->getDate() ){
+          &&  ( $lastVenteMontantPayeNotZero->getDate() > $firstVenteUmpayed->getDate()
+                ||
+                $lastVenteMontantPayeNotZero->getDate() == $firstVenteUmpayed->getDate() && $lastVenteMontantPayeNotZero->getId() > $firstVenteUmpayed->getId()
+              )
+        ){ // die('KO');
 
             //get ventes from first umpayed to last montant paye > 0
             $vts = $venteRepository->getVentesToTreat($vente->getClient()->getId(),$firstVenteUmpayed->getDate()->format('Y-m-d H:i:s'),$lastVenteMontantPayeNotZero->getDate()->format("Y-m-d H:i:s"));
