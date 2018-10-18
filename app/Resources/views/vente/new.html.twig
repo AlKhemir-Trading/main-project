@@ -5,6 +5,7 @@
 {% block stylesheets %}
   {{ parent() }}
   <link rel="stylesheet" type="text/css" href="{{ asset('template/css/newAndEditPages.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 {% endblock %}
 
 {% block body2 %}
@@ -22,7 +23,6 @@
 
 {% block javascripts %}
   {{parent()}}
-
   <script type="text/javascript">
   $(document).ready(function(){
 

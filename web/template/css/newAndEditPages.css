@@ -2,3 +2,7 @@ input:not([type="submit"]), select, textarea {
     background: blanchedalmond!important;
     font-weight: bold!important;
 }
+
+.btn-light{
+  background: blanchedalmond !important;
+}

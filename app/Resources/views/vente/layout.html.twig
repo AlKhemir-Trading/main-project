@@ -71,9 +71,12 @@
   <script type="text/javascript" src="{{ asset('template/js/plugins/dataTables.bootstrap.min.js') }}"></script>
   <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function() {
+
+    $('.selectpicker').selectpicker();
 
     var table = $('#example').DataTable();
     table.order( [ 2, 'desc' ] ).draw();
