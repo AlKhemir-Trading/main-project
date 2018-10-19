@@ -58,8 +58,8 @@
                                   </td>
                                   <td>{{ client.tel }}</td>
 
-                                  <td data-order="{{client.pays}}">
-                                    <span class="flag-icon flag-icon-{{ client.pays|lower }}"></span>
+                                  <td data-order="{{client.zone}}">
+                                    {{ client.zone|upper }}
                                   </td>
                                   {% if (client.plusOuMoins < 0 ) %}
                                     <td class="btn-danger" data-order="{{client.plusOuMoins}}">

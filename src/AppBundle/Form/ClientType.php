@@ -20,7 +20,7 @@ class ClientType extends AbstractType
         $builder
         ->add('name',TextType::class, array(
         ))
-        ->add('pays',CountryType::class, array(
+        ->add('zone',TextType::class, array(
         ))
         ->add('tel',TelType::class, array(
           'required'   => false,

@@ -35,9 +35,9 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="pays", type="string", length=50)
+     * @ORM\Column(name="zone", type="string", length=50)
      */
-    private $pays;
+    private $zone;
 
     /**
      * @var int
@@ -154,30 +154,6 @@ class Client
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set pays
-     *
-     * @param string $pays
-     *
-     * @return Client
-     */
-    public function setPays($pays)
-    {
-        $this->pays = $pays;
-
-        return $this;
-    }
-
-    /**
-     * Get pays
-     *
-     * @return string
-     */
-    public function getPays()
-    {
-        return $this->pays;
     }
 
     /**
@@ -318,5 +294,29 @@ class Client
     public function getPlusOuMoins()
     {
         return $this->plusOuMoins;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param string $zone
+     *
+     * @return Client
+     */
+    public function setZone($zone)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return string
+     */
+    public function getZone()
+    {
+        return $this->zone;
     }
 }
