@@ -38,77 +38,86 @@
 
 
 <div class="container">
+    <div class="col-sm-12">
+  		<div class="invoice-title text-center btn-primary p-3">
+  			<h2 class="pull-left">ALKHEMIR-TRADING </h2><h2>FACTURE</h2><h3 class="pull-right">Commande #{{ "%05d"|format(id) }}</h3>
+  		</div>
+      <hr />
+      <br />
 
-        <div class="col-sm-12">
-    		<div class="invoice-title">
-    			<h2>Facture</h2><h3 class="pull-right">Order #{{ "%05d"|format(id) }}</h3>
-    		</div>
-        <hr />
-        <br />
+      <table>
+        <tr>
+          <td style="width:200px">Facturé par:</td>
+          <td><strong>{{ app.user.firstName |capitalize  }} {{ app.user.lastName |capitalize  }}</strong></td>
+        </tr>
+        <tr>
+          <td>Facturé à:</td>
+          <td><strong>{{ vente.client.name |capitalize  }}</strong></td>
+        </tr>
+        <tr>
+          <td>Facturé le:</td>
+          <td><strong>{{ vente.date |date("m/d/Y") }}</strong></td>
+        </tr>
+      </table>
 
-				<div >
+				<!-- <div >
 	      Facturé par:
-        <strong>  Mr {{ app.user.username |capitalize  }}</strong>
+        <strong>  {{ app.user.username |capitalize  }}</strong>
 				</div>
 
 				<div >
     			Facturé à:
-					<strong> Mr {{ vente.client.name |capitalize  }}</strong>
+					<strong> {{ vente.client.name |capitalize  }}</strong>
           <br>
 				</div>
-
-        <!-- <div >
-	      Methode de payement:
-          <strong> Cheque</strong>
-				</div> -->
 
 				<div >
     			Facturé le:
 					<strong> {{ vente.date |date("m/d/Y") }}</strong>
           <br>
-				</div>
+				</div> -->
 
-    </div>
-    <hr />
-    <br />
+        </div>
+        <hr />
+        <br />
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h2 class="panel-title"><strong>Order summary</strong></h3>
-          </div>
-          <div class="panel-body">
-            <div class="table-responsive">
-              <table class="table table-condensed">
-                <thead>
-                    <tr>
-                      <td><strong>Produits</strong></td>
-                      <td class="text-center"><strong>Quantite</strong></td>
-                      <td class="text-center"><strong>Prix Unitaire</strong></td>
-                      <td class="text-right"><strong>Montant</strong></td>
-                    </tr>
-                </thead>
-                <tbody>
-                  {% for produit,value in produits %}
-                    <tr>
-                      <td>{{produit}}</td>
-                      <td class="text-center">{{value['quantite'] }}</td>
-                      <td class="text-center">{{value['prixUnit'] | number_format(0, '.', ' ')}} D</td>
-                      <td class="text-right">{{value['montant'] | number_format(0, '.', ' ') }} D</td>
-                    </tr>
-                  {% endfor %}
-                  <tr>
-                    <td class="no-line"></td>
-                    <td class="no-line"></td>
-                    <td class="no-line text-center"><strong>Total</strong></td>
-                    <td class="no-line text-right">{{montantGlobal | number_format(0, '.', ' ')}} D</td>
-                  </tr>
-                </tbody>
-              </table>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h2 class="panel-title"><strong>Order summary</strong></h3>
+              </div>
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                          <td><strong>Produits</strong></td>
+                          <td class="text-center"><strong>Quantite</strong></td>
+                          <td class="text-center"><strong>Prix Unitaire</strong></td>
+                          <td class="text-right"><strong>Montant</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for produit,value in produits %}
+                        <tr>
+                          <td>{{produit}}</td>
+                          <td class="text-center">{{value['quantite'] }}</td>
+                          <td class="text-center">{{value['prixUnit'] | number_format(0, '.', ' ')}} D</td>
+                          <td class="text-right">{{value['montant'] | number_format(0, '.', ' ') }} D</td>
+                        </tr>
+                      {% endfor %}
+                      <tr>
+                        <td class="no-line"></td>
+                        <td class="no-line"></td>
+                        <td class="no-line text-center"><strong>Total</strong></td>
+                        <td class="no-line text-right">{{montantGlobal | number_format(0, '.', ' ')}} D</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
-</div>
