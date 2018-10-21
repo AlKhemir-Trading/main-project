@@ -5,4 +5,5 @@ input:not([type="submit"]), select, textarea {
 
 .btn-light{
   background: blanchedalmond !important;
+  color: brown!important;
 }

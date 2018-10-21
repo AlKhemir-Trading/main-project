@@ -43,7 +43,7 @@ class ClientController extends Controller
     public function newAction(Request $request)
     {
         $client = new Client();
-        $client->setPays('TN');
+        // $client->setPays('TN');
         $form = $this->createForm('AppBundle\Form\ClientType', $client);
         $form->handleRequest($request);
 
