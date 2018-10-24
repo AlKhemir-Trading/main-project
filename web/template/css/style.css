@@ -123,14 +123,14 @@
 }
 
 .tableData tbody tr:hover{
-  background: powderblue;
+  background: powderblue!important;
   /* color:white!important; */
   /* cursor: pointer; */
   /* font-size: 18px; */
 }
 
 .tableVente tbody tr:hover{
-  background: powderblue;
+  background: powderblue!important;
   color: black!important;
   /* cursor: pointer; */
 }
@@ -192,4 +192,8 @@
   vertical-align: middle!important;
   white-space: nowrap!important;
   /* width:auto!important; */
+}
+
+.darkSeaGreen{
+  background: darkseagreen!important;
 }

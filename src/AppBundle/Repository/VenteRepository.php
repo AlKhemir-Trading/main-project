@@ -11,6 +11,12 @@ namespace AppBundle\Repository;
 class VenteRepository extends \Doctrine\ORM\EntityRepository
 {
 
+  public function findAll()
+  {
+      return $this->findBy(array(), array('date' => 'DESC'));
+  }
+
+
   public function venteByClientId($id)
   {
       // return $this->getEntityManager()

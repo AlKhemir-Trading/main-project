@@ -43,11 +43,18 @@
                           </tr>
                       </thead>
                       <tbody>
+                        {% set classTr = "" %}
+                        {% set currentDate = date("2100-00-00") %}
+                        <!-- {{ currentDate|date('d/m/Y') }} -->
                         {% for vente in ventes %}
-                          {% if( date( vente.date) > date('-'~newDatesNb~'days') )%}
-                            {% set class = 'a' %}
-                          {% else %}
-                            {% set class = '' %}
+                          {#<!-- {% if( date(vente.date) > date('-'~newDatesNb~'days') )%} -->#}
+                          {% if( date(vente.date)|date('Y-m-d') < currentDate|date('Y-m-d') )%}
+                              {% if classTr == "darkSeaGreen" %}
+                                {% set classTr = '' %}
+                              {% else %}
+                                {% set classTr = 'darkSeaGreen' %}
+                              {%endif%}
+                              {% set currentDate = date(vente.date) %}
                           {% endif %}
 
                           {% set produitArray = [] %}
@@ -55,8 +62,8 @@
                             {% set produitArray = produitArray|merge([element.elementArrivage.produit.name]) %}
                           {% endfor %}
 
-                          <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';"> -->
-                          <tr class="{{class}}">
+                          {#<!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';"> -->#}
+                          <tr class="{{classTr}}">
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
                               <td>
                                 {{ vente.client.name }}
@@ -65,9 +72,9 @@
                                 {{ produitArray|join(' + ') }}
                               </td>
                               <td>{{ "%05d"|format(vente.id) }}
-                                {% if( class != '' ) %}
+                                {% if( date()|date('Ymd') == vente.date|date('Ymd') ) %}
                                     <span class="badge badge-info">New</span>
-                                {%endif%}
+                                {% endif %}
                               </td>
                               {% set montantClass ="" %}
                               {% set montantPayeClass ="" %}
