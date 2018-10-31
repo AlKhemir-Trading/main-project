@@ -12,7 +12,7 @@
 
 
             <label class="col-form-label font-weight-bold"> Historique de payements:</label>
-            <button class=" btn btn-info btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
+            <button class=" btn btn-success btn-sm float-right mt-0" data-target="#ModalPayement" data-toggle="modal" > Nouveau payement</button>
             <div class="clearfix"></div>
             <div class="row ">
 
@@ -30,6 +30,7 @@
                           <th>Pocesseur</th>
                           <th>Banque</th>
                           <th>dateCheque</th>
+                          <th>Utilisateur</th>
 
                           <!-- <th style="width:20px">
 
@@ -53,7 +54,7 @@
                           <td>{{payement.pocesseur}} {{empty}}</td>
                           <td>{{payement.banque}} {{empty}}</td>
                           <td>{% if not empty %}{{payement.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
-
+                          <td>{{payement.user.firstName ~' '~ payement.user.lastName}}</td>
                           <!-- <td>
                             <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>
                           </td> -->
@@ -133,7 +134,7 @@
         <div class="modal fade" id="ModalPayement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header btn-info">
+              <div class="modal-header btn-success">
                 <h5 class="modal-title" id="exampleModalLabel">Payement</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -162,7 +163,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="formPayementButton" type="button" class="btn btn-info">Payement</button>
+                <button id="formPayementButton" type="button" class="btn btn-success">Payement</button>
               </div>
             </div>
           </div>
@@ -277,6 +278,7 @@
     $('#appbundle_payement_client').attr('disabled',true);
     //button submit formPayement:
     $("#formPayementButton").on("click", function(){
+      $("#formPayementButton").prop("disabled",true);
       $('#appbundle_payement_client').removeAttr('disabled');
       var form = document.getElementById("formPayement");
       form.submit();

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Actioncaisses list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Motif</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for actionCaisse in actionCaisses %}
+            <tr>
+                <td><a href="{{ path('actioncaisse_show', { 'id': actionCaisse.id }) }}">{{ actionCaisse.id }}</a></td>
+                <td>{{ actionCaisse.montant }}</td>
+                <td>{% if actionCaisse.date %}{{ actionCaisse.date|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ actionCaisse.motif }}</td>
+                <td>{{ actionCaisse.type }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('actioncaisse_show', { 'id': actionCaisse.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('actioncaisse_edit', { 'id': actionCaisse.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('actioncaisse_new') }}">Create a new actionCaisse</a>
+        </li>
+    </ul>
+{% endblock %}

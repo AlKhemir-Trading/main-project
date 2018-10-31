@@ -7,6 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 
+use AppBundle\Entity\ActionCaisse;
+use AppBundle\Entity\ElementCaisse;
+use AppBundle\Service\ElementCaisseService;
+
 /**
  * Payement controller.
  *
@@ -37,7 +41,7 @@ class PayementController extends Controller
      * @Route("/new", name="payement_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, ElementCaisseService $elementCaisseService)
     {
         $payement = new Payement();
         $form = $this->createForm('AppBundle\Form\PayementType', $payement);
@@ -69,18 +73,37 @@ class PayementController extends Controller
               $em->persist($vente);
             }
             $payement->getClient()->updatePlusOuMoins();
-            $em->persist($payement);
+            $payement->setUser($this->getUser());
 
+            #ActionCaisse
+            if ($payement->getType() == "cash"){
+              $actionCaisse = new ActionCaisse();
+              $actionCaisse->setUser($this->getUser());
+              $actionCaisse->setMontant($payement->getMontant());
+              $actionCaisse->setType("client");
+              $actionCaisse->setMotif("Payement du Client ".$payement->getClient()->getName());
+              $actionCaisse->setPayement($payement);
+              $payement->setActionCaisse($actionCaisse);
+
+              $elementCaisse = $elementCaisseService->obtainElementCaisse();
+              $actionCaisse->setElementCaisse($elementCaisse);
+              $elementCaisse->addActionsCaisse($actionCaisse);
+
+              $em->persist($actionCaisse);
+              $em->persist($elementCaisse);
+            }
+            $em->persist($payement);
             $em->flush();
 
             // return $this->redirectToRoute('payement_show', array('id' => $payement->getId()));
             return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));
         }
 
-        return $this->render('payement/new.html.twig', array(
-            'payement' => $payement,
-            'form' => $form->createView(),
-        ));
+        $this->addFlash(
+            'danger',
+            'Erreur de Saisie de Payement: Payement non effectué Veuillez recommencer.'
+        );
+        return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));
     }
 
     // /**
@@ -130,7 +153,7 @@ class PayementController extends Controller
      * @Route("/{id}", name="payement_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Payement $payement)
+    public function deleteAction(Request $request, Payement $payement, ElementCaisseService $elementCaisseService)
     {
         $form = $this->createDeleteForm($payement);
         $form->handleRequest($request);
@@ -172,6 +195,22 @@ class PayementController extends Controller
               }
             }
             $payement->getClient()->updatePlusOuMoins();
+
+            #ActionCaisse
+            $actionCaisse = new ActionCaisse();
+            $actionCaisse->setUser($this->getUser());
+            $actionCaisse->setMontant(-$payement->getMontant());
+            $actionCaisse->setType("client");
+            $actionCaisse->setMotif("Suppression du Payement de ".$payement->getClient()->getName()." du ".$payement->getDate()->format('Y-m-d'));
+            $actionCaisse->setPayement(null);
+
+            $elementCaisse = $elementCaisseService->obtainElementCaisse();
+            $actionCaisse->setElementCaisse($elementCaisse);
+            $elementCaisse->addActionsCaisse($actionCaisse);
+
+            $em->persist($actionCaisse);
+            $em->persist($elementCaisse);
+
             $em->remove($payement);
             $em->flush();
         }

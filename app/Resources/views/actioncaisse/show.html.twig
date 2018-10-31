@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Actioncaisse</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ actionCaisse.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ actionCaisse.montant }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if actionCaisse.date %}{{ actionCaisse.date|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Motif</th>
+                <td>{{ actionCaisse.motif }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ actionCaisse.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('actioncaisse_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('actioncaisse_edit', { 'id': actionCaisse.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

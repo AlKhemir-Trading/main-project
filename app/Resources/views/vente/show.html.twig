@@ -51,7 +51,7 @@
       <div class="modal fade" id="ModalPayement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header btn-info">
+            <div class="modal-header btn-success">
               <h5 class="modal-title" id="exampleModalLabel">Payement</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -80,7 +80,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button id="formPayementButton" type="button" class="btn btn-info">Payement</button>
+              <button id="formPayementButton" type="button" class="btn btn-success">Payement</button>
             </div>
           </div>
         </div>
@@ -142,6 +142,7 @@
     $('#appbundle_payement_client').attr('disabled',true);
     //button submit formPayement:
     $("#formPayementButton").on("click", function(){
+      $("#formPayementButton").prop("disabled",true);
       $('#appbundle_payement_client').removeAttr('disabled');
       var form = document.getElementById("formPayement");
       form.submit();

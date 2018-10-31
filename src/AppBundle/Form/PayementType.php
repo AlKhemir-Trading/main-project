@@ -50,7 +50,7 @@ class PayementType extends AbstractType
           //'data' => 0.000,
           // 'scale' => 3,
           'attr' => array(
-            "min" => 0,
+            "min" => 0.001,
             "step" => 0.001,
             "placeholder" => "0.000",
             //"onchange"=>"(function(el){el.value=parseFloat(el.value).toFixed(3);})(this)"

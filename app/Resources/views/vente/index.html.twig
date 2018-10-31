@@ -94,7 +94,7 @@
                               <td class="{{montantClass}}" data-order="{{vente.montant}}">
                                 {{ vente.montant | number_format(0, '.', ' ') }} D
                               </td>
-                              <td>
+                              <td data-order="{{vente.montant - vente.montantPaye}}">
 
                                 <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">
                                   <i class="fa fa-info fa-fix"></i>

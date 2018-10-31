@@ -32,6 +32,7 @@
                           <th>Pocesseur</th>
                           <th>Banque</th>
                           <th>dateCheque</th>
+                          <th>Utilisateur</th>
                           <th style="width:10px"></th>
                         </tr>
                       </thead>
@@ -54,7 +55,7 @@
                           <td>{{payement.pocesseur}} {{empty}}</td>
                           <td>{{payement.banque}} {{empty}}</td>
                           <td>{% if not empty %}{{payement.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
-
+                          <td>{{payement.user.firstName ~' '~ payement.user.lastName}}</td>
 
                           <td>
                             <button type="button" class="btn btn-edit-xs btn-sm btn-table-sm modalDeletePayementBtn"><i class="fa fa-close fa-fix"></i></button>
@@ -222,9 +223,10 @@
 
     });
 
+    var action_cste = $("#payementDeleteForm").attr('action');
     $("#delete-payement").on("click", function(){
       let id = $("#deletePayementModal").data('id');
-      let action = $("#payementDeleteForm").attr('action');
+      let action = action_cste;
       action = action.replace("id", id);
       $("#payementDeleteForm").attr('action',action);
       // alert(action);

@@ -28,7 +28,7 @@ class Payement
      * @var string
      * @Assert\NotBlank(message=" Spécifiez le payement")
      *
-     * @ORM\Column(name="montant", type="string", length=255)
+     * @ORM\Column(name="montant", type="decimal")
      */
     private $montant;
 
@@ -87,6 +87,20 @@ class Payement
       * @ORM\ManyToOne(targetEntity="Client", inversedBy="payements", cascade={"persist"})
       */
      private $client;
+
+     /**
+      * @var Client
+      *
+      * @ORM\ManyToOne(targetEntity="User")
+      */
+     private $user;
+
+     /**
+      * @var ActionCaisse
+      *
+      * @ORM\OneToOne(targetEntity="ActionCaisse", inversedBy="payement")
+      */
+     private $actionCaisse;
 
      public function __construct() {
        $this->dateCheque = new \DateTime();
@@ -366,5 +380,54 @@ class Payement
     public function getDateCheque()
     {
         return $this->dateCheque;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Payement
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * Set actionCaisse
+     *
+     * @param \AppBundle\Entity\ActionCaisse $actionCaisse
+     *
+     * @return Payement
+     */
+    public function setActionCaisse(\AppBundle\Entity\ActionCaisse $actionCaisse = null)
+    {
+        $this->actionCaisse = $actionCaisse;
+
+        return $this;
+    }
+
+    /**
+     * Get actionCaisse
+     *
+     * @return \AppBundle\Entity\ActionCaisse
+     */
+    public function getActionCaisse()
+    {
+        return $this->actionCaisse;
     }
 }
