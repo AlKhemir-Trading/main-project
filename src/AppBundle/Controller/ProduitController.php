@@ -49,6 +49,11 @@ class ProduitController extends Controller
             $em->persist($produit);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Produit Déclarée avec Succés: '.$produit->getName()
+            );
+
             return $this->redirectToRoute('produit_show', array('id' => $produit->getId()));
         }
 
@@ -90,7 +95,10 @@ class ProduitController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash(
+                'warning',
+                'Produit Modifié avec Succés: '.$produit->getName()
+            );
             return $this->redirectToRoute('produit_show', array('id' => $produit->getId()));
         }
 
@@ -116,6 +124,10 @@ class ProduitController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($produit);
             $em->flush();
+            $this->addFlash(
+                'danger',
+                'Produit Supprimé avec Succés: '.$produit->getName()
+            );
         }
 
         return $this->redirectToRoute('produit_index');

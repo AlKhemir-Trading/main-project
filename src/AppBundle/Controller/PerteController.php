@@ -53,8 +53,12 @@ class PerteController extends Controller
             $perte->getElementArrivage()->addPerdus($perte);
             $perte->getElementArrivage()->updateTotalPerdu();
             $em->persist($perte);
-
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Perte Déclarée avec Succéss: '.$perte->getPerdu().' de '.$perte->getElementArrivage()->getProduit()->getName()
+            );
 
             return $this->redirectToRoute('monstock_index', array());
         }
@@ -120,9 +124,15 @@ class PerteController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $perte->getElementArrivage()->removePerdus($perte);
-            $perte->getElementArrivage()->updateTotalPerdu();            
+            $perte->getElementArrivage()->updateTotalPerdu();
             $em->remove($perte);
             $em->flush();
+
+            $this->addFlash(
+                'danger',
+                'Perte Supprimée avec Succéss: '.$perte->getPerdu().' de '.$perte->getElementArrivage()->getProduit()->getName()
+            );
+
         }
 
         return $this->redirectToRoute('monstock_index');

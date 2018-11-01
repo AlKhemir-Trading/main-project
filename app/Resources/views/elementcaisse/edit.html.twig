@@ -57,7 +57,7 @@
             <td class="motif">{{ actionCaisse.motif }}</td>
             <td>{{ actionCaisse.user.firstName ~' '~ actionCaisse.user.lastName  }}</td>
             <td>
-              {% if actionCaisse.type != "client" or true %}
+              {% if actionCaisse.type != "client" %}
                 <button type="button" class="btn btn-danger btn-sm btn-table-sm modalDeleteActionCaisseBtn"><i class="fa fa-close fa-fix"></i></button>
               {% endif %}
             </td>

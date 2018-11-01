@@ -17,23 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 class ActionCaisseController extends Controller
 {
     /**
-     * Lists all actionCaisse entities.
-     *
-     * @Route("/", name="actioncaisse_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $actionCaisses = $em->getRepository('AppBundle:ActionCaisse')->findAll();
-
-        return $this->render('actioncaisse/index.html.twig', array(
-            'actionCaisses' => $actionCaisses,
-        ));
-    }
-
-    /**
      * Creates a new actionCaisse entity.
      *
      * @Route("/new", name="actioncaisse_new")
@@ -45,8 +28,6 @@ class ActionCaisseController extends Controller
         $actionCaisse->setUser($this->getUser());
         $form = $this->createForm('AppBundle\Form\ActionCaisseType', $actionCaisse);
         $form->handleRequest($request);
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($actionCaisse->getType() == "retrait")
@@ -63,6 +44,11 @@ class ActionCaisseController extends Controller
             $em->persist($actionCaisse);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'action caisse "'.$actionCaisse->getMotif().'" ajoutée avec succes.'
+            );
+
             // return $this->redirectToRoute('actioncaisse_show', array('id' => $actionCaisse->getId()));
             return $this->redirectToRoute('caisse_index');
         }
@@ -73,54 +59,6 @@ class ActionCaisseController extends Controller
         );
 
         return $this->redirectToRoute('caisse_index');
-        //
-        // return $this->render('actioncaisse/new.html.twig', array(
-        //     'actionCaisse' => $actionCaisse,
-        //     'form' => $form->createView(),
-        // ));
-    }
-
-    /**
-     * Finds and displays a actionCaisse entity.
-     *
-     * @Route("/{id}", name="actioncaisse_show")
-     * @Method("GET")
-     */
-    public function showAction(ActionCaisse $actionCaisse)
-    {
-        $deleteForm = $this->createDeleteForm($actionCaisse);
-
-        return $this->render('actioncaisse/show.html.twig', array(
-            'actionCaisse' => $actionCaisse,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing actionCaisse entity.
-     *
-     * @Route("/{id}/edit", name="actioncaisse_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, ActionCaisse $actionCaisse)
-    {
-        $deleteForm = $this->createDeleteForm($actionCaisse);
-        $editForm = $this->createForm('AppBundle\Form\ActionCaisseType', $actionCaisse);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('actioncaisse_edit', array('id' => $actionCaisse->getId()));
-        }
-
-
-
-        return $this->render('actioncaisse/edit.html.twig', array(
-            'actionCaisse' => $actionCaisse,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
     }
 
     /**
@@ -140,14 +78,77 @@ class ActionCaisseController extends Controller
                 $actionCaisse->getElementCaisse()->removeActionsCaisse($actionCaisse);
                 $em->remove($actionCaisse);
                 $em->flush();
+
+                $this->addFlash(
+                    'danger',
+                    'action caisse "'.$actionCaisse->getMotif().'" supprimée avec succes.'
+                );
             }else{
                 // throw new \Exception('Vous n\'avez pas le droit de supprimer cette action caisse');
                 throw $this->createNotFoundException('Vous n\'avez pas le droit de supprimer cette action caisse');
             }
         }
 
-        return $this->redirectToRoute('actioncaisse_index');
+        return $this->redirectToRoute('caisse_index');
     }
+
+    // /**
+    //  * Lists all actionCaisse entities.
+    //  *
+    //  * @Route("/", name="actioncaisse_index")
+    //  * @Method("GET")
+    //  */
+    // public function indexAction()
+    // {
+    //     $em = $this->getDoctrine()->getManager();
+    //
+    //     $actionCaisses = $em->getRepository('AppBundle:ActionCaisse')->findAll();
+    //
+    //     return $this->render('actioncaisse/index.html.twig', array(
+    //         'actionCaisses' => $actionCaisses,
+    //     ));
+    // }
+    //
+    // /**
+    //  * Finds and displays a actionCaisse entity.
+    //  *
+    //  * @Route("/{id}", name="actioncaisse_show")
+    //  * @Method("GET")
+    //  */
+    // public function showAction(ActionCaisse $actionCaisse)
+    // {
+    //     $deleteForm = $this->createDeleteForm($actionCaisse);
+    //
+    //     return $this->render('actioncaisse/show.html.twig', array(
+    //         'actionCaisse' => $actionCaisse,
+    //         'delete_form' => $deleteForm->createView(),
+    //     ));
+    // }
+    //
+    // /**
+    //  * Displays a form to edit an existing actionCaisse entity.
+    //  *
+    //  * @Route("/{id}/edit", name="actioncaisse_edit")
+    //  * @Method({"GET", "POST"})
+    //  */
+    // public function editAction(Request $request, ActionCaisse $actionCaisse)
+    // {
+    //     $deleteForm = $this->createDeleteForm($actionCaisse);
+    //     $editForm = $this->createForm('AppBundle\Form\ActionCaisseType', $actionCaisse);
+    //     $editForm->handleRequest($request);
+    //
+    //     if ($editForm->isSubmitted() && $editForm->isValid()) {
+    //         $this->getDoctrine()->getManager()->flush();
+    //
+    //         return $this->redirectToRoute('actioncaisse_edit', array('id' => $actionCaisse->getId()));
+    //     }
+    //
+    //     return $this->render('actioncaisse/edit.html.twig', array(
+    //         'actionCaisse' => $actionCaisse,
+    //         'edit_form' => $editForm->createView(),
+    //         'delete_form' => $deleteForm->createView(),
+    //     ));
+    // }
 
     /**
      * Creates a form to delete a actionCaisse entity.
@@ -165,20 +166,20 @@ class ActionCaisseController extends Controller
         ;
     }
 
-    public function obtainElementCaisse(){
-        $em = $this->getDoctrine()->getManager();
-        $elementCaisse = $em->getRepository('AppBundle:ElementCaisse')->findOneBy(array('date' => new \DateTime()));
-
-        if (!$elementCaisse){
-            $elementCaisse = new ElementCaisse();
-            $em = $this->getDoctrine()->getManager();
-            $res = $em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse();
-            if(count($res)){
-             $lastElementCaisse = $res[0];
-             $elementCaisse->setOuvertureCaisse($lastElementCaisse->getFermutureCaisse());
-            }
-        }
-
-        return $elementCaisse;
-    }
+    // public function obtainElementCaisse(){
+    //     $em = $this->getDoctrine()->getManager();
+    //     $elementCaisse = $em->getRepository('AppBundle:ElementCaisse')->findOneBy(array('date' => new \DateTime()));
+    //
+    //     if (!$elementCaisse){
+    //         $elementCaisse = new ElementCaisse();
+    //         $em = $this->getDoctrine()->getManager();
+    //         $res = $em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse();
+    //         if(count($res)){
+    //          $lastElementCaisse = $res[0];
+    //          $elementCaisse->setOuvertureCaisse($lastElementCaisse->getFermutureCaisse());
+    //         }
+    //     }
+    //
+    //     return $elementCaisse;
+    // }
 }

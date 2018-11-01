@@ -20,7 +20,9 @@ class VenteType extends AbstractType
         $builder
         ->add('client', EntityType::class, array(
             'class' => 'AppBundle:Client',
-            'choice_label' => 'name',
+            'choice_label' => function ($client) {
+                return $client->getName(). " (".$client->getZone().")";
+            },
             'placeholder' => 'Selectionnez Un Client',
             'empty_data'  => null,
             'required' => true

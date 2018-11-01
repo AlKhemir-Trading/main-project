@@ -50,6 +50,11 @@ class FournisseurController extends Controller
             $em->persist($fournisseur);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Fournisseur Crée avec Succés.'
+            );
+
             return $this->redirectToRoute('fournisseur_show', array('id' => $fournisseur->getId()));
         }
 
@@ -92,6 +97,11 @@ class FournisseurController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash(
+                'warning',
+                'Fournisseur Modifié avec Succés.'
+            );
+
             return $this->redirectToRoute('fournisseur_show', array('id' => $fournisseur->getId()));
         }
 
@@ -117,6 +127,10 @@ class FournisseurController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($fournisseur);
             $em->flush();
+            $this->addFlash(
+                'danger',
+                'Fournisseur Supprimé avec Succés.'
+            );
         }
 
         return $this->redirectToRoute('fournisseur_index');

@@ -66,7 +66,7 @@
                           <tr class="{{classTr}}">
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
                               <td>
-                                {{ vente.client.name }}
+                                {{ vente.client.name ~" ("~ vente.client.zone ~ ')' }}
                               </td>
                               <td style="overflow:hidden;text-overflow:ellipsis;max-width:170px;">
                                 {{ produitArray|join(' + ') }}

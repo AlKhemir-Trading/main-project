@@ -95,6 +95,11 @@ class PayementController extends Controller
             $em->persist($payement);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Payement Crée avec Succés :'.$payement->getMontant()." de ".$payement->getClient()->getName()
+            );
+
             // return $this->redirectToRoute('payement_show', array('id' => $payement->getId()));
             return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));
         }
@@ -213,6 +218,11 @@ class PayementController extends Controller
 
             $em->remove($payement);
             $em->flush();
+
+            $this->addFlash(
+                'danger',
+                'Payement Supprimé avec Succés :'.$payement->getMontant()." de ".$payement->getClient()->getName()
+            );
         }
 
         return $this->redirectToRoute('client_show', array('id' => $payement->getClient()->getId()));

@@ -141,7 +141,10 @@ class VenteController extends Controller
 
             $this->refreshDestribution2($vente);
             $em->flush();
-
+            $this->addFlash(
+                'success',
+                'Vente Crée avec Succés.'
+            );
             return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
         }
         //print_r(count($vente->getElementsVente()));
@@ -399,6 +402,10 @@ class VenteController extends Controller
 
         // echo "<br />after flush:".$vente->getClient()->getPlusOuMoins()."<br />";
         // die("ss".$vente->getClient()->getPlusOuMoins());
+        $this->addFlash(
+            'warning',
+            'Vente Modifié avec Succés'
+        );
         return $this->redirectToRoute('vente_show', array('id' => $vente->getId()));
       }
       // elseif ($editForm->isSubmitted()){
@@ -456,7 +463,10 @@ class VenteController extends Controller
 
             $em->remove($vente);
             $em->flush();
-
+            $this->addFlash(
+                'danger',
+                'Vente Supprimée avec Succés'
+            );
         }
 
         return $this->redirectToRoute('vente_index');

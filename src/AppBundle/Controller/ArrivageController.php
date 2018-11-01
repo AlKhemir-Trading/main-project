@@ -71,6 +71,11 @@ class ArrivageController extends Controller
             $em->persist($arrivage);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Arrivage Crée avec Succés.'
+            );
+
             return $this->redirectToRoute('arrivage_show', array('id' => $arrivage->getId()));
         }
 
@@ -195,6 +200,11 @@ class ArrivageController extends Controller
             // $arrivage->prePersistOrUpdate();
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash(
+                'warning',
+                'Arrivage Modifié avec Succés.'
+            );
+
             return $this->redirectToRoute('arrivage_show', array('id' => $arrivage->getId()));
         }
 
@@ -256,6 +266,11 @@ class ArrivageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($arrivage);
             $em->flush();
+
+            $this->addFlash(
+                'danger',
+                'Arrivage Supprimé avec Succés.'
+            );
         }
 
         return $this->redirectToRoute('arrivage_index');

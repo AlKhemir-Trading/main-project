@@ -29,6 +29,7 @@ class CaisseController extends Controller
 
       $elementsCaisse = $em->getRepository('AppBundle:ElementCaisse')->findAll();
       //$actionsCaisse = $em->getRepository('AppBundle:ActionCaisse')->findAll();
+      $caisse = ($em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse())[0]->getFermutureCaisse();
 
       #Form ActionCaisse:
       $actionCaisse = new ActionCaisse();
@@ -36,10 +37,9 @@ class CaisseController extends Controller
       $formActionCaisse = $this->createForm('AppBundle\Form\ActionCaisseType', $actionCaisse);
 
       return $this->render('elementcaisse/index.html.twig', array(
-          // 'elementCaisses' => $elementCaisses,
-          //'actionsCaisse' => $actionsCaisse,
           'elementsCaisse'=>$elementsCaisse,
           'formActionCaisse' => $formActionCaisse->createView(),
+          'caisse' => $caisse,
       ));
   }
 

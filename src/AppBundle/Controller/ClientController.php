@@ -52,6 +52,10 @@ class ClientController extends Controller
             $em->persist($client);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Client Crée avec Succés.'
+            );
             return $this->redirectToRoute('client_show', array('id' => $client->getId()));
         }
 
@@ -123,7 +127,10 @@ class ClientController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash(
+                'warning',
+                'Client Modifié avec Succés.'
+            );
             return $this->redirectToRoute('client_show', array('id' => $client->getId()));
         }
 
@@ -156,6 +163,10 @@ class ClientController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($client);
             $em->flush();
+            $this->addFlash(
+                'danger',
+                'Client Supprimé avec Succés.'
+            );
         }
 
         return $this->redirectToRoute('client_index');

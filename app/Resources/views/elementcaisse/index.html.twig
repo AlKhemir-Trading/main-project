@@ -45,7 +45,7 @@
 
 
 {% extends 'elementcaisse/layout.html.twig' %}
-{% set action = "Caisse" %}
+{% set action = "Caisse: "~ caisse | number_format(0, '.', ' ') ~ "D" %}
 {% block body2 %}
 <!-- <label class="col-form-label font-weight-bold"> Caisse:</label> -->
 <button class=" btn btn-info float-right mt-0" data-target="#ModalActionCaisse" data-toggle="modal" > Nouvelle Transaction</button>
