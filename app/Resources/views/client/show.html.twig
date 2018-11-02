@@ -16,9 +16,9 @@
             <div class="clearfix"></div>
             <div class="row ">
 
-                  <div class="card-body">
+                  <div class="card-body w-100">
 
-                    <div class="table-responsive">
+                    <div class="table-responsive w-100">
                     <table id="example" class="table table-striped table-bordered w-100 text-center">
                       <thead>
                           <tr>
@@ -30,6 +30,7 @@
                           <th>Pocesseur</th>
                           <th>Banque</th>
                           <th>dateCheque</th>
+                          <th>EtatCheque</th>
                           <th>Utilisateur</th>
 
                           <!-- <th style="width:20px">
@@ -54,6 +55,13 @@
                           <td>{{payement.pocesseur}} {{empty}}</td>
                           <td>{{payement.banque}} {{empty}}</td>
                           <td>{% if not empty %}{{payement.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
+                          {% if payement.type == 'cheque' and payement.etatCheque == 1 %}
+                              <td class="btn-primary">Payé</td>
+                          {% elseif payement.type == 'cheque' %}
+                              <td class="btn-warning">Impayé</td>
+                          {% else %}
+                              <td>-</td>
+                          {% endif %}
                           <td>{{payement.user.firstName ~' '~ payement.user.lastName}}</td>
                           <!-- <td>
                             <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>

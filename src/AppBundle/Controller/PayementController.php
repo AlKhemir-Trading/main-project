@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Payement;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\ActionCaisse;
 use AppBundle\Entity\ElementCaisse;
@@ -92,6 +93,7 @@ class PayementController extends Controller
               $em->persist($actionCaisse);
               $em->persist($elementCaisse);
             }
+            
             $em->persist($payement);
             $em->flush();
 

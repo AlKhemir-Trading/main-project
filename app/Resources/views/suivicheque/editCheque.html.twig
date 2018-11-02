@@ -1,0 +1,54 @@
+{% extends 'suivicheque/layout.html.twig' %}
+
+{% set action = "Edit Cheque" %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- <link rel="stylesheet" type="text/css" href="{{ asset('template/css/newAndEditPages.css') }}"> -->
+{% endblock %}
+
+{% block body2 %}
+
+          {{ form_start(form,{'attr' :{'id': 'form_suivicheque'} }) }}
+            {{ include("suivicheque/form.html.twig") }}
+            <button class="btn-block btn btn-primary">Soumettre</button>
+          {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts%}
+{{parent()}}
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('#appbundle_payement_client').attr('disabled',true);
+    $('#appbundle_payement_type').attr('disabled',true);
+
+    $('#form_suivicheque').on('submit', function(e){
+      e.preventDefault();
+      $('#appbundle_payement_client').removeAttr('disabled');
+      $('#appbundle_payement_type').removeAttr('disabled');
+      this.submit();
+    });
+
+
+    if ($('#appbundle_payement_etatCheque').val() == 1){
+      $('#appbundle_payement_etatCheque').removeClass('btn-warning');
+      $('#appbundle_payement_etatCheque').addClass('btn-success');
+    }else{
+      $('#appbundle_payement_etatCheque').removeClass('btn-success');
+      $('#appbundle_payement_etatCheque').addClass('btn-warning');
+    }
+    $('#appbundle_payement_etatCheque').on('change', function() {
+      if (this.value == 1 ){
+        $('#appbundle_payement_etatCheque').css("background-color","#28a745");
+        $('#appbundle_payement_etatCheque').css("color","white");
+      }else{
+        $('#appbundle_payement_etatCheque').css("background-color","#ffc107");
+        $('#appbundle_payement_etatCheque').css("color","black");
+      }
+    });
+
+  });
+</script>
+{% endblock %}

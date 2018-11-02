@@ -83,7 +83,7 @@ class Payement
 
       /**
        * @var string
-       * @Assert\Choice(choices={null, 0, 1}, message="Choose a valid cheque status.")
+       *
        * @ORM\Column(name="etat_cheque", type="boolean", nullable=true)
        */
       private $etatCheque;
@@ -110,7 +110,7 @@ class Payement
      private $actionCaisse;
 
      public function __construct() {
-       $this->dateCheque = new \DateTime();
+
      }
 
      /**
@@ -118,13 +118,15 @@ class Payement
       */
      public function prePersist(){
        $this->date = new \DateTime();
+       $this->dateCheque = null;
+       // die('aa'.$this->date->format('d/m/Y H:i'));
        if($this->type == 'cash'){
          $this->numCheque = null;
          $this->pocesseur = null;
          $this->banque = null;
          $this->dateCheque = null;
        }else{
-         //$this->dateCheque = new \DateTime();
+         $this->dateCheque = new \DateTime();
          $this->etatCheque = 0;
        }
      }
@@ -437,29 +439,5 @@ class Payement
     public function getActionCaisse()
     {
         return $this->actionCaisse;
-    }
-
-    /**
-     * Set etatCheque
-     *
-     * @param boolean $etatCheque
-     *
-     * @return Payement
-     */
-    public function setEtatCheque($etatCheque)
-    {
-        $this->etatCheque = $etatCheque;
-
-        return $this;
-    }
-
-    /**
-     * Get etatCheque
-     *
-     * @return boolean
-     */
-    public function getEtatCheque()
-    {
-        return $this->etatCheque;
     }
 }
