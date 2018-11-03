@@ -10,4 +10,15 @@ namespace AppBundle\Repository;
  */
 class ClientRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function findClientCredit(){
+    return  $this->createQueryBuilder('c')
+                  ->select('c')
+                  ->andWhere('c.plusOuMoins < 0')
+                  ->orderBy('c.plusOuMoins', 'ASC')
+                  // ->andWhere('p.date < :date2')
+                  // ->setParameter('date', new \DateTime('today'))
+                  // ->setParameter('date2', new \DateTime('tomorrow'))
+                  ->getQuery()
+                  ->getResult();
+  }
 }

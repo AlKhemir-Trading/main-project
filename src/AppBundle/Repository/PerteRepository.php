@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class PerteRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function findTodayPertes(){
+      return  $this->createQueryBuilder('p')
+                    ->select('p')
+                    ->andWhere('p.date > :date')
+                    ->andWhere('p.date < :date2')
+                    ->setParameter('date', new \DateTime('today'))
+                    ->setParameter('date2', new \DateTime('tomorrow'))
+                    ->getQuery()
+                    ->getResult();
+  }
 }

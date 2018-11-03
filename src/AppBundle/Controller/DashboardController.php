@@ -5,13 +5,14 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\ElementCaisseService;
 
 class DashboardController extends Controller
 {
   /**
    * @Route("/", name="homepage")
    */
-  public function indexAction(Request $request)
+  public function indexAction(Request $request, ElementCaisseService $elementCaisseService)
   {
       $em = $this->getDoctrine()->getManager();
       $qb = $em->createQueryBuilder();
@@ -139,7 +140,26 @@ class DashboardController extends Controller
         $dataPieChart3[] = $arr;
       }
 
-      // print_r($dataPieChart2); die('qq');
+      #Caisse:
+      $elementCaisse = $elementCaisseService->obtainElementCaisse();
+      $em->persist($elementCaisse);
+      $em->flush();
+
+      #Ventes du Jour:
+      $ventes = $em->getRepository('AppBundle:Vente')->findTodayVentes();
+
+      #Payements du Jour:
+      $payements = $em->getRepository('AppBundle:Payement')->findTodayPayements();
+
+      #Client - Crédits
+      $clients = $em->getRepository('AppBundle:Client')->findClientCredit();
+
+      #Monstock
+      $monstock = $em->getRepository('AppBundle:ElementArrivage')->monstockIndex();
+
+      #Pertes
+      $pertes = $em->getRepository('AppBundle:Perte')->findTodayPertes();
+
       return $this->render('dashboard/dashboard.html.twig', array(
           'countArrivage' => $countArrivage,
           'countVente' => $countVente,
@@ -148,8 +168,14 @@ class DashboardController extends Controller
           'months' => $months,
           'values' => $values,
           'dataPieChart1' => $dataPieChart1,
+          'monstock' => $monstock,
           'dataPieChart2' => $dataPieChart2,
-          'dataPieChart3' => $dataPieChart3
+          'dataPieChart3' => $dataPieChart3,
+          'elementCaisse' => $elementCaisse,
+          'ventes' => $ventes,
+          'payements' => $payements,
+          'clients' => $clients,
+          'pertes' => $pertes,
       ));
 
   }

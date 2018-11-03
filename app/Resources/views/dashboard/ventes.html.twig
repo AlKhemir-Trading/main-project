@@ -1,0 +1,71 @@
+
+
+<div class="table-responsive">
+  <table id="example" class="table table-striped table-bordered w-100 tableData">
+    <thead>
+      <tr>
+        <th>Date de vente</th>
+        <th>Client</th>
+        <th>Produits</th>
+        <th style="width:50px;">Matricule</th>
+        <th style="width:50px;">Payé</th>
+        <th style="width:50px;">Montant</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set currentDate = date("2100-00-00") %}
+      {% for vente in ventes %}
+          {% if( date(vente.date)|date('Y-m-d') < currentDate|date('Y-m-d') )%}
+              {% set currentDate = date(vente.date) %}
+          {% endif %}
+          {% set produitArray = [] %}
+          {% for element in vente.elementsVente %}
+              {% set item = element.quantite ~ ' ' ~ element.elementArrivage.produit.name %}
+              {% set produitArray = produitArray|merge([item]) %}
+          {% endfor %}
+          <tr>
+            <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
+            <td>
+              {{ vente.client.name ~" ("~ vente.client.zone ~ ')' }}
+            </td>
+            <td style="overflow:hidden;text-overflow:ellipsis;max-width:170px;">
+              {{ produitArray | join(' + ') }}
+            </td>
+            <td>{{ "%05d"|format(vente.id) }}
+              {% if( date()|date('Ymd') == vente.date|date('Ymd') ) %}
+              <span class="badge badge-info">New</span>
+              {% endif %}
+            </td>
+            {% set montantClass ="" %}
+            {% set montantPayeClass ="" %}
+            {% if (vente.montantPaye == vente.montant) %}
+                {% set montantPayeClass = "btn-success" %}
+                {% set montantClass = "btn-success" %}
+            {% elseif (vente.montantPaye == 0) %}
+                {% set montantPayeClass = "btn-danger" %}
+                {% set montantClass = "btn-dark" %}
+            {% else %}
+                {% set montantPayeClass = "btn-warning" %}
+                {% set montantClass = "btn-dark" %}
+            {% endif %}
+            {% set montantClass = "btn-info" %}
+            <td class="{{montantPayeClass}}" data-order="{{vente.montantPaye}}">
+              {{ vente.montantPaye | number_format(0, '.', ' ') }} D
+            </td>
+            <td class="{{montantClass}}" data-order="{{vente.montant}}">
+              {{ vente.montant | number_format(0, '.', ' ') }} D
+            </td>
+            <td data-order="{{vente.montant - vente.montantPaye}}">
+              <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('vente_show', { 'id': vente.id }) }}">
+              <i class="fa fa-info fa-fix"></i>
+              </a>
+              <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('vente_edit', { 'id': vente.id }) }}">
+              <i class="fa fa-edit fa-fix"></i>
+              </a>
+            </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,22 @@
+
+<div class="table-responsive">
+<table class="table table-bordered font-weight-bold">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Produit</th>
+        <th scope="col">Perdu</th>
+        <th scope="col">Raison</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for perte in pertes %}
+      <tr>
+        <td>{{perte.elementArrivage.produit.name ~ ' (' ~ perte.elementArrivage.arrivage.fournisseur.name ~ ')'}}</td>
+        <td class="btn-danger" style="width:50px" >{{perte.perdu}}</td>
+        <td>{{perte.raison}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+</div>

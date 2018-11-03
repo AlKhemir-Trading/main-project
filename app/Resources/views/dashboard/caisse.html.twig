@@ -1,0 +1,60 @@
+<div class="table-responsive ">
+  <table id="example" class="table table-striped table-bordered w-100 text-center font-weight-bold">
+    <thead>
+      <tr>
+        <!-- <th scope="col" style="width:50px">#</th> -->
+        <th scope="col">Date</th>
+        <th scope="col">Type</th>
+        <th scope="col">Montant</th>
+        <th scope="col">Motif</th>
+        <th scope="col">Utilisateur</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr >
+        <td class="bg-primary text-light">{{elementCaisse.date|date('Y-m-d')}}</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr> -->
+      <tr>
+        <td>-</td>
+        <td class="">Fermuture Caisse</td>
+        <td class="btn-dark">{{elementCaisse.fermutureCaisse| number_format(0, '.', ' ')}} D</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+      {% for actionCaisse in elementCaisse.actionsCaisse %}
+      {% set classType = "btn-info" %}
+      {% set prefix = "+" %}
+      {% if actionCaisse.type == "depot" %}
+      {% set classType = "btn-success" %}
+      {% elseif actionCaisse.type == "retrait" or actionCaisse.montant < 0 %}
+      {% set classType = "btn-danger" %}
+      {% set prefix = "" %}
+      {% endif %}
+      <tr>
+        <!-- <td scope="row">{{loop.index}}</td> -->
+        <td data-order="{{actionCaisse.date|date('YmdHis')}}">
+          {{ actionCaisse.date|date('Y-m-d (H:i)') }}
+        </td>
+        <td class="{{classType}}" >{{ actionCaisse.type | capitalize }}</td>
+        <td class="{{classType}} ">{{prefix ~''~ actionCaisse.montant | number_format(0, '.', ' ') }} D</td>
+        <td class="text-left">{{ actionCaisse.motif }}</td>
+        <td>{{ actionCaisse.user.firstName ~' '~ actionCaisse.user.lastName  }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td>-</td>
+        <td class="">Ouverture Caisse</td>
+        <td class="btn-primary">{{elementCaisse.ouvertureCaisse | number_format(0, '.', ' ')}} D</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</div>

@@ -28,4 +28,15 @@ class PayementRepository extends \Doctrine\ORM\EntityRepository
                     ->getOneOrNullResult();
   }
 
+  public function findTodayPayements(){
+      return  $this->createQueryBuilder('p')
+                    ->select('p')
+                    ->andWhere('p.date > :date')
+                    ->andWhere('p.date < :date2')
+                    ->setParameter('date', new \DateTime('today'))
+                    ->setParameter('date2', new \DateTime('tomorrow'))
+                    ->getQuery()
+                    ->getResult();
+  }
+
 }

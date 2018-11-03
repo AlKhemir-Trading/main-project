@@ -1,0 +1,37 @@
+
+<div class="table-responsive">
+
+<table class="table font-weight-bold">
+  <thead>
+    <tr>
+      <th scope="col">Produit</th>
+      <th scope="col">Fournisseur</th>
+      <th scope="col">Restant</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for element in monstock %}
+    {% if( date( element.arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+    {% set class = 'a' %}
+    {% else %}
+    {% set class = '' %}
+    {% endif %}
+    <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': element.arrivage.id }) }}';" >
+      <td>{{ element.produit.name }}
+        {% if( class != '' ) %}
+        <span class="badge badge-info">New</span>
+        {%endif%}
+      </td>
+      <td>
+        {{ element.arrivage.fournisseur.name }}
+      </td>
+      <td class="text-center btn-info">
+        {{ element.quantiteRestante }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+</div>

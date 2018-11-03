@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ElementCaisse;
 use AppBundle\Entity\ActionCaisse;
+use AppBundle\Service\ElementCaisseService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,12 +24,17 @@ class CaisseController extends Controller
    * @Route("/", name="caisse_index")
    * @Method("GET")
    */
-  public function indexAction()
+  public function indexAction(ElementCaisseService $elementCaisseService)
   {
       $em = $this->getDoctrine()->getManager();
 
+      $elementCaisse = $elementCaisseService->obtainElementCaisse();
+      $em->persist($elementCaisse);
+      $em->flush();
+
       $elementsCaisse = $em->getRepository('AppBundle:ElementCaisse')->findAll();
       //$actionsCaisse = $em->getRepository('AppBundle:ActionCaisse')->findAll();
+
       $caisse = ($em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse())[0]->getFermutureCaisse();
 
       #Form ActionCaisse:

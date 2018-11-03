@@ -16,6 +16,20 @@ class VenteRepository extends \Doctrine\ORM\EntityRepository
       return $this->findBy(array(), array('date' => 'DESC'));
   }
 
+  public function findTodayVentes(){
+    return  $this->createQueryBuilder('v')
+                  ->select('v')
+                  ->andWhere('v.date > :date')
+                  ->andWhere('v.date < :date2')
+                  ->setParameter('date', new \DateTime('today'))
+                  ->setParameter('date2', new \DateTime('tomorrow'))
+                  ->getQuery()
+                  ->getResult();
+                  // $date = new DateTime('today');
+                  // $date2 =  clone $date;
+                  //
+                  // $date2->modify('+1 day');
+  }
 
   public function venteByClientId($id)
   {

@@ -59,10 +59,10 @@
 
                           {% set produitArray = [] %}
                           {% for element in vente.elementsVente %}
-                            {% set produitArray = produitArray|merge([element.elementArrivage.produit.name]) %}
+                              {% set item = element.quantite ~ ' ' ~ element.elementArrivage.produit.name %}
+                              {% set produitArray = produitArray|merge([item]) %}
                           {% endfor %}
 
-                          {#<!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('vente_show', { 'id': vente.id }) }}';"> -->#}
                           <tr class="{{classTr}}">
                               <td data-order="{{vente.date|date('YmdHis')}}">{{ vente.date|date('d/m/Y (H:i)') }}</td>
                               <td>
@@ -103,14 +103,6 @@
                                 <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('vente_edit', { 'id': vente.id }) }}">
                                   <i class="fa fa-edit fa-fix"></i>
                                 </a>
-
-                                <!-- <button class="btn btn-sm btn-danger btn-table-sm" type="button"
-                                data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash fa-fix"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm btn-table-sm" type="button"><i class="fa fa-trash fa-fix"></i></button>
-                                <a class="btn btn-primary btn-sm btn-table-sm" type="button" href="{{ path('vente_edit', { 'id': vente.id }) }}">
-                                  <i class="fa fa-trash fa-fix"></i>
-                                </a> -->
 
                               </td>
                           </tr>
