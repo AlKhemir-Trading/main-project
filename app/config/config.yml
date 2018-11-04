@@ -68,12 +68,18 @@ doctrine:
         #         YEAR: DoctrineExtensions\Query\Mysql\Year
 
 # Swiftmailer Configuration
+
 swiftmailer:
-    transport: '%mailer_transport%'
-#    host: '%mailer_host%'
-#    port: '%mailer_port%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport: gmail
+    username:  tunisiewebpro@gmail.com
+    password:  KarimMahdi2017
+
+# swiftmailer:
+#     transport: "%mailer_transport%"
+# #    host: "%mailer_host%"
+# #    port: "%mailer_port%"
+#     username: "%mailer_user%"
+#     password: "%mailer_password%"
 #    spool: { type: memory }
 
 # FOS USER BUNDLE

@@ -12,7 +12,6 @@ parameters:
     database_user: iheb_user
     database_password: '0000'
 
-
     mailer_transport: gmail
 #    mailer_host: smtp.gmail.com
 #    mailer_port: 587

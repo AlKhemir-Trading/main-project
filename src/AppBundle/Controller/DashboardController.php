@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Service\ElementCaisseService;
 
 class DashboardController extends Controller
@@ -12,7 +14,7 @@ class DashboardController extends Controller
   /**
    * @Route("/", name="homepage")
    */
-  public function indexAction(Request $request, ElementCaisseService $elementCaisseService)
+  public function indexAction(Request $request, ElementCaisseService $elementCaisseService, \Swift_Mailer $mailer)
   {
       $em = $this->getDoctrine()->getManager();
       // $qb = $em->createQueryBuilder();
@@ -169,6 +171,39 @@ class DashboardController extends Controller
 
       #Pertes
       $pertes = $em->getRepository('AppBundle:Perte')->findTodayPertes();
+
+      #Mail
+      // $mailBody = $this->renderView('dashboard/dashboard.html.twig', array(
+      //     'countArrivage' => $countArrivage,
+      //     'countVente' => $countVente,
+      //     // 'countFournisseur' => $countFournisseur,
+      //     // 'countClient' => $countClient,
+      //     'months' => $months,
+      //     'values' => $values,
+      //     'dataPieChart1' => $dataPieChart1,
+      //     'monstock' => $monstock,
+      //     'dataPieChart2' => $dataPieChart2,
+      //     'dataPieChart3' => $dataPieChart3,
+      //     'elementCaisse' => $elementCaisse,
+      //     'ventes' => $ventes,
+      //     'payements' => $payements,
+      //     'clients' => $clients,
+      //     'pertes' => $pertes,
+      //     'arrivages' => $arrivages,
+      //     'cheques' => $cheques,
+      //     'countPayements' => $countPayements
+      //     ),
+      // 'text/html'
+      // );
+      //
+      // $message = (new \Swift_Message('Hello Email'))
+      //         ->setFrom('tunisiewebpro@gmail.com')
+      //         ->setTo('garalimedkarim@gmail.com')
+      //         ->setEncoder( new \Swift_Mime_ContentEncoder_PlainContentEncoder('8bit'))
+      //         ->setBody($mailBody)
+      //         ->setContentType("text/html");
+      //
+      // $mailer->send($message);
 
       return $this->render('dashboard/dashboard.html.twig', array(
           'countArrivage' => $countArrivage,
