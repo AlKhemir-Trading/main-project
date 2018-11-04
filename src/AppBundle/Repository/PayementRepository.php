@@ -39,4 +39,14 @@ class PayementRepository extends \Doctrine\ORM\EntityRepository
                     ->getResult();
   }
 
+  public function findChequesNonPayes(){
+    return  $this->createQueryBuilder('p')
+                  ->select('p')
+                  ->andWhere("p.type = 'cheque'")
+                  ->andWhere('p.etatCheque = 0')
+                  ->orderBy("p.dateCheque","ASC")
+                  ->getQuery()
+                  ->getResult();
+  }
+
 }

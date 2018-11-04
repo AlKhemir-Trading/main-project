@@ -10,4 +10,16 @@ namespace AppBundle\Repository;
  */
 class ArrivageRepository extends \Doctrine\ORM\EntityRepository
 {
+
+  public function findTodayArrivages(){
+    return  $this->createQueryBuilder('A')
+                  ->select('A')
+                  ->andWhere('A.dateCreation > :date')
+                  ->andWhere('A.dateCreation < :date2')
+                  ->setParameter('date', new \DateTime('today'))
+                  ->setParameter('date2', new \DateTime('tomorrow'))
+                  ->getQuery()
+                  ->getResult();
+  }
+
 }

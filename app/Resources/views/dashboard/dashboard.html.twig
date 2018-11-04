@@ -13,15 +13,7 @@
   </div>
   <div class="row">
     <div class="col-md-6 col-lg-3">
-      <div class="widget-small info coloured-icon"><i class="icon fa fa-building fa-3x"></i>
-        <div class="info">
-          <h4>Fournisseur</h4>
-          <p><b>{{countFournisseur}}</b></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="widget-small btn-secondary coloured-icon"><i class="icon fa fa-truck fa-3x"></i>
+      <div class="widget-small info coloured-icon"><i class="icon fa fa-truck fa-3x"></i>
         <div class="info">
           <h4>Arrivage</h4>
           <p><b>{{countArrivage}}</b></p>
@@ -29,21 +21,30 @@
       </div>
     </div>
     <div class="col-md-6 col-lg-3">
-      <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-        <div class="info">
-          <h4>Client</h4>
-          <p><b>{{countClient}}</b></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="widget-small btn-success coloured-icon"><i class="icon fa fa-credit-card fa-3x"></i>
+      <div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"></i>
         <div class="info">
           <h4>Vente</h4>
           <p><b>{{countVente}}</b></p>
         </div>
       </div>
     </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="widget-small info coloured-icon"><i class="icon fa fa-credit-card fa-3x"></i>
+        <div class="info">
+          <h4>Payement</h4>
+          <p><b>{{countPayements}}</b></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="widget-small primary coloured-icon"><i class="icon fa fa-money fa-3x"></i>
+        <div class="info">
+          <h4>Caisse</h4>
+          <p><b>{{elementCaisse.fermutureCaisse |abs|number_format(0, '.', ' ') }} D </b></p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 
@@ -65,6 +66,15 @@
   <div class="row">
     <div class="col-md-12">
       <div class="tile cornsilk">
+        <h3 class="tile-title"><i class="app-menu__icon fa fa-truck"></i> Arrivages du Jour</h3>
+          {% include 'dashboard/arrivages.html.twig' %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile cornsilk">
         <h3 class="tile-title"><i class="app-menu__icon fa fa-shopping-cart"></i> Ventes du Jour</h3>
           {% include 'dashboard/ventes.html.twig' %}
       </div>
@@ -76,6 +86,15 @@
       <div class="tile cornsilk">
         <h3 class="tile-title"><i class="app-menu__icon fa fa-credit-card"></i> Payements du Jour</h3>
           {% include 'dashboard/payements.html.twig' %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile cornsilk">
+        <h3 class="tile-title"><i class="app-menu__icon fa fa-credit-card"></i> Cheques A Regler</h3>
+          {% include 'dashboard/cheques.html.twig' %}
       </div>
     </div>
   </div>

@@ -1,0 +1,74 @@
+
+<div class="table-responsive">
+  <table id="example" class="table table-striped table-bordered w-100 tableData">
+    <thead>
+      <tr>
+        <th>Matricule</th>
+        <th>Fournisseur</th>
+        <th>Produits</th>
+        <th>Restant</th>
+        <!-- <th>Montant</th> -->
+        <th>Entrant</th>
+        <th>Date d'arrivée</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for arrivage in arrivages %}
+      {% if( date( arrivage.dateCreation) > date('-'~newDatesNb~'days') )%}
+      {% set class = 'a' %}
+      {% else %}
+      {% set class = '' %}
+      {% endif %}
+      {% set quantiteTotal = 0 %}
+      {% set quantiteRestanteTotal = 0 %}
+      {% set montantEntrant = 0 %}
+      {% set produitArray = [] %}
+      {% for element in arrivage.elementArrivages %}
+      {% set produitArray = produitArray|merge([ element.quantite ~ ' ' ~ element.produit.name]) %}
+      {% set quantiteTotal = quantiteTotal + element.quantite %}
+      {% set quantiteRestanteTotal = quantiteRestanteTotal + element.quantiteRestante %}
+      {% for eltVente in element.elementsVente %}
+      {% set montantEntrant = montantEntrant + eltVente.montant %}
+      {% endfor %}
+      {% endfor %}
+      {% set finished = false %}
+      {% if quantiteRestanteTotal == 0 %}
+      {% set finished = true %}
+      {% endif %}
+      {# <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': arrivage.id }) }}';"> --> #}
+      <tr class="{{class}}" role="row">
+        <td>{{ "%05d"|format(arrivage.id) }}
+          {% if( class != '' ) %}
+          <span class="badge badge-info">New</span>
+          {%endif%}
+        </td>
+        <td>
+          {{ arrivage.fournisseur.name }}
+        </td>
+        <td>
+          {{ produitArray|join(' + ') }}
+        </td>
+        <td class="{% if finished %} btn-primary {% endif %}"> {{quantiteRestanteTotal}}/{{quantiteTotal}} </td>
+        {#<!-- <td class="btn-secondary" data-order="{{arrivage.montant}}">
+          {{ arrivage.montant |number_format(0, '.', ' ') }} D
+          </td> -->#}
+        <td class="btn-success" data-order="{{montantEntrant}}">
+          {{montantEntrant|number_format(0, '.', ' ') }} D
+        </td>
+        <td data-order="{{arrivage.dateCreation|date('YmdHis')}}">
+          {{ arrivage.dateCreation|date('d/m/Y (H:i)') }}
+        </td>
+        <td>
+          <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('arrivage_show', { 'id': arrivage.id }) }}">
+          <i class="fa fa-info fa-fix"></i>
+          </a>
+          <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('arrivage_edit', { 'id': arrivage.id }) }}">
+          <i class="fa fa-edit fa-fix"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -16,7 +16,8 @@
     {% else %}
     {% set class = '' %}
     {% endif %}
-    <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': element.arrivage.id }) }}';" >
+    <!-- <tr class="{{class}}" onclick="window.location.href = '{{ path('arrivage_show', { 'id': element.arrivage.id }) }}';" > -->
+    <tr class="{{class}}" >
       <td>{{ element.produit.name }}
         {% if( class != '' ) %}
         <span class="badge badge-info">New</span>

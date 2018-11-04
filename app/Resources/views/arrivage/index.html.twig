@@ -50,7 +50,7 @@
                           {% set montantEntrant = 0 %}
                           {% set produitArray = [] %}
                           {% for element in arrivage.elementArrivages %}
-                            {% set produitArray = produitArray|merge([element.produit.name]) %}
+                                  {% set produitArray = produitArray|merge([ element.quantite ~ ' ' ~ element.produit.name]) %}
 
                             {% set quantiteTotal = quantiteTotal + element.quantite %}
                             {% set quantiteRestanteTotal = quantiteRestanteTotal + element.quantiteRestante %}

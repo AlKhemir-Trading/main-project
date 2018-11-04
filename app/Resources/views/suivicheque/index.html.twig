@@ -7,7 +7,7 @@
 
 <div class="row ">
   <div class="card-body w-100">
-    <div class="table-responsive w-100">
+    <div class="table-responsive w-100 font-weight-bold">
       <table id="example" class="table table-striped table-bordered w-100 text-center">
         <thead>
           <tr>
@@ -49,7 +49,7 @@
             <td>{{cheque.numCheque}} {{empty}}</td>
             <td>{{cheque.pocesseur}} {{empty}}</td>
             <td>{{cheque.banque}} {{empty}}</td>
-            <td data-order="{{cheque.dateCheque|date('YmdHis')}}">{% if not empty %}{{cheque.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
+            <td class="{% if cheque.etatCheque is not null and cheque.etatCheque == 0 and cheque.dateCheque < date("+1month") %} btn-danger {% endif %}" data-order="{{cheque.dateCheque|date('YmdHis')}}">{% if not empty %}{{cheque.dateCheque|date('Y-m-d')}}{%endif%} {{empty}}</td>
             <td>{{cheque.user.firstName ~' '~ cheque.user.lastName}}</td>
             <!-- <td>
               <button class="btn btn-edit-xs btn-sm btn-table-sm"><i class="fa fa-close fa-fix"></i></button>

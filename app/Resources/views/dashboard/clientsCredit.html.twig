@@ -13,44 +13,56 @@
       </tr>
     </thead>
     <tbody>
+      {% set totalCredits = 0 %}
       {% for client in clients %}
-      {% if( date( client.dateCreation) > date('-'~newDatesNb~'days') )%}
-      {% set class = 'a' %}
-      {% else %}
-      {% set class = '' %}
-      {% endif %}
-      <tr class="{{class}}">
-        <td>{{ "%05d"|format(client.id) }}</td>
-        <td class="">
-          {{ client.name }}
-          {% if( class != '' ) %}
-          <span class="badge badge-info">New</span>
-          {%endif%}
-        </td>
-        <td>{{ client.tel }}</td>
-        <td data-order="{{client.zone}}">
-          {{ client.zone|upper }}
-        </td>
-        {% if (client.plusOuMoins < 0 ) %}
-        <td class="btn-danger" data-order="{{client.plusOuMoins}}">
-          - {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
-        </td>
+        {% if( date( client.dateCreation) > date('-'~newDatesNb~'days') )%}
+        {% set class = 'a' %}
         {% else %}
-        <td class="btn-success" data-order="{{client.plusOuMoins}}">
-          + {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
-        </td>
+        {% set class = '' %}
         {% endif %}
-        <td>
-          <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('client_show', { 'id': client.id }) }}">
-          <i class="fa fa-info fa-fix"></i>
-          </a>
-          <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('client_edit', { 'id': client.id }) }}">
-          <i class="fa fa-edit fa-fix"></i>
-          </a>
-        </td>
-      </tr>
+        {% set totalCredits = totalCredits + client.plusOuMoins %}
+        <tr class="{{class}}">
+          <td>{{ "%05d"|format(client.id) }}</td>
+          <td class="btn-dark">
+            {{ client.name }}
+            {% if( class != '' ) %}
+            <span class="badge badge-info">New</span>
+            {%endif%}
+          </td>
+          <td>{{ client.tel }}</td>
+          <td data-order="{{client.zone}}">
+            {{ client.zone|upper }}
+          </td>
+          {% if (client.plusOuMoins < 0 ) %}
+          <td class="btn-danger" data-order="{{client.plusOuMoins}}">
+            - {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
+          </td>
+          {% else %}
+          <td class="btn-success" data-order="{{client.plusOuMoins}}">
+            + {{client.plusOuMoins|abs|number_format(0, '.', ' ') }} D
+          </td>
+          {% endif %}
+          <td>
+            <a class="btn btn-info btn-sm btn-table-sm" type="button" href="{{ path('client_show', { 'id': client.id }) }}">
+            <i class="fa fa-info fa-fix"></i>
+            </a>
+            <a class="btn btn-edit-xs btn-sm btn-table-sm" type="button" href="{{ path('client_edit', { 'id': client.id }) }}">
+            <i class="fa fa-edit fa-fix"></i>
+            </a>
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
+    <tfoot>
+      <tr>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+        <td>Total</td>
+        <td class="btn-dark">- {{totalCredits|abs|number_format(0, '.', ' ') }} D</td>
+        <td class="text-center">-</td>
+      </tr>
+    </tfoot>
   </table>
 </div>
 

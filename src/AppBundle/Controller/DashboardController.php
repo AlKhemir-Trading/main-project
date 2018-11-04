@@ -15,28 +15,28 @@ class DashboardController extends Controller
   public function indexAction(Request $request, ElementCaisseService $elementCaisseService)
   {
       $em = $this->getDoctrine()->getManager();
-      $qb = $em->createQueryBuilder();
-      $qb->select('count(c.id)')
-         ->from('AppBundle:Client', 'c');
-      $countClient = $qb->getQuery()->getSingleScalarResult();
-
-      $qb = $em->createQueryBuilder();
-      $qb->select('count(c.id)')
-         ->from('AppBundle:Fournisseur', 'c');
-      $countFournisseur = $qb->getQuery()->getSingleScalarResult();
-
-      $qb = $em->createQueryBuilder();
-      $qb->select('count(c.id)')
-         ->from('AppBundle:Vente', 'c');
-      $countVente = $qb->getQuery()->getSingleScalarResult();
-
-      $qb = $em->createQueryBuilder();
-      $qb->select('count(c.id)')
-         ->from('AppBundle:Arrivage', 'c');
-      $countArrivage = $qb->getQuery()->getSingleScalarResult();
+      // $qb = $em->createQueryBuilder();
+      // $qb->select('count(c.id)')
+      //    ->from('AppBundle:Client', 'c');
+      // $countClient = $qb->getQuery()->getSingleScalarResult();
+      //
+      // $qb = $em->createQueryBuilder();
+      // $qb->select('count(c.id)')
+      //    ->from('AppBundle:Fournisseur', 'c');
+      // $countFournisseur = $qb->getQuery()->getSingleScalarResult();
+      //
+      // $qb = $em->createQueryBuilder();
+      // $qb->select('count(c.id)')
+      //    ->from('AppBundle:Vente', 'c');
+      // $countVente = $qb->getQuery()->getSingleScalarResult();
+      //
+      // $qb = $em->createQueryBuilder();
+      // $qb->select('count(c.id)')
+      //    ->from('AppBundle:Arrivage', 'c');
+      // $countArrivage = $qb->getQuery()->getSingleScalarResult();
 
       $dateBegin = new \DateTime();
-      $dateBegin->modify("-6 month");
+      $dateBegin->modify("-1 year");
       $qb = $em->createQueryBuilder();
       $qb->select('sum(v.montant),  substring(v.date,1,4) as YEAR, substring(v.date,6,2) as MONTH')
          ->from('AppBundle:Vente', 'v')
@@ -56,7 +56,7 @@ class DashboardController extends Controller
       $monthTmp = $data[count($data) - 1]['MONTH'];
       $dateTmp = new \DateTime();
       $dateTmp->setDate("2001",$monthTmp,"1");
-      while( count($months) <6 ){
+      while( count($months) <12 ){
           $months[] = $dateTmp->modify("+ 1 month")->format('F');
           $values[] = 0;
       }
@@ -147,9 +147,19 @@ class DashboardController extends Controller
 
       #Ventes du Jour:
       $ventes = $em->getRepository('AppBundle:Vente')->findTodayVentes();
+      $countVente = count($ventes);
+
+      #Arrivages du Jour:
+      $arrivages = $em->getRepository('AppBundle:Arrivage')->findTodayArrivages();
+      $countArrivage = count($arrivages);
 
       #Payements du Jour:
       $payements = $em->getRepository('AppBundle:Payement')->findTodayPayements();
+      $countPayements = count($payements);
+
+
+      #Cheques A Regler:
+      $cheques = $em->getRepository('AppBundle:Payement')->findChequesNonPayes();
 
       #Client - Crédits
       $clients = $em->getRepository('AppBundle:Client')->findClientCredit();
@@ -163,8 +173,8 @@ class DashboardController extends Controller
       return $this->render('dashboard/dashboard.html.twig', array(
           'countArrivage' => $countArrivage,
           'countVente' => $countVente,
-          'countFournisseur' => $countFournisseur,
-          'countClient' => $countClient,
+          // 'countFournisseur' => $countFournisseur,
+          // 'countClient' => $countClient,
           'months' => $months,
           'values' => $values,
           'dataPieChart1' => $dataPieChart1,
@@ -176,6 +186,9 @@ class DashboardController extends Controller
           'payements' => $payements,
           'clients' => $clients,
           'pertes' => $pertes,
+          'arrivages' => $arrivages,
+          'cheques' => $cheques,
+          'countPayements' => $countPayements,
       ));
 
   }
