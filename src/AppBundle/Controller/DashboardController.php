@@ -55,9 +55,12 @@ class DashboardController extends Controller
         $months[] = date("F", strtotime("2001-" . $array['MONTH'] . "-01"));
         $values[] = $array[1] + 0;
       }
-      $monthTmp = $data[count($data) - 1]['MONTH'];
       $dateTmp = new \DateTime();
-      $dateTmp->setDate("2001",$monthTmp,"1");
+      if ($data){
+        $monthTmp = $data[count($data) - 1]['MONTH'];
+        $dateTmp->setDate("2001",$monthTmp,"1");
+      }
+
       while( count($months) <12 ){
           $months[] = $dateTmp->modify("+ 1 month")->format('F');
           $values[] = 0;

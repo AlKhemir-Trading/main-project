@@ -34,9 +34,11 @@ class CaisseController extends Controller
 
       $elementsCaisse = $em->getRepository('AppBundle:ElementCaisse')->findAll();
       //$actionsCaisse = $em->getRepository('AppBundle:ActionCaisse')->findAll();
-
-      $caisse = ($em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse())[0]->getFermutureCaisse();
-
+      $caisse = 0;
+      if(count($elementsCaisse > 0)){
+        $res = $em->getRepository('AppBundle:ElementCaisse')->findLastElementCaisse();
+        $caisse = $res[0]->getFermutureCaisse();
+      }
       #Form ActionCaisse:
       $actionCaisse = new ActionCaisse();
       $actionCaisse->setUser($this->getUser());
